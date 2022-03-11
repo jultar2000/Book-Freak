@@ -2,21 +2,25 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Book-module" />
+        <module name="Author-module" />
         <module name="User-module" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Author-module" target="11" />
       <module name="Book-module" target="11" />
       <module name="User-module" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Author-module" options="-parameters" />
       <module name="Book-module" options="-parameters" />
       <module name="User-module" options="-parameters" />
     </option>

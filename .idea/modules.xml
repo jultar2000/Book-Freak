@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/43214121/43214121.iml" filepath="$PROJECT_DIR$/43214121/43214121.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/Author-module/Author-module.iml" filepath="$PROJECT_DIR$/backend/Author-module/Author-module.iml" />
       <module fileurl="file://$PROJECT_DIR$/Backend/Book-module/Book-module.iml" filepath="$PROJECT_DIR$/Backend/Book-module/Book-module.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/BookFreak.iml" filepath="$PROJECT_DIR$/.idea/BookFreak.iml" />
       <module fileurl="file://$PROJECT_DIR$/Backend/User-module/User-module.iml" filepath="$PROJECT_DIR$/Backend/User-module/User-module.iml" />

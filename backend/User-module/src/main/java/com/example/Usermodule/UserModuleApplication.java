@@ -1,7 +1,12 @@
 package com.example.Usermodule;
 
+import com.example.Usermodule.dao.UserDao;
+import com.example.Usermodule.entity.User;
+import com.example.Usermodule.service.UserService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class UserModuleApplication {
@@ -10,4 +15,22 @@ public class UserModuleApplication {
 		SpringApplication.run(UserModuleApplication.class, args);
 	}
 
+	@Bean
+	CommandLineRunner commandLineRunner(UserService userService) {
+		return args -> {
+			User user = User.builder()
+					.email("aa")
+					.name("user")
+					.build();
+
+			User user2 = User.builder()
+					.email("aa")
+					.name("user")
+					.build();
+
+			userService.createUser(user);
+			userService.deleteUser("aa");
+
+		};
+	}
 }

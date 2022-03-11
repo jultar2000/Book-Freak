@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/Backend/Book-module/pom.xml" />
         <option value="$PROJECT_DIR$/Backend/User-module/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/Author-module/pom.xml" />
       </list>
     </option>
   </component>
