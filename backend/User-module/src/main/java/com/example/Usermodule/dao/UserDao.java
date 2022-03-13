@@ -8,6 +8,8 @@ import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -18,8 +20,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Updates.*;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -59,9 +66,9 @@ public class UserDao {
     }
 
     public boolean deleteUser(String email) {
-        Bson query = eq("email", email);
+        Bson find_query = eq("email", email);
         try {
-            usersCollection.deleteOne(query);
+            usersCollection.deleteOne(find_query);
             return true;
         } catch(Exception e) {
             log.error("Could not delete `{}` from 'users' collection: {}", email, e.getMessage());
@@ -71,13 +78,41 @@ public class UserDao {
     }
 
     public User findUser(String email) {
-        Bson query = eq("email", email);
+        Bson find_query = eq("email", email);
         try {
-            return usersCollection.find(query).first();
+            return usersCollection.find(find_query).first();
         } catch(Exception e) {
             log.error("Could not find `{}` in 'users' collection: {}", email, e.getMessage());
             throw new IncorrectDaoOperation(
                     MessageFormat.format("User with email `{0}` does not exist.", email));
         }
+    }
+
+    public List<User> findAllEmails() {
+        List<User> users = new ArrayList<>();
+        Bson projection = fields(exclude("_id"), include("email"));
+        return usersCollection.find(projection).into(users);
+    }
+
+    public boolean updateUserField(String email, String field, String value) {
+        Bson find_query = eq("email", email);
+        Bson update = set(field, value);
+        try {
+            UpdateResult updateResult = usersCollection.updateOne(find_query, update);
+            if(updateResult.getModifiedCount() < 1) {
+                log.warn(
+                        "User `{}` was not updated. Field `{}` might not exist.",
+                        email, field);
+                return false;
+            }
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Issue caught while trying to update user `{}`: {}",
+                            email,
+                            e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
+        return true;
     }
 }

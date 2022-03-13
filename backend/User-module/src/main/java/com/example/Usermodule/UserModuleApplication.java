@@ -15,22 +15,5 @@ public class UserModuleApplication {
 		SpringApplication.run(UserModuleApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(UserService userService) {
-		return args -> {
-			User user = User.builder()
-					.email("aa")
-					.name("user")
-					.build();
-
-			User user2 = User.builder()
-					.email("aa")
-					.name("user")
-					.build();
-
-			userService.createUser(user);
-			userService.deleteUser("aa");
-
-		};
 	}
-}
+
