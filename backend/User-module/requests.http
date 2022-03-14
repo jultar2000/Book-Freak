@@ -1,3 +1,8 @@
+
+###
+GET http://localhost:8080/api/v1/emails
+
+
 ###
 PUT http://localhost:8080/api/v1/aaa
 Content-Type: application/json

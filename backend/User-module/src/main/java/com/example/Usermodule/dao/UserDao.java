@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -88,10 +87,10 @@ public class UserDao {
         }
     }
 
-    public List<User> findAllEmails() {
-        List<User> users = new ArrayList<>();
-        Bson projection = fields(exclude("_id"), include("email"));
-        return usersCollection.find(projection).into(users);
+    public List<String> findAllEmails() {
+        List<String> emails = new ArrayList<>();
+        usersCollection.distinct("email", String.class).into(emails);
+        return emails;
     }
 
     public boolean updateUserField(String email, String field, String value) {

@@ -2,6 +2,7 @@ package com.example.Usermodule.service;
 
 import com.example.Usermodule.dao.UserDao;
 import com.example.Usermodule.entity.User;
+import com.example.Usermodule.exceptions.IncorrectDaoOperation;
 import com.example.Usermodule.exceptions.NullArgumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -23,12 +25,12 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        if (user == null) {
-            log.error("Could not create user");
-            throw new NullArgumentException("Cannot create null user");
-        } else {
+        try {
             return userDao.insertUser(user) ? user : null;
+        } catch (IncorrectDaoOperation e) {
+            log.error("Could not create user");
         }
+        return null;
     }
 
     public boolean deleteUser(String email) {
@@ -47,6 +49,10 @@ public class UserService {
         } else {
             return userDao.findUser(email);
         }
+    }
+
+    public List<String> findAllEmails() {
+       return userDao.findAllEmails();
     }
 
     public boolean updateUserFields(String email, HashMap<String, ?> request) {
