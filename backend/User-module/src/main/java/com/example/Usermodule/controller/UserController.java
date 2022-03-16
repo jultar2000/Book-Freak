@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping("/{email}")
     public ResponseEntity<User> getUser(@PathVariable("email") String email) {
         User user = userService.findUser(email);
-        if(user == null) {
+        if (user == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(user);
@@ -51,7 +51,7 @@ public class UserController {
     @PutMapping("/{email}")
     public ResponseEntity<Void> updateUser(@PathVariable("email") String email,
                                            @RequestBody HashMap<String, String> request) {
-        if(!userService.updateUserFields(email, request)) {
+        if (!userService.updateUserFields(email, request)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();
@@ -59,7 +59,7 @@ public class UserController {
 
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable("email") String email) {
-        if(!userService.deleteUser(email)) {
+        if (!userService.deleteUser(email)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();

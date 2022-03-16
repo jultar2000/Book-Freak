@@ -9,6 +9,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -54,6 +55,10 @@ public class UserDao {
     }
 
     public boolean insertUser(User user) {
+        if (user.getEmail() == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("User email cannot be null", user.getEmail()));
+        }
         try {
             usersCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(user);
             return true;
@@ -67,24 +72,26 @@ public class UserDao {
     public boolean deleteUser(String email) {
         Bson find_query = eq("email", email);
         try {
-            usersCollection.deleteOne(find_query);
+            DeleteResult result = usersCollection.deleteOne(find_query);
+            if (result.getDeletedCount() < 1) {
+                log.warn("Email '{}' not found in 'users' collection. No user deleted.", email);
+            }
             return true;
-        } catch(Exception e) {
-            log.error("Could not delete `{}` from 'users' collection: {}", email, e.getMessage());
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("User with email `{0}` does not exist.", email));
+        } catch (Exception e) {
+            String errorMessage = MessageFormat
+                    .format("Could not delete `{}` from 'users' collection: {}.", email, e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
         }
     }
 
     public User findUser(String email) {
         Bson find_query = eq("email", email);
-        try {
-            return usersCollection.find(find_query).first();
-        } catch(Exception e) {
-            log.error("Could not find `{}` in 'users' collection: {}", email, e.getMessage());
+        User user = usersCollection.find(find_query).first();
+        if(user == null) {
             throw new IncorrectDaoOperation(
                     MessageFormat.format("User with email `{0}` does not exist.", email));
         }
+        return user;
     }
 
     public List<String> findAllEmails() {
@@ -98,7 +105,7 @@ public class UserDao {
         Bson update = set(field, value);
         try {
             UpdateResult updateResult = usersCollection.updateOne(find_query, update);
-            if(updateResult.getModifiedCount() < 1) {
+            if (updateResult.getModifiedCount() < 1) {
                 log.warn(
                         "User `{}` was not updated. Field `{}` might not exist.",
                         email, field);
