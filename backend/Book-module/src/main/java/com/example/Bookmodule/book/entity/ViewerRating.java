@@ -1,10 +1,17 @@
 package com.example.Bookmodule.book.entity;
 
-import lombok.Data;
+import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@ToString
+@EqualsAndHashCode
 public class ViewerRating {
     private int numReviews;
     private double rating;

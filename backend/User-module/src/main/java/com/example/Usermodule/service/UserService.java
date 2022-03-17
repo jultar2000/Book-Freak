@@ -2,7 +2,6 @@ package com.example.Usermodule.service;
 
 import com.example.Usermodule.dao.UserDao;
 import com.example.Usermodule.entity.User;
-import com.example.Usermodule.exceptions.IncorrectDaoOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserDao userDao;
-    private Logger log;
+    private final UserDao userDao;
+    private final Logger log;
 
     @Autowired
     public UserService(UserDao userDao) {
@@ -44,9 +43,10 @@ public class UserService {
             log.error("Could not update user field");
             return false;
         }
-        return userDao.updateUserField(email, "name", request.get("name").toString()) &
-                userDao.updateUserField(email, "surname", request.get("surname").toString()) &
-                userDao.updateUserField(email, "gender", request.get("gender").toString()) &
-                userDao.updateUserField(email, "birthDate", request.get("birthDate").toString());
+        return userDao.updateUserFields(email,
+                request.get("name").toString(),
+                request.get("surname").toString(),
+                request.get("gender").toString(),
+                request.get("birthDate").toString());
     }
 }
