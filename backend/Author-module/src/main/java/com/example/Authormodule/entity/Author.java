@@ -1,7 +1,7 @@
 package com.example.Authormodule.entity;
 
-import com.example.Authormodule.config.ObjectIdDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -19,8 +19,8 @@ import java.time.LocalDate;
 @Document
 public class Author {
     @BsonId
-    @JsonDeserialize(using = ObjectIdDeserializer.class)
-    private ObjectId id;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId oid;
     private String name;
     private String surname;
     private String nationality;

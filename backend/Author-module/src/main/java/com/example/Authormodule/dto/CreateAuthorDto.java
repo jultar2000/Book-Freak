@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class CreateAuthorRequest {
+public class CreateAuthorDto {
     private String name;
     private String surname;
     private String nationality;

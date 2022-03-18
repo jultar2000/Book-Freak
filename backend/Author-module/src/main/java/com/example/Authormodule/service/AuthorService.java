@@ -27,7 +27,7 @@ public class AuthorService {
     private ObjectId convertIdToObjectId(String id) {
         try {
             return new ObjectId(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Cannot create ObjectId: {}", e.getMessage());
             String errorMessage = MessageFormat
                     .format("String Id `{0}` cannot be converted to ObjectId.", id);
@@ -36,18 +36,21 @@ public class AuthorService {
     }
 
     public List<Author> findAllAuthors() {
-        authorDao.findAllAuthors().forEach(author -> System.out.println(author.getId()));
         return authorDao.findAllAuthors();
     }
 
+    public Author findAuthorByNameAndSurname(String name, String surname) {
+        return authorDao.findAuthorByNameAndSurname(name, surname);
+    }
+
     public List<Author> findAuthorsBornBeforeSomeDate(String date) {
-        return  authorDao.findAuthorsBornBeforeSpecificDate(date);
+        return authorDao.findAuthorsBornBeforeSpecificDate(date);
     }
 
     public List<Author> findAuthorsByNationality(String nationality) {
-        return  authorDao.findAuthorsByNationality(nationality);
+        return authorDao.findAuthorsByNationality(nationality);
     }
-    
+
     public Author createAuthor(Author author) {
         return authorDao.insertAuthor(author) ? author : null;
     }
@@ -57,7 +60,6 @@ public class AuthorService {
     }
 
     public Author findAuthor(String id) {
-
         return authorDao.findAuthor(convertIdToObjectId(id));
     }
 

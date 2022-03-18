@@ -8,6 +8,7 @@ import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -55,9 +56,9 @@ public class AuthorDao {
             authorsCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(author);
             return true;
         } catch (MongoWriteException e) {
-            log.error("Could not insert `{}` into 'authors' collection: {}", author.getId(), e.getMessage());
+            log.error("Could not insert `{}` into 'authors' collection: {}", author.getOid(), e.getMessage());
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("Author with Id `{0}` already exists.", author.getId()));
+                    MessageFormat.format("Author with Id `{0}` already exists.", author.getOid()));
         }
     }
 
@@ -82,6 +83,19 @@ public class AuthorDao {
         if (author == null) {
             throw new IncorrectDaoOperation(
                     MessageFormat.format("Author with Id `{0}` does not exist.", id));
+        }
+        return author;
+    }
+
+    public Author findAuthorByNameAndSurname(String name, String surname) {
+        Bson find_query = Filters.and(
+                eq("name", name),
+                eq("surname", surname)
+        );
+        Author author = authorsCollection.find(find_query).first();
+        if (author == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("Author with name `{0}` and surname `{1}` does not exist.", name, surname));
         }
         return author;
     }
