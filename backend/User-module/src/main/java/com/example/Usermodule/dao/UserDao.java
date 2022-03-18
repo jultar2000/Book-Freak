@@ -1,5 +1,6 @@
 package com.example.Usermodule.dao;
 
+import com.example.Usermodule.entity.Gender;
 import com.example.Usermodule.entity.User;
 import com.example.Usermodule.exceptions.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
@@ -50,10 +51,6 @@ public class UserDao {
     }
 
     public boolean insertUser(User user) {
-        if (user.getEmail() == null) {
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("User email cannot be null", user.getEmail()));
-        }
         try {
             usersCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(user);
             return true;
@@ -104,13 +101,13 @@ public class UserDao {
         Bson update = Updates.combine(
                 set("name", name),
                 set("surname", surname),
-                set("gender", gender),
+                set("gender", Gender.valueOf(gender)),
                 set("birthDate", LocalDate.parse(birthDate)));
         try {
             UpdateResult updateResult = usersCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
                 log.warn(
-                        "User `{}` was not updated. Some field might not exist.",
+                        "User `{}` was not updated. User might not exist or all fields remain the same.",
                         email);
                 return false;
             }

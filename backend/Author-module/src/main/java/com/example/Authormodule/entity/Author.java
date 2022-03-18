@@ -1,12 +1,13 @@
 package com.example.Authormodule.entity;
 
+import com.example.Authormodule.config.ObjectIdDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.*;
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.awt.print.Book;
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,11 +18,13 @@ import java.util.List;
 @EqualsAndHashCode
 @Document
 public class Author {
+    @BsonId
+    @JsonDeserialize(using = ObjectIdDeserializer.class)
     private ObjectId id;
     private String name;
     private String surname;
     private String nationality;
     private Gender gender;
     private LocalDate birthDate;
-    private boolean isAlive;
+    private boolean alive;
 }

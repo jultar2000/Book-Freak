@@ -3,6 +3,7 @@ package com.example.Usermodule.controller;
 import com.example.Usermodule.dto.CreateUserRequest;
 import com.example.Usermodule.entity.User;
 import com.example.Usermodule.service.UserService;
+import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class UserController {
     public ResponseEntity<User> getUser(@PathVariable("email") String email) {
         User user = userService.findUser(email);
         if (user == null) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(user);
     }
@@ -60,7 +61,7 @@ public class UserController {
     @DeleteMapping("/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable("email") String email) {
         if (!userService.deleteUser(email)) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.accepted().build();
     }

@@ -8,7 +8,6 @@ import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -21,11 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.awt.print.Book;
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.*;
+import static com.mongodb.client.model.Updates.set;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -33,7 +35,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class AuthorDao {
 
     private final Logger log;
-    private static final String USERS_COLLECTION = "authors";
+    private static final String AuthorS_COLLECTION = "authors";
     private final MongoCollection<Author> authorsCollection;
 
     @Autowired
@@ -45,7 +47,7 @@ public class AuthorDao {
                 MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         this.authorsCollection =
-                database.getCollection(USERS_COLLECTION, Author.class).withCodecRegistry(pojoCodecRegistry);
+                database.getCollection(AuthorS_COLLECTION, Author.class).withCodecRegistry(pojoCodecRegistry);
     }
 
     public boolean insertAuthor(Author author) {
@@ -69,7 +71,7 @@ public class AuthorDao {
             return true;
         } catch (Exception e) {
             String errorMessage = MessageFormat
-                    .format("Could not delete `{}` from 'authors' collection: {}.", id, e.getMessage());
+                    .format("Could not delete `{0}` from 'authors' collection: {1}.", id, e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
     }
@@ -79,15 +81,44 @@ public class AuthorDao {
         Author author = authorsCollection.find(find_query).first();
         if (author == null) {
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("User with Id `{0}` does not exist.", id));
+                    MessageFormat.format("Author with Id `{0}` does not exist.", id));
         }
         return author;
     }
 
+    public List<Author> findAllAuthors() {
+        List<Author> authors = new ArrayList<>();
+        Bson projection = fields(exclude("alive"));
+        authorsCollection
+                .find()
+                .projection(projection)
+                .into(authors);
+        return authors;
+    }
+
+    public List<Author> findAuthorsByNationality(String nationality) {
+        List<Author> authors = new ArrayList<>();
+        Bson find_query = eq("nationality", nationality);
+        Bson projection = fields(include("name", "surname","nationality"));
+        authorsCollection
+                .find(find_query)
+                .projection(projection)
+                .into(authors);
+        return authors;
+    }
+
+    public List<Author> findAuthorsBornBeforeSpecificDate(String date) {
+        List<Author> authors = new ArrayList<>();
+        Bson find_query = gte("birthDate", LocalDate.parse(date));
+        authorsCollection
+                .find(find_query)
+                .into(authors);
+        return authors;
+    }
+
     public boolean updateAuthorFields(ObjectId id, boolean isAlive) {
         Bson find_query = eq("_id", id);
-        Bson update = Updates.combine();
-
+        Bson update = set("alive", isAlive);
         try {
             UpdateResult updateResult = authorsCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
