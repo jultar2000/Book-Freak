@@ -41,7 +41,7 @@ public class AuthorDao {
 
     @Autowired
     public AuthorDao(MongoClient mongoClient,
-                   @Value("${spring.mongodb.database}") String databaseName) {
+                     @Value("${spring.mongodb.database}") String databaseName) {
         log = LoggerFactory.getLogger(this.getClass());
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(
@@ -102,10 +102,8 @@ public class AuthorDao {
 
     public List<Author> findAllAuthors() {
         List<Author> authors = new ArrayList<>();
-        Bson projection = fields(exclude("alive"));
         authorsCollection
                 .find()
-                .projection(projection)
                 .into(authors);
         return authors;
     }
@@ -113,17 +111,17 @@ public class AuthorDao {
     public List<Author> findAuthorsByNationality(String nationality) {
         List<Author> authors = new ArrayList<>();
         Bson find_query = eq("nationality", nationality);
-        Bson projection = fields(include("name", "surname","nationality"));
         authorsCollection
                 .find(find_query)
-                .projection(projection)
                 .into(authors);
         return authors;
     }
 
-    public List<Author> findAuthorsBornBeforeSpecificDate(String date) {
+    public List<Author> findAuthorsBornAfterYear(int year) {
+
         List<Author> authors = new ArrayList<>();
-        Bson find_query = gte("birthDate", LocalDate.parse(date));
+        LocalDate dummy_date = LocalDate.of(year, 1, 1);
+        Bson find_query = gte("birthDate", dummy_date);
         authorsCollection
                 .find(find_query)
                 .into(authors);

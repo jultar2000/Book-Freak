@@ -1,7 +1,7 @@
 package com.example.Authormodule.controller;
 
 import com.example.Authormodule.dto.CreateAuthorDto;
-import com.example.Authormodule.dto.GetAuthorByNameAndSurnameDto;
+import com.example.Authormodule.dto.AuthorNameSurnameDto;
 import com.example.Authormodule.dto.GetAuthorsDto;
 import com.example.Authormodule.entity.Author;
 import com.example.Authormodule.service.AuthorService;
@@ -26,7 +26,7 @@ public class AuthorController {
         this.mapper = mapper;
     }
 
-    @GetMapping("/all")
+    @GetMapping("authors/all")
     public ResponseEntity<List<GetAuthorsDto>> getAllAuthors() {
         List<GetAuthorsDto> authorsDto =
                 authorService.findAllAuthors()
@@ -37,7 +37,30 @@ public class AuthorController {
         return ResponseEntity.ok(authorsDto);
     }
 
-    @GetMapping("author/{id}")
+    @GetMapping("/authors/nationality/{nationality}")
+    public ResponseEntity<List<GetAuthorsDto>> getAuthorByNationality(@PathVariable("nationality")
+                                                                              String nationality) {
+        List<GetAuthorsDto> authorsDto =
+                authorService.findAuthorsByNationality(nationality)
+                        .stream()
+                        .map(author ->
+                                mapper.map(author, GetAuthorsDto.class))
+                        .collect(Collectors.toList());
+        return ResponseEntity.ok(authorsDto);
+    }
+
+    @GetMapping("/authors/year/{year}")
+    public ResponseEntity<List<GetAuthorsDto>> getAuthorsBornAfterYear(@PathVariable("year") int year) {
+        List<GetAuthorsDto> authorsDto =
+                authorService.findAuthorsBornAfterYear(year)
+                        .stream()
+                        .map(author ->
+                                mapper.map(author, GetAuthorsDto.class))
+                        .collect(Collectors.toList());
+        return ResponseEntity.ok(authorsDto);
+    }
+
+    @GetMapping("/author/{id}")
     public ResponseEntity<Author> getAuthor(@PathVariable("id") String id) {
         Author author = authorService.findAuthor(id);
         if (author == null) {
@@ -46,8 +69,8 @@ public class AuthorController {
         return ResponseEntity.ok(author);
     }
 
-    @GetMapping("/author")
-    public ResponseEntity<Author> getAuthor(@RequestBody GetAuthorByNameAndSurnameDto request) {
+    @GetMapping("/author/nameAndSurname")
+    public ResponseEntity<Author> getAuthorByNameAndSurname(@RequestBody AuthorNameSurnameDto request) {
         Author author = authorService
                 .findAuthorByNameAndSurname(request.getName(), request.getSurname());
         if (author == null) {

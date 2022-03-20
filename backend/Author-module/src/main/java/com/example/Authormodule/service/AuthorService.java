@@ -43,8 +43,8 @@ public class AuthorService {
         return authorDao.findAuthorByNameAndSurname(name, surname);
     }
 
-    public List<Author> findAuthorsBornBeforeSomeDate(String date) {
-        return authorDao.findAuthorsBornBeforeSpecificDate(date);
+    public List<Author> findAuthorsBornAfterYear(int year) {
+        return authorDao.findAuthorsBornAfterYear(year);
     }
 
     public List<Author> findAuthorsByNationality(String nationality) {

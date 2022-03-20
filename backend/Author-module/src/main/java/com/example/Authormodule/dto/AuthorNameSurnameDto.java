@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetAuthorByNameAndSurnameDto {
+public class AuthorNameSurnameDto {
     public String name;
     public String surname;
 }
