@@ -1,7 +1,7 @@
 package com.example.Authormodule.controller;
 
 import com.example.Authormodule.dto.CreateAuthorDto;
-import com.example.Authormodule.dto.AuthorNameSurnameDto;
+import com.example.Authormodule.dto.AuthorNameSurnameRequest;
 import com.example.Authormodule.dto.GetAuthorsDto;
 import com.example.Authormodule.entity.Author;
 import com.example.Authormodule.service.AuthorService;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -26,7 +26,7 @@ public class AuthorController {
         this.mapper = mapper;
     }
 
-    @GetMapping("authors/all")
+    @GetMapping("/all")
     public ResponseEntity<List<GetAuthorsDto>> getAllAuthors() {
         List<GetAuthorsDto> authorsDto =
                 authorService.findAllAuthors()
@@ -37,7 +37,7 @@ public class AuthorController {
         return ResponseEntity.ok(authorsDto);
     }
 
-    @GetMapping("/authors/nationality/{nationality}")
+    @GetMapping("/nationality/{nationality}")
     public ResponseEntity<List<GetAuthorsDto>> getAuthorByNationality(@PathVariable("nationality")
                                                                               String nationality) {
         List<GetAuthorsDto> authorsDto =
@@ -49,7 +49,7 @@ public class AuthorController {
         return ResponseEntity.ok(authorsDto);
     }
 
-    @GetMapping("/authors/year/{year}")
+    @GetMapping("/year/{year}")
     public ResponseEntity<List<GetAuthorsDto>> getAuthorsBornAfterYear(@PathVariable("year") int year) {
         List<GetAuthorsDto> authorsDto =
                 authorService.findAuthorsBornAfterYear(year)
@@ -60,7 +60,7 @@ public class AuthorController {
         return ResponseEntity.ok(authorsDto);
     }
 
-    @GetMapping("/author/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Author> getAuthor(@PathVariable("id") String id) {
         Author author = authorService.findAuthor(id);
         if (author == null) {
@@ -69,8 +69,8 @@ public class AuthorController {
         return ResponseEntity.ok(author);
     }
 
-    @GetMapping("/author/nameAndSurname")
-    public ResponseEntity<Author> getAuthorByNameAndSurname(@RequestBody AuthorNameSurnameDto request) {
+    @GetMapping("/nameAndSurname")
+    public ResponseEntity<Author> getAuthorByNameAndSurname(@RequestBody AuthorNameSurnameRequest request) {
         Author author = authorService
                 .findAuthorByNameAndSurname(request.getName(), request.getSurname());
         if (author == null) {
@@ -88,7 +88,7 @@ public class AuthorController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("author/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> updateAuthor(@PathVariable("id") String id,
                                              @RequestBody Boolean isAlive) {
         if (!authorService.updateAuthorFields(id, isAlive)) {
@@ -97,7 +97,7 @@ public class AuthorController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("author/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable("id") String id) {
         if (!authorService.deleteAuthor(id)) {
             return ResponseEntity.notFound().build();

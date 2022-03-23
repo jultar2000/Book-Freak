@@ -1,7 +1,7 @@
-package com.example.Authormodule.dao;
+package com.example.Bookmodule.author.dao;
 
-import com.example.Authormodule.entity.Author;
-import com.example.Authormodule.exceptions.IncorrectDaoOperation;
+import com.example.Bookmodule.author.entity.Author;
+import com.example.Bookmodule.exceptions.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
 import com.mongodb.WriteConcern;
@@ -9,10 +9,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Sorts;
-import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -24,9 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -84,69 +78,5 @@ public class AuthorDao {
                     MessageFormat.format("Author with Id `{0}` does not exist.", id));
         }
         return author;
-    }
-
-    public Author findAuthorByNameAndSurname(String name, String surname) {
-        Bson find_query = Filters.and(
-                Filters.eq("name", name),
-                Filters.eq("surname", surname)
-        );
-        Author author = authorsCollection.find(find_query).first();
-        if (author == null) {
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("Author with name `{0}` and surname `{1}` does not exist.", name, surname));
-        }
-        return author;
-    }
-
-    public List<Author> findAllAuthors() {
-        List<Author> authors = new ArrayList<>();
-        authorsCollection
-                .find()
-                .into(authors);
-        return authors;
-    }
-
-    public List<Author> findAuthorsByNationality(String nationality) {
-        List<Author> authors = new ArrayList<>();
-        Bson find_query = Filters.eq("nationality", nationality);
-        authorsCollection
-                .find(find_query)
-                .into(authors);
-        return authors;
-    }
-
-    public List<Author> findAuthorsBornAfterYear(int year) {
-        List<Author> authors = new ArrayList<>();
-        LocalDate dummy_date = LocalDate.of(year, 1, 1);
-        Bson find_query = Filters.gte("birthDate", dummy_date);
-        Bson sort = Sorts.ascending("birthDate");
-        authorsCollection
-                .find(find_query)
-                .sort(sort)
-                .into(authors);
-        return authors;
-    }
-
-    public boolean updateAuthorFields(ObjectId id, boolean isAlive) {
-        Bson find_query = Filters.eq("_id", id);
-        Bson update = Updates.set("alive", isAlive);
-        try {
-            UpdateResult updateResult = authorsCollection.updateOne(find_query, update);
-            if (updateResult.getModifiedCount() < 1) {
-                log.warn(
-                        "Author `{}` was not updated. Some field might not exist.",
-                        id);
-                return false;
-            }
-        } catch (MongoWriteException e) {
-            String errorMessage =
-                    MessageFormat.format(
-                            "Issue caught while trying to update author `{}`: {}",
-                            id,
-                            e.getMessage());
-            throw new IncorrectDaoOperation(errorMessage);
-        }
-        return true;
     }
 }

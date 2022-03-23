@@ -1,7 +1,6 @@
 package com.example.Bookmodule.book.entity;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 

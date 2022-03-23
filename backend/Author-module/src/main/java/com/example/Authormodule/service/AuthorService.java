@@ -2,6 +2,7 @@ package com.example.Authormodule.service;
 
 import com.example.Authormodule.dao.AuthorDao;
 import com.example.Authormodule.entity.Author;
+import com.example.Authormodule.event.EventDao;
 import com.example.Authormodule.exceptions.IncorrectParameterException;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -16,15 +17,17 @@ import java.util.List;
 public class AuthorService {
 
     private final AuthorDao authorDao;
+    private final EventDao eventDao;
     private final Logger log;
 
     @Autowired
-    public AuthorService(AuthorDao authorDao) {
+    public AuthorService(AuthorDao authorDao, EventDao eventDao) {
         this.authorDao = authorDao;
+        this.eventDao = eventDao;
         log = LoggerFactory.getLogger(this.getClass());
     }
 
-    private ObjectId convertIdToObjectId(String id) {
+    private ObjectId convertStringIdToObjectId(String id) {
         try {
             return new ObjectId(id);
         } catch (Exception e) {
@@ -52,18 +55,22 @@ public class AuthorService {
     }
 
     public Author createAuthor(Author author) {
-        return authorDao.insertAuthor(author) ? author : null;
+        Author inserted_author = authorDao.insertAuthor(author) ? author : null;
+        eventDao.createAuthor(author);
+        return inserted_author;
     }
 
     public boolean deleteAuthor(String id) {
-        return authorDao.deleteAuthor(convertIdToObjectId(id));
+        ObjectId oid = convertStringIdToObjectId(id);
+        eventDao.deleteAuthor(oid);
+        return authorDao.deleteAuthor(oid);
     }
 
     public Author findAuthor(String id) {
-        return authorDao.findAuthor(convertIdToObjectId(id));
+        return authorDao.findAuthor(convertStringIdToObjectId(id));
     }
 
     public boolean updateAuthorFields(String id, boolean isAlive) {
-        return authorDao.updateAuthorFields(convertIdToObjectId(id), isAlive);
+        return authorDao.updateAuthorFields(convertStringIdToObjectId(id), isAlive);
     }
 }

@@ -3,7 +3,6 @@ package com.example.Usermodule.controller;
 import com.example.Usermodule.dto.CreateUserRequest;
 import com.example.Usermodule.entity.User;
 import com.example.Usermodule.service.UserService;
-import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
