@@ -2,6 +2,8 @@ package com.example.Bookmodule.book.dao;
 
 import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.book.entity.Book;
+import com.example.Bookmodule.book.entity.Comment;
+import com.example.Bookmodule.book.entity.Genre;
 import com.example.Bookmodule.exceptions.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
@@ -54,33 +56,33 @@ public class BookDao {
             booksCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(book);
             return true;
         } catch (MongoWriteException e) {
-            log.error("Could not insert `{}` into 'authors' collection: {}", book.getOid(), e.getMessage());
+            log.error("Could not insert `{}` into 'books' collection: {}", book.getOid(), e.getMessage());
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("Author with Id `{0}` already exists.", book.getOid()));
+                    MessageFormat.format("Book with id `{0}` already exists.", book.getOid()));
         }
     }
 
-    public boolean deleteBook(ObjectId id) {
-        Bson find_query = Filters.eq("_id", id);
+    public boolean deleteBook(ObjectId bookId) {
+        Bson find_query = Filters.in("_id", bookId);
         try {
             DeleteResult result = booksCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
-                log.warn("Id '{}' not found in 'books' collection. No books deleted.", id);
+                log.warn("Id '{}' not found in 'books' collection. No books deleted.", bookId);
             }
             return true;
         } catch (Exception e) {
             String errorMessage = MessageFormat
-                    .format("Could not delete `{0}` from 'books' collection: {1}.", id, e.getMessage());
+                    .format("Could not delete `{0}` from 'books' collection: {1}.", bookId, e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
     }
 
-    public Book findBook(ObjectId id) {
-        Bson find_query = Filters.eq("_id", id);
+    public Book findBook(ObjectId bookId) {
+        Bson find_query = Filters.in("_id", bookId);
         Book book = booksCollection.find(find_query).first();
         if (book == null) {
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("Book with Id `{0}` does not exist.", id));
+                    MessageFormat.format("Book with Id `{0}` does not exist.", bookId));
         }
         return book;
     }
@@ -122,12 +124,32 @@ public class BookDao {
         return books;
     }
 
-    public List<Book> findBooksByAuthor(Author author) {
-        Bson find_query = Filters.eq("author", author);
+    public List<Book> findBooksByAuthor(int limit, int skip, Author author) {
+        Bson find_query = Filters.in("author", author);
         List<Book> books = new ArrayList<>();
         booksCollection
                 .find(find_query)
+                .limit(limit)
+                .skip(skip)
                 .into(books);
         return books;
+    }
+
+    public List<Book> findBooksByGenre(int limit, int skip, String genre){
+        Bson find_query = Filters.in("genre", Genre.valueOf(genre));
+        List<Book> books = new ArrayList<>();
+        booksCollection
+                .find(find_query)
+                .limit(limit)
+                .skip(skip)
+                .iterator()
+                .forEachRemaining(books::add);
+        return books;
+    }
+
+    public boolean updateBook(ObjectId id, int rating, Comment comment) {
+
+
+        return true;
     }
 }

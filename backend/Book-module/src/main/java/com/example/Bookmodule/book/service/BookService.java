@@ -36,7 +36,8 @@ public class BookService {
         }
     }
 
-    public Book insertBook(Book book) {
+    public Book insertBook(Book book, Author author) {
+        book.setAuthor(author);
         return bookDao.insertBook(book) ? book : null;
     }
 
@@ -60,7 +61,11 @@ public class BookService {
         return bookDao.findBooksByRating(limit, skip);
     }
 
-    public List<Book> findBooksByAuthor(Author author) {
-        return bookDao.findBooksByAuthor(author);
+    public List<Book> findBooksByAuthor(int limit, int skip, Author author) {
+        return bookDao.findBooksByAuthor(limit, skip, author);
+    }
+
+    public List<Book> findBooksByGenre(int limit, int skip, String genre) {
+        return bookDao.findBooksByGenre(limit, skip, genre);
     }
 }

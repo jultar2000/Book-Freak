@@ -62,7 +62,7 @@ public class AuthorDao {
     }
 
     public boolean deleteAuthor(ObjectId id) {
-        Bson find_query = Filters.eq("_id", id);
+        Bson find_query = Filters.in("_id", id);
         try {
             DeleteResult result = authorsCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
@@ -77,7 +77,7 @@ public class AuthorDao {
     }
 
     public Author findAuthor(ObjectId id) {
-        Bson find_query = Filters.eq("_id", id);
+        Bson find_query = Filters.in("_id", id);
         Author author = authorsCollection.find(find_query).first();
         if (author == null) {
             throw new IncorrectDaoOperation(
@@ -88,8 +88,8 @@ public class AuthorDao {
 
     public Author findAuthorByNameAndSurname(String name, String surname) {
         Bson find_query = Filters.and(
-                Filters.eq("name", name),
-                Filters.eq("surname", surname)
+                Filters.in("name", name),
+                Filters.in("surname", surname)
         );
         Author author = authorsCollection.find(find_query).first();
         if (author == null) {
@@ -109,7 +109,7 @@ public class AuthorDao {
 
     public List<Author> findAuthorsByNationality(String nationality) {
         List<Author> authors = new ArrayList<>();
-        Bson find_query = Filters.eq("nationality", nationality);
+        Bson find_query = Filters.in("nationality", nationality);
         authorsCollection
                 .find(find_query)
                 .into(authors);
@@ -129,7 +129,7 @@ public class AuthorDao {
     }
 
     public boolean updateAuthorFields(ObjectId id, boolean isAlive) {
-        Bson find_query = Filters.eq("_id", id);
+        Bson find_query = Filters.in("_id", id);
         Bson update = Updates.set("alive", isAlive);
         try {
             UpdateResult updateResult = authorsCollection.updateOne(find_query, update);

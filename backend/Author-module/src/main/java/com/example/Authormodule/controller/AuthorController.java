@@ -60,9 +60,9 @@ public class AuthorController {
         return ResponseEntity.ok(authorsDto);
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Author> getAuthor(@PathVariable("id") String id) {
-        Author author = authorService.findAuthor(id);
+    @GetMapping("/id/{authorId}")
+    public ResponseEntity<Author> getAuthor(@PathVariable("authorId") String authorId) {
+        Author author = authorService.findAuthor(authorId);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
@@ -88,18 +88,18 @@ public class AuthorController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateAuthor(@PathVariable("id") String id,
+    @PutMapping("/id/{authorId}")
+    public ResponseEntity<Void> updateAuthor(@PathVariable("authorId") String authorId,
                                              @RequestBody Boolean isAlive) {
-        if (!authorService.updateAuthorFields(id, isAlive)) {
+        if (!authorService.updateAuthorFields(authorId, isAlive)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable("id") String id) {
-        if (!authorService.deleteAuthor(id)) {
+    @DeleteMapping("/id//{authorId}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable("authorId") String authorId) {
+        if (!authorService.deleteAuthor(authorId)) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.accepted().build();

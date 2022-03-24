@@ -26,7 +26,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.in;
 import static com.mongodb.client.model.Updates.*;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -62,7 +62,7 @@ public class UserDao {
     }
 
     public boolean deleteUser(String email) {
-        Bson find_query = eq("email", email);
+        Bson find_query = in("email", email);
         try {
             DeleteResult result = usersCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
@@ -77,7 +77,7 @@ public class UserDao {
     }
 
     public User findUser(String email) {
-        Bson find_query = eq("email", email);
+        Bson find_query = in("email", email);
         User user = usersCollection.find(find_query).first();
         if (user == null) {
             throw new IncorrectDaoOperation(
@@ -97,7 +97,7 @@ public class UserDao {
                                    String surname,
                                    String gender,
                                    String birthDate) {
-        Bson find_query = eq("email", email);
+        Bson find_query = in("email", email);
         Bson update = Updates.combine(
                 set("name", name),
                 set("surname", surname),

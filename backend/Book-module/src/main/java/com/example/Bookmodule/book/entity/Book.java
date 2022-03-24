@@ -26,7 +26,9 @@ public class Book {
     private int year;
     private String title;
     private int numberOfPages;
+    private String description;
     private Author author;
     private ViewerRating viewerRating;
-    private List<String> comments;
+    private Genre genre;
+    private List<Comment> comments;
 }
