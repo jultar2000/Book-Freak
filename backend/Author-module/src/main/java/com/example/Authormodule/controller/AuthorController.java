@@ -81,8 +81,7 @@ public class AuthorController {
 
     @PostMapping("")
     public ResponseEntity<Void> addAuthor(@RequestBody CreateAuthorDto request) {
-        Author author = authorService.createAuthor(mapper.map(request, Author.class));
-        if (author == null) {
+        if (!authorService.createAuthor(mapper.map(request, Author.class))) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
@@ -97,7 +96,7 @@ public class AuthorController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("/id//{authorId}")
+    @DeleteMapping("/id/{authorId}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable("authorId") String authorId) {
         if (!authorService.deleteAuthor(authorId)) {
             return ResponseEntity.notFound().build();

@@ -23,7 +23,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -37,7 +39,7 @@ public class CommentDao {
 
     @Autowired
     public CommentDao(MongoClient mongoClient,
-                   @Value("${spring.mongodb.database}") String databaseName) {
+                      @Value("${spring.mongodb.database}") String databaseName) {
         log = LoggerFactory.getLogger(this.getClass());
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(
@@ -83,21 +85,30 @@ public class CommentDao {
         return comment;
     }
 
+    public List<Comment> findBookComments(ObjectId bookId) {
+        Bson find_query = Filters.in("book_oid", bookId);
+        List<Comment> comments = new ArrayList<>();
+        commentsCollection
+                .find(find_query)
+                .into(comments);
+        return comments;
+    }
+
     public boolean updateComment(ObjectId commentId, String text) {
-        Bson filter = Filters.in("_id", commentId);
+        Bson find_query = Filters.in("_id", commentId);
         Bson update = Updates.combine(
                 Updates.set("text", text),
                 Updates.set("date", new Date())
         );
         try {
-            UpdateResult updateResult = commentsCollection.updateOne(filter, update);
+            UpdateResult updateResult = commentsCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
                 log.warn(
                         "Author `{}` was not updated. Some field might not exist.",
                         commentId);
                 return false;
             }
-        } catch(MongoWriteException e) {
+        } catch (MongoWriteException e) {
             String errorMessage =
                     MessageFormat.format(
                             "Issue caught while trying to update comment `{}`: {}",

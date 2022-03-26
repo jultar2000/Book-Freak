@@ -33,9 +33,9 @@ public class UserService {
         }
     }
 
-    public User createUser(User user) {
+    public boolean createUser(User user) {
         validateEmail(user.getEmail());
-        return userDao.insertUser(user) ? user : null;
+        return userDao.insertUser(user);
     }
 
     public boolean deleteUser(String email) {

@@ -36,9 +36,9 @@ public class BookService {
         }
     }
 
-    public Book insertBook(Book book, Author author) {
+    public boolean insertBook(Book book, Author author) {
         book.setAuthor(author);
-        return bookDao.insertBook(book) ? book : null;
+        return bookDao.insertBook(book);
     }
 
     public boolean deleteBook(String id) {

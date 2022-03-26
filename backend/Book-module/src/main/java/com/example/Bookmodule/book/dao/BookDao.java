@@ -36,7 +36,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class BookDao {
 
     private final Logger log;
-    private static final String AUTHORS_COLLECTION = "books";
+    private static final String BOOKS_COLLECTION = "books";
     private final MongoCollection<Book> booksCollection;
 
     @Autowired
@@ -48,7 +48,7 @@ public class BookDao {
                 MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         this.booksCollection =
-                database.getCollection(AUTHORS_COLLECTION, Book.class).withCodecRegistry(pojoCodecRegistry);
+                database.getCollection(BOOKS_COLLECTION, Book.class).withCodecRegistry(pojoCodecRegistry);
     }
 
     public boolean insertBook(Book book) {
@@ -79,7 +79,9 @@ public class BookDao {
 
     public Book findBook(ObjectId bookId) {
         Bson find_query = Filters.in("_id", bookId);
-        Book book = booksCollection.find(find_query).first();
+        Book book = booksCollection
+                .find(find_query)
+                .first();
         if (book == null) {
             throw new IncorrectDaoOperation(
                     MessageFormat.format("Book with Id `{0}` does not exist.", bookId));
@@ -135,8 +137,8 @@ public class BookDao {
         return books;
     }
 
-    public List<Book> findBooksByGenre(int limit, int skip, String genre){
-        Bson find_query = Filters.in("genre", Genre.valueOf(genre));
+    public List<Book> findBooksByGenre(int limit, int skip, String genre) {
+        Bson find_query = Filters.in("genre", genre);
         List<Book> books = new ArrayList<>();
         booksCollection
                 .find(find_query)

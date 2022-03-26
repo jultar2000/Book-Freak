@@ -22,7 +22,7 @@ public class EventDao {
         restTemplate.delete("/authors/{Id}", oid);
     }
 
-    public void createAuthor(Author author) {
+    public void insertAuthor(Author author) {
         System.out.println(author.getOid());
         restTemplate.postForLocation("/authors", author);
     }

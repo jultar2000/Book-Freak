@@ -54,10 +54,9 @@ public class AuthorService {
         return authorDao.findAuthorsByNationality(nationality);
     }
 
-    public Author createAuthor(Author author) {
-        Author inserted_author = authorDao.insertAuthor(author) ? author : null;
-        eventDao.createAuthor(author);
-        return inserted_author;
+    public boolean createAuthor(Author author) {
+        eventDao.insertAuthor(author);
+        return authorDao.insertAuthor(author);
     }
 
     public boolean deleteAuthor(String id) {

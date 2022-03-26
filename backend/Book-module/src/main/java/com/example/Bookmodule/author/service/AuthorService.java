@@ -34,8 +34,8 @@ public class AuthorService {
         }
     }
 
-    public Author createAuthor(Author author) {
-        return authorDao.insertAuthor(author) ? author : null;
+    public boolean insertAuthor(Author author) {
+        return authorDao.insertAuthor(author);
     }
 
     public Author findAuthor(String id) {

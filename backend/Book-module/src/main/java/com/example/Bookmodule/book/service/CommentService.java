@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CommentService {
@@ -35,17 +36,22 @@ public class CommentService {
         }
     }
 
-    public Comment insertComment(String text) {
+    public boolean insertComment(String bookId, String text) {
         Comment comment = Comment
                 .builder()
+                .book_oid(convertStringIdToObjectId(bookId))
                 .date(new Date())
                 .text(text)
                 .build();
-        return commentDao.insertComment(comment) ? comment : null;
+        return commentDao.insertComment(comment);
     }
 
     public boolean deleteComment(String commentId) {
         return commentDao.deleteComment(convertStringIdToObjectId(commentId));
+    }
+
+    public List<Comment> findBookComments(String movieId) {
+        return commentDao.findBookComments(convertStringIdToObjectId(movieId));
     }
 
     public Comment findComment(String id) {

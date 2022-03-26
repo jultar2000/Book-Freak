@@ -22,7 +22,7 @@ public class Comment {
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
-    private ObjectId movie_oid;
+    private ObjectId book_oid;
     private String text;
     private String email;
     private Date date;

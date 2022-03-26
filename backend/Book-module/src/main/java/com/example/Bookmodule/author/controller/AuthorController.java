@@ -22,8 +22,7 @@ public class AuthorController {
 
     @PostMapping("")
     public ResponseEntity<Void> addAuthor(@RequestBody Author request_author) {
-        Author author = authorService.createAuthor(mapper.map(request_author, Author.class));
-        if (author == null) {
+        if (!authorService.insertAuthor(mapper.map(request_author, Author.class))) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

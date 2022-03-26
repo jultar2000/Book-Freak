@@ -24,11 +24,11 @@ public class Book {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
     private int year;
-    private String title;
     private int numberOfPages;
+    private String title;
     private String description;
-    private Author author;
-    private ViewerRating viewerRating;
     private Genre genre;
+    private Author author;
     private List<Comment> comments;
+    private ViewerRating viewerRating;
 }

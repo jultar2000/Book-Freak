@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class BooksStringParameterRequest {
+public class BooksRequest {
     int limit;
     int skip;
-    String parameter;
 }
