@@ -3,6 +3,7 @@ package com.example.Bookmodule.book.service;
 import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.book.dao.BookDao;
 import com.example.Bookmodule.book.entity.Book;
+import com.example.Bookmodule.book.entity.Genre;
 import com.example.Bookmodule.exceptions.IncorrectParameterException;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -67,5 +68,16 @@ public class BookService {
 
     public List<Book> findBooksByGenre(int limit, int skip, String genre) {
         return bookDao.findBooksByGenre(limit, skip, genre);
+    }
+
+    public boolean updateBook(String bookId,
+                              int numberOfPages,
+                              String description,
+                              Genre genre) {
+        return bookDao.updateBook(
+                        convertStringIdToObjectId(bookId),
+                        numberOfPages,
+                        description,
+                        genre);
     }
 }

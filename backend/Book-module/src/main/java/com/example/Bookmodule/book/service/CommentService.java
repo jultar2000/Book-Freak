@@ -50,6 +50,10 @@ public class CommentService {
         return commentDao.deleteComment(convertStringIdToObjectId(commentId));
     }
 
+    public void deleteAllBookComments(String bookId) {
+        commentDao.deleteAllBookComments(convertStringIdToObjectId(bookId));
+    }
+
     public List<Comment> findBookComments(String movieId) {
         return commentDao.findBookComments(convertStringIdToObjectId(movieId));
     }

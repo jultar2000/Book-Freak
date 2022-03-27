@@ -94,6 +94,20 @@ public class CommentDao {
         return comments;
     }
 
+    public void deleteAllBookComments(ObjectId bookId) {
+        Bson find_query = Filters.in("book_oid", bookId);
+        try {
+            DeleteResult result = commentsCollection.deleteMany(find_query);
+            if (result.getDeletedCount() < 1) {
+                log.warn("No comments deleted for book id '{}'", bookId);
+            }
+        } catch (Exception e) {
+            String errorMessage = MessageFormat
+                    .format("Could not delete comments from 'comments' collection: {1}.", e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
+    }
+
     public boolean updateComment(ObjectId commentId, String text) {
         Bson find_query = Filters.in("_id", commentId);
         Bson update = Updates.combine(

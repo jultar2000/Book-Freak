@@ -37,74 +37,72 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GetBooksDto>> getAllBooks() {
-        List<GetBooksDto> booksDto =
+    public ResponseEntity<List<GetBookDto>> getAllBooks() {
+        List<GetBookDto> booksDto =
                 bookService
                         .findAllBooks()
                         .stream()
                         .map(book ->
-                                mapper.map(book, GetBooksDto.class))
+                                mapper.map(book, GetBookDto.class))
                         .collect(Collectors.toList());
         return ResponseEntity.ok(booksDto);
     }
 
+    @GetMapping("/id/{bookId}")
+    public ResponseEntity<GetBookDto> getBookById(@PathVariable("bookId") String bookId) {
+        Book book = bookService.findBook(bookId);
+        return ResponseEntity.ok(mapper.map(book, GetBookDto.class));
+    }
+
     @GetMapping("/keyword")
-    public ResponseEntity<List<GetBooksDto>> getBooksByKeyword(@RequestBody BooksStringParameterRequest request) {
-        List<GetBooksDto> booksDto =
+    public ResponseEntity<List<GetBookDto>> getBooksByKeyword(@RequestBody BooksStringParameterRequest request) {
+        List<GetBookDto> booksDto =
                 bookService
                         .findBooksByKeyword(request.getLimit(), request.getSkip(), request.getParameter())
                         .stream()
                         .map(book ->
-                                mapper.map(book, GetBooksDto.class))
+                                mapper.map(book, GetBookDto.class))
                         .collect(Collectors.toList());
         return ResponseEntity.ok(booksDto);
     }
 
     @GetMapping("/genre")
-    public ResponseEntity<List<GetBooksDto>> getBooksByGenre(@RequestBody BooksStringParameterRequest request) {
-        List<GetBooksDto> booksDto =
+    public ResponseEntity<List<GetBookDto>> getBooksByGenre(@RequestBody BooksStringParameterRequest request) {
+        List<GetBookDto> booksDto =
                 bookService
                         .findBooksByGenre(request.getLimit(), request.getSkip(), request.getParameter())
                         .stream()
                         .map(book ->
-                                mapper.map(book, GetBooksDto.class))
+                                mapper.map(book, GetBookDto.class))
                         .collect(Collectors.toList());
         return ResponseEntity.ok(booksDto);
     }
 
     @GetMapping("/rating")
-    public ResponseEntity<List<GetBooksDto>> getBooksByRating(@RequestBody BooksRequest request) {
-        List<GetBooksDto> booksDto =
+    public ResponseEntity<List<GetBookDto>> getBooksByRating(@RequestBody BooksRequest request) {
+        List<GetBookDto> booksDto =
                 bookService
                         .findBooksByRating(request.getLimit(), request.getSkip())
                         .stream()
                         .map(book ->
-                                mapper.map(book, GetBooksDto.class))
+                                mapper.map(book, GetBookDto.class))
                         .collect(Collectors.toList());
         return ResponseEntity.ok(booksDto);
     }
 
-    @DeleteMapping("/id/{bookId}")
-    public ResponseEntity<Void> deleteBook(@PathVariable("bookId") String bookId) {
-        if (!bookService.deleteBook(bookId)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.accepted().build();
-    }
-
     @GetMapping("/authors/id/{authorId}")
-    public ResponseEntity<List<GetBooksDto>> getBooksByAuthor(@PathVariable("authorId") String authorId,
-                                                              @RequestBody BooksRequest request) {
+    public ResponseEntity<List<GetBookDto>> getBooksByAuthor(@PathVariable("authorId") String authorId,
+                                                             @RequestBody BooksRequest request) {
         Author author = authorService.findAuthor(authorId);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
-        List<GetBooksDto> booksDto =
+        List<GetBookDto> booksDto =
                 bookService
                         .findBooksByAuthor(request.getLimit(), request.getSkip(), author)
                         .stream()
                         .map(book ->
-                                mapper.map(book, GetBooksDto.class))
+                                mapper.map(book, GetBookDto.class))
                         .collect(Collectors.toList());
         return ResponseEntity.ok(booksDto);
     }
@@ -120,6 +118,28 @@ public class BookController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/id/{bookId}")
+    public ResponseEntity<Void> updateBook(@PathVariable("bookId") String bookId,
+                                           @RequestBody UpdateBookDto request) {
+        if(!bookService.updateBook(
+                bookId,
+                request.getNumberOfPages(),
+                request.getDescription(),
+                request.getGenre())){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
+
+    @DeleteMapping("/id/{bookId}")
+    public ResponseEntity<Void> deleteBook(@PathVariable("bookId") String bookId) {
+        if (!bookService.deleteBook(bookId)) {
+            return ResponseEntity.notFound().build();
+        }
+        commentService.deleteAllBookComments(bookId);
+        return ResponseEntity.accepted().build();
     }
 
     @GetMapping("/id/{bookId}/comments")
@@ -151,18 +171,18 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/comments/id/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId) {
-        if (!commentService.deleteComment(commentId)) {
+    @PutMapping("/comments/id/{commentId}")
+    public ResponseEntity<Void> updateComment(@PathVariable("commentId") String commentId,
+                                              @RequestBody StringParameterRequest request) {
+        if (!commentService.updateComment(commentId, request.getParameter())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/comments/id/{commentId}")
-    public ResponseEntity<Void> updateComment(@PathVariable("commentId") String commentId,
-                                              @RequestBody StringParameterRequest request) {
-        if (!commentService.updateComment(commentId, request.getParameter())) {
+    @DeleteMapping("/comments/id/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId) {
+        if (!commentService.deleteComment(commentId)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

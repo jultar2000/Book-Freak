@@ -50,6 +50,12 @@ public class AuthorDao {
                 database.getCollection(AUTHORS_COLLECTION, Author.class).withCodecRegistry(pojoCodecRegistry);
     }
 
+    /**
+     * Inserts the 'author' object in the 'authors' collection.
+     *
+     * @param author - Author object to be inserted.
+     * @return True if successful, throw IncorrectDaoOperation otherwise.
+     */
     public boolean insertAuthor(Author author) {
         try {
             authorsCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(author);
@@ -61,44 +67,48 @@ public class AuthorDao {
         }
     }
 
-    public boolean deleteAuthor(ObjectId id) {
-        Bson find_query = Filters.in("_id", id);
+    /**
+     * Deletes the author document from the 'authors' collection with the provided authorId.
+     *
+     * @param authorId - id of the author to be deleted.
+     * @return True if successful, throw IncorrectDaoOperation otherwise.
+     */
+    public boolean deleteAuthor(ObjectId authorId) {
+        Bson find_query = Filters.in("_id", authorId);
         try {
             DeleteResult result = authorsCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
-                log.warn("Id '{}' not found in 'authors' collection. No author deleted.", id);
+                log.warn("Id '{}' not found in 'authors' collection. No author deleted.", authorId);
             }
             return true;
         } catch (Exception e) {
             String errorMessage = MessageFormat
-                    .format("Could not delete `{0}` from 'authors' collection: {1}.", id, e.getMessage());
+                    .format("Could not delete `{0}` from 'authors' collection: {1}.", authorId, e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
     }
 
-    public Author findAuthor(ObjectId id) {
-        Bson find_query = Filters.in("_id", id);
+    /**
+     * Given the authorId, finds the author object in 'authors' collection.
+     *
+     * @param authorId - id of the author.
+     * @return author object, if null throws IncorrectDaoOperation.
+     */
+    public Author findAuthor(ObjectId authorId) {
+        Bson find_query = Filters.in("_id", authorId);
         Author author = authorsCollection.find(find_query).first();
         if (author == null) {
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("Author with Id `{0}` does not exist.", id));
+                    MessageFormat.format("Author with Id `{0}` does not exist.", authorId));
         }
         return author;
     }
 
-    public Author findAuthorByNameAndSurname(String name, String surname) {
-        Bson find_query = Filters.and(
-                Filters.in("name", name),
-                Filters.in("surname", surname)
-        );
-        Author author = authorsCollection.find(find_query).first();
-        if (author == null) {
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("Author with name `{0}` and surname `{1}` does not exist.", name, surname));
-        }
-        return author;
-    }
-
+    /**
+     * Finds all authors in 'authors' collection.
+     *
+     * @return list of found authors.
+     */
     public List<Author> findAllAuthors() {
         List<Author> authors = new ArrayList<>();
         authorsCollection
@@ -107,6 +117,34 @@ public class AuthorDao {
         return authors;
     }
 
+    /**
+     * Given the author's name and surname, finds the author object in 'authors' collection.
+     *
+     * @param name - name of the author.
+     * @param surname - surname of the author.
+     * @return author object, if null throw IncorrectDaoOperation.
+     */
+    public Author findAuthorByNameAndSurname(String name, String surname) {
+        Bson find_query = Filters.and(
+                Filters.in("name", name),
+                Filters.in("surname", surname)
+        );
+        Author author = authorsCollection.find(find_query).first();
+        if (author == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat
+                            .format(
+                                    "Author with name `{0}` and surname `{1}` does not exist.", name, surname));
+        }
+        return author;
+    }
+
+    /**
+     * Finds all authors in 'authors' collection with specified nationality.
+     *
+     * @param nationality - author's nationality
+     * @return list of found authors that match specified criteria.
+     */
     public List<Author> findAuthorsByNationality(String nationality) {
         List<Author> authors = new ArrayList<>();
         Bson find_query = Filters.in("nationality", nationality);
@@ -116,6 +154,12 @@ public class AuthorDao {
         return authors;
     }
 
+    /**
+     * Finds all authors in 'authors' collection born after specified year.
+     *
+     * @param year - number from which the search is started.
+     * @return list of found authors that match specified criteria.
+     */
     public List<Author> findAuthorsBornAfterYear(int year) {
         List<Author> authors = new ArrayList<>();
         LocalDate dummy_date = LocalDate.of(year, 1, 1);
@@ -128,22 +172,29 @@ public class AuthorDao {
         return authors;
     }
 
-    public boolean updateAuthorFields(ObjectId id, boolean isAlive) {
-        Bson find_query = Filters.in("_id", id);
+    /**
+     * Given the author's id, finds the author object and updates his isAlive field.
+     *
+     * @param authorId - id of the author.
+     * @param isAlive - isAlive boolean value
+     * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
+     */
+    public boolean updateAuthorFields(ObjectId authorId, boolean isAlive) {
+        Bson find_query = Filters.in("_id", authorId);
         Bson update = Updates.set("alive", isAlive);
         try {
             UpdateResult updateResult = authorsCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
                 log.warn(
                         "Author `{}` was not updated. Some field might not exist.",
-                        id);
+                        authorId);
                 return false;
             }
         } catch (MongoWriteException e) {
             String errorMessage =
                     MessageFormat.format(
                             "Issue caught while trying to update author `{}`: {}",
-                            id,
+                            authorId,
                             e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }

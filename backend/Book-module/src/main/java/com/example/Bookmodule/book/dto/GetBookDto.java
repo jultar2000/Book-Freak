@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GetBooksDto {
+public class GetBookDto {
     private String oid;
     private int year;
     private int numberOfPages;

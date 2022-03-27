@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +26,5 @@ public class Book {
     private String description;
     private Genre genre;
     private Author author;
-    private List<Comment> comments;
     private ViewerRating viewerRating;
 }

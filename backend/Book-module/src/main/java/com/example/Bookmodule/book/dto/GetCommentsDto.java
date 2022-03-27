@@ -6,5 +6,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class GetCommentsDto {
+    private String oid;
     private String text;
 }
