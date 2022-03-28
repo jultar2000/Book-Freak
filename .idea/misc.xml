@@ -7,6 +7,9 @@
         <option value="$PROJECT_DIR$/Backend/User-module/pom.xml" />
         <option value="$PROJECT_DIR$/backend/Author-module/pom.xml" />
         <option value="$PROJECT_DIR$/backend/Book-module/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/Eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/Auth-module/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/Eureka-module/pom.xml" />
       </list>
     </option>
   </component>

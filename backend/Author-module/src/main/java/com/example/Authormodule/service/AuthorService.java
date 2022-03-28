@@ -55,8 +55,9 @@ public class AuthorService {
     }
 
     public boolean createAuthor(Author author) {
+        boolean result = authorDao.insertAuthor(author);
         eventDao.insertAuthor(author);
-        return authorDao.insertAuthor(author);
+        return result;
     }
 
     public boolean deleteAuthor(String id) {

@@ -12,6 +12,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.InsertOneResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -58,7 +59,9 @@ public class AuthorDao {
      */
     public boolean insertAuthor(Author author) {
         try {
-            authorsCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(author);
+                    authorsCollection
+                    .withWriteConcern(WriteConcern.MAJORITY)
+                    .insertOne(author);
             return true;
         } catch (MongoWriteException e) {
             log.error("Could not insert `{}` into 'authors' collection: {}", author.getOid(), e.getMessage());
