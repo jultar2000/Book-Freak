@@ -33,11 +33,6 @@ public class UserService {
         }
     }
 
-    public boolean createUser(User user) {
-        validateEmail(user.getEmail());
-        return userDao.insertUser(user);
-    }
-
     public boolean deleteUser(String email) {
         validateEmail(email);
         return userDao.deleteUser(email);

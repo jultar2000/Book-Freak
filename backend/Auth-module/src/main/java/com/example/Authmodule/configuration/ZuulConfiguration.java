@@ -19,6 +19,9 @@ import org.springframework.cloud.netflix.zuul.web.ZuulHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Class to resolve problem with Zuul and Spring Boot 2.6.4 version incompatibility
+ */
 @Configuration
 public class ZuulConfiguration {
 
@@ -32,7 +35,6 @@ public class ZuulConfiguration {
      * @param errorController the error controller.
      * @return the new bean post-processor.
      */
-
     @Bean
     public ZuulPostProcessor zuulPostProcessor(@Autowired RouteLocator routeLocator, @Autowired ZuulController zuulController,
                                                @Autowired(required = false) ErrorController errorController) {

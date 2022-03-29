@@ -39,14 +39,6 @@ public class UserController {
         return ResponseEntity.ok(emails);
     }
 
-    @PostMapping("")
-    public ResponseEntity<Void> addUser(@RequestBody CreateUserRequest request) {
-        if (!userService.createUser(mapper.map(request, User.class))) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().build();
-    }
-
     @PutMapping("/{email}")
     public ResponseEntity<Void> updateUser(@PathVariable("email") String email,
                                            @RequestBody HashMap<String, String> request) {

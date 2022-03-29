@@ -50,17 +50,6 @@ public class UserDao {
                 database.getCollection(USERS_COLLECTION, User.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public boolean insertUser(User user) {
-        try {
-            usersCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(user);
-            return true;
-        } catch (MongoWriteException e) {
-            log.error("Could not insert `{}` into 'users' collection: {}", user.getEmail(), e.getMessage());
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("User with email `{0}` already exists.", user.getEmail()));
-        }
-    }
-
     public boolean deleteUser(String email) {
         Bson find_query = in("email", email);
         try {

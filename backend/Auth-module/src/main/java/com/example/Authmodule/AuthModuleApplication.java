@@ -1,6 +1,6 @@
 package com.example.Authmodule;
 
-import com.example.Authmodule.configuration.SimpleFilter;
+import com.example.Authmodule.configuration.ZuulFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -19,8 +19,8 @@ public class AuthModuleApplication {
 	}
 
 	@Bean
-	public SimpleFilter simpleFilter() {
-		return new SimpleFilter();
+	public ZuulFilter simpleFilter() {
+		return new ZuulFilter();
 	}
 
 }
