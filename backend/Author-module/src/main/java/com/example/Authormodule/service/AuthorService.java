@@ -3,7 +3,6 @@ package com.example.Authormodule.service;
 import com.example.Authormodule.dao.AuthorDao;
 import com.example.Authormodule.entity.Author;
 import com.example.Authormodule.event.EventDao;
-import com.example.Authormodule.exceptions.IncorrectParameterException;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public class AuthorService {
             log.error("Cannot create ObjectId: {}", e.getMessage());
             String errorMessage = MessageFormat
                     .format("String Id `{0}` cannot be converted to ObjectId.", id);
-            throw new IncorrectParameterException(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 

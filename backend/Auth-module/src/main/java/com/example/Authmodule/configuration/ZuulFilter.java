@@ -1,15 +1,13 @@
 package com.example.Authmodule.configuration;
 
 import javax.servlet.http.HttpServletRequest;
-
 import com.netflix.zuul.context.RequestContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+@Slf4j
+@Configuration
 public class ZuulFilter extends com.netflix.zuul.ZuulFilter {
-
-    private static Logger log = LoggerFactory.getLogger(ZuulFilter.class);
 
     @Override
     public String filterType() {

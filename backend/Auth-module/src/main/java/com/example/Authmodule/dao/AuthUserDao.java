@@ -8,11 +8,10 @@ import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -25,16 +24,15 @@ import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 @Component
-public class AuthDao {
+@Slf4j
+public class AuthUserDao {
 
-    private final Logger log;
     private static final String USERS_COLLECTION = "users";
     private final MongoCollection<AuthUser> usersCollection;
 
     @Autowired
-    public AuthDao(MongoClient mongoClient,
-                   @Value("${spring.mongodb.database}") String databaseName) {
-        log = LoggerFactory.getLogger(this.getClass());
+    public AuthUserDao(MongoClient mongoClient,
+                       @Value("${spring.mongodb.database}") String databaseName) {
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(
                 MongoClientSettings.getDefaultCodecRegistry(),
@@ -60,5 +58,11 @@ public class AuthDao {
                 .orElseThrow(() ->
                         new IncorrectDaoOperation
                                 (MessageFormat.format("User with username `{0}` does not exist.", username)));
+    }
+
+    public boolean isUserPresent(String username) {
+        Bson find_query = in("username", username);
+        AuthUser user = usersCollection.find(find_query).first();
+        return user != null;
     }
 }

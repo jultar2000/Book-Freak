@@ -2,7 +2,6 @@ package com.example.Bookmodule.book.service;
 
 import com.example.Bookmodule.book.dao.CommentDao;
 import com.example.Bookmodule.book.entity.Comment;
-import com.example.Bookmodule.exceptions.IncorrectParameterException;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class CommentService {
             log.error("Cannot create ObjectId: {}", e.getMessage());
             String errorMessage = MessageFormat
                     .format("String Id `{0}` cannot be converted to ObjectId.", id);
-            throw new IncorrectParameterException(errorMessage);
+            throw new IllegalArgumentException(errorMessage);
         }
     }
 

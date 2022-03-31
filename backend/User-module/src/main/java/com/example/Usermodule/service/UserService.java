@@ -2,8 +2,6 @@ package com.example.Usermodule.service;
 
 import com.example.Usermodule.dao.UserDao;
 import com.example.Usermodule.entity.User;
-import com.example.Usermodule.exceptions.IncorrectDaoOperation;
-import com.example.Usermodule.exceptions.IncorrectParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class UserService {
     private void validateEmail(String email) {
         if (email == null || email.isEmpty()) {
             log.error("Not valid email `{}`, cannot perform any operation.", email);
-            throw new IncorrectParameterException(
+            throw new IllegalArgumentException(
                     MessageFormat.format("User email cannot be null or empty", email));
         }
     }

@@ -1,6 +1,6 @@
 package com.example.Authmodule.service;
 
-import com.example.Authmodule.dao.AuthDao;
+import com.example.Authmodule.dao.AuthUserDao;
 import com.example.Authmodule.entity.AuthUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserDetailService implements UserDetailsService {
 
-    private final AuthDao authDao;
+    private final AuthUserDao authDao;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
