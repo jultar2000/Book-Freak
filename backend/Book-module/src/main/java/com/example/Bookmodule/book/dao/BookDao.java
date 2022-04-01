@@ -218,12 +218,19 @@ public class BookDao {
     public boolean updateBook(ObjectId bookId,
                               int numberOfPages,
                               String description,
-                              Genre genre) {
+                              String genre) {
         Bson find_query = Filters.in("_id", bookId);
-        Bson update = Updates.combine(
-                Updates.set("numberOfPages", numberOfPages),
-                Updates.set("description", description),
-                Updates.set("genre", genre));
+        List<Bson> updatesList = new ArrayList<>();
+        if(numberOfPages != 0){
+            updatesList.add(Updates.set("name", numberOfPages));
+        }
+        if(description != null){
+            updatesList.add(Updates.set("description", description));
+        }
+        if(genre != null){
+            updatesList.add(Updates.set("genre", genre));
+        }
+        Bson update = Updates.combine(updatesList);
         try {
             UpdateResult updateResult = booksCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
@@ -235,7 +242,7 @@ public class BookDao {
         } catch (MongoWriteException e) {
             String errorMessage =
                     MessageFormat.format(
-                            "Issue caught while trying to update author `{}`: {}",
+                            "Issue caught while trying to update book `{}`: {}",
                             bookId,
                             e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);

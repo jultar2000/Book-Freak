@@ -26,7 +26,7 @@ public class MailService {
     void sendMail(VerificationEmail verificationEmail) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom("cyptoTracker@gmail.com");
+            messageHelper.setFrom("BookFreak@gmail.com");
             messageHelper.setTo(verificationEmail.getToEmail());
             messageHelper.setSubject(verificationEmail.getSubject());
             messageHelper.setText(verificationEmail.getBody());

@@ -8,10 +8,12 @@ import com.mongodb.MongoWriteException;
 import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -50,61 +52,76 @@ public class UserDao {
                 database.getCollection(USERS_COLLECTION, User.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public boolean deleteUser(String email) {
-        Bson find_query = in("email", email);
+    public boolean deleteUser(String username) {
+        Bson find_query = in("username", username);
         try {
             DeleteResult result = usersCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
-                log.warn("Email '{}' not found in 'users' collection. No user deleted.", email);
+                log.warn("Email '{}' not found in 'users' collection. No user deleted.", username);
             }
             return true;
         } catch (Exception e) {
             String errorMessage = MessageFormat
-                    .format("Could not delete `{}` from 'users' collection: {}.", email, e.getMessage());
+                    .format("Could not delete `{}` from 'users' collection: {}.", username, e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
     }
 
-    public User findUser(String email) {
-        Bson find_query = in("email", email);
+    public User findUser(String username) {
+        Bson find_query = in("username", username);
         User user = usersCollection.find(find_query).first();
         if (user == null) {
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("User with email `{0}` does not exist.", email));
+                    MessageFormat.format("User with email `{0}` does not exist.", username));
         }
         return user;
     }
 
-    public List<String> findAllEmails() {
-        List<String> emails = new ArrayList<>();
-        usersCollection.distinct("email", String.class).into(emails);
-        return emails;
+    public List<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        MongoCursor<User> cursor = usersCollection.find().iterator();
+        while (cursor.hasNext()) {
+            users.add(cursor.next());
+        }
+//        for (User user : usersCollection.find()) {
+//            users.add(user);
+//        }
+        return users;
     }
 
-    public boolean updateUserFields(String email,
+    public boolean updateUserFields(String username,
                                    String name,
                                    String surname,
                                    String gender,
                                    String birthDate) {
-        Bson find_query = in("email", email);
-        Bson update = Updates.combine(
-                set("name", name),
-                set("surname", surname),
-                set("gender", Gender.valueOf(gender)),
-                set("birthDate", LocalDate.parse(birthDate)));
+        Bson find_query = in("username", username);
+        List<Bson> updatesList = new ArrayList<>();
+        if(name != null){
+            updatesList.add(Updates.set("name", name));
+        }
+        if(surname != null){
+            updatesList.add(Updates.set("surname", surname));
+        }
+        if(gender != null){
+            updatesList.add(Updates.set("gender", gender));
+        }
+        if(birthDate != null){
+            updatesList.add(Updates.set("birthDate", birthDate));
+        }
+        Bson update = Updates.combine(updatesList);
         try {
             UpdateResult updateResult = usersCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
                 log.warn(
                         "User `{}` was not updated. User might not exist or all fields remain the same.",
-                        email);
+                        username);
                 return false;
             }
         } catch (MongoWriteException e) {
             String errorMessage =
                     MessageFormat.format(
                             "Issue caught while trying to update user `{}`: {}",
-                            email,
+                            username,
                             e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }

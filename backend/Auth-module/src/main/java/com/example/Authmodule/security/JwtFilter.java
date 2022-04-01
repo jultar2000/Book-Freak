@@ -35,7 +35,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
+        System.out.println(request.getRequestURL());
         RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/v1/auth/**");
+        System.out.println(ignoredPaths.matches(request));
         return ignoredPaths.matches(request);
     }
 

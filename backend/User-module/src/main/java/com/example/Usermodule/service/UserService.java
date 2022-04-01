@@ -1,6 +1,7 @@
 package com.example.Usermodule.service;
 
 import com.example.Usermodule.dao.UserDao;
+import com.example.Usermodule.dto.UpdateUserDto;
 import com.example.Usermodule.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -23,34 +23,33 @@ public class UserService {
         log = LoggerFactory.getLogger(this.getClass());
     }
 
-    private void validateEmail(String email) {
-        if (email == null || email.isEmpty()) {
-            log.error("Not valid email `{}`, cannot perform any operation.", email);
-            throw new IllegalArgumentException(
-                    MessageFormat.format("User email cannot be null or empty", email));
+    private void validateUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            log.error("Not valid username `{}`, cannot perform any operation.", username);
+            throw new IllegalArgumentException("User username cannot be null or empty");
         }
     }
 
-    public boolean deleteUser(String email) {
-        validateEmail(email);
-        return userDao.deleteUser(email);
+    public boolean deleteUser(String username) {
+        validateUsername(username);
+        return userDao.deleteUser(username);
     }
 
-    public User findUser(String email) {
-        validateEmail(email);
-        return userDao.findUser(email);
+    public User findUser(String username) {
+        validateUsername(username);
+        return userDao.findUser(username);
     }
 
-    public List<String> findAllEmails() {
-        return userDao.findAllEmails();
+    public List<User> findAllUsers() {
+        return userDao.findAllUsers();
     }
 
-    public boolean updateUserFields(String email, HashMap<String, ?> request) {
-        validateEmail(email);
-        return userDao.updateUserFields(email,
-                request.get("name").toString(),
-                request.get("surname").toString(),
-                request.get("gender").toString(),
-                request.get("birthDate").toString());
+    public boolean updateUserFields(String username, UpdateUserDto request) {
+        validateUsername(username);
+        return userDao.updateUserFields(username,
+                request.getName(),
+                request.getSurname(),
+                request.getGender(),
+                request.getBirthDate());
     }
 }

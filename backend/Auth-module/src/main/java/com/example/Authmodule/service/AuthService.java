@@ -20,6 +20,7 @@ import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.UUID;
 
+import static com.example.Authmodule.security.Role.ADMIN;
 import static com.example.Authmodule.security.Role.USER;
 
 @Service
@@ -57,19 +58,15 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    /*
-    * TODO> Encrypt user password, resolve verification email problem
-    *
-     */
     public void signup(AuthUser user) {
         if (authUserDao.isUserPresent(user.getUsername())) {
             throw new IllegalArgumentException(
                     MessageFormat.format("Username '{}' already taken!", user.getUsername()));
         } else {
-            authUserDao.insertUser(user);
             String token = generateVerificationToken(user);
+            authUserDao.insertUser(user);
             mailService.sendMail(new VerificationEmail(
-                    "Activate acccount",
+                    "Activate acccount.",
                     user.getEmail(),
                     "http://localhost:8080/api/v1/auth/verification/" + token));
         }
@@ -94,9 +91,14 @@ public class AuthService {
     public void registerUser(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         AuthUser user = authUserDao.findUserByUsername(username);
-        user.setEnabled(true);
         user.setRole(USER);
-        authUserDao.insertUser(user);
+        authUserDao.updateUser(username, true);
+    }
+
+    public void createAdminUser(AuthUser admin) {
+        admin.setRole(ADMIN);
+        admin.setEnabled(true);
+        authUserDao.insertUser(admin);
     }
 
     public AuthUserResponse login(LoginUserRequest request) {

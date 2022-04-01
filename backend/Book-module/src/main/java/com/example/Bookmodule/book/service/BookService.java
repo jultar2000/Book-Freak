@@ -72,7 +72,7 @@ public class BookService {
     public boolean updateBook(String bookId,
                               int numberOfPages,
                               String description,
-                              Genre genre) {
+                              String genre) {
         return bookDao.updateBook(
                         convertStringIdToObjectId(bookId),
                         numberOfPages,

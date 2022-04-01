@@ -61,7 +61,6 @@ public class CommentService {
         return commentDao.findComment(convertStringIdToObjectId(id));
     }
 
-    //TODO> chceck how commentId is working with the book
     public boolean updateComment(String commentId, String text) {
         return commentDao.updateComment(convertStringIdToObjectId(commentId), text);
     }

@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
-//TODO> Change all objects to optional and use other structure to check for existence
 @RestController
 @RequestMapping("api/v1/books")
 public class BookController {
