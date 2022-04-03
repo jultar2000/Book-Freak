@@ -221,7 +221,7 @@ public class BookDao {
                               String genre) {
         Bson find_query = Filters.in("_id", bookId);
         List<Bson> updatesList = new ArrayList<>();
-        if(numberOfPages != 0){
+        if(numberOfPages > 0){
             updatesList.add(Updates.set("name", numberOfPages));
         }
         if(description != null){

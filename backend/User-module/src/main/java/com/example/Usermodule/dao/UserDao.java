@@ -79,13 +79,9 @@ public class UserDao {
 
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
-        MongoCursor<User> cursor = usersCollection.find().iterator();
-        while (cursor.hasNext()) {
-            users.add(cursor.next());
+        for (User user : usersCollection.find()) {
+            users.add(user);
         }
-//        for (User user : usersCollection.find()) {
-//            users.add(user);
-//        }
         return users;
     }
 
@@ -106,7 +102,7 @@ public class UserDao {
             updatesList.add(Updates.set("gender", gender));
         }
         if(birthDate != null){
-            updatesList.add(Updates.set("birthDate", birthDate));
+            updatesList.add(Updates.set("birthDate", LocalDate.parse(birthDate)));
         }
         Bson update = Updates.combine(updatesList);
         try {

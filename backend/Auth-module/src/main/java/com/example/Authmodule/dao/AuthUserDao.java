@@ -68,9 +68,11 @@ public class AuthUserDao {
         return user != null;
     }
 
-    public void updateUser(String username, boolean enabled) {
+    public void updateUser(String username, boolean enabled, String role) {
         Bson find_query = Filters.in("username", username);
-        Bson update = Updates.set("enabled", enabled);
+        Bson update = Updates.combine(
+                Updates.set("enabled", enabled),
+                Updates.set("role", role));
         try {
             UpdateResult updateResult = usersCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {

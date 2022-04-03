@@ -68,7 +68,7 @@ public class AuthService {
             mailService.sendMail(new VerificationEmail(
                     "Activate acccount.",
                     user.getEmail(),
-                    "http://localhost:8080/api/v1/auth/verification/" + token));
+                    "https://localhost:8443/api/v1/auth/verification/" + token));
         }
     }
 
@@ -90,9 +90,7 @@ public class AuthService {
 
     public void registerUser(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
-        AuthUser user = authUserDao.findUserByUsername(username);
-        user.setRole(USER);
-        authUserDao.updateUser(username, true);
+        authUserDao.updateUser(username, true, "USER");
     }
 
     public void createAdminUser(AuthUser admin) {
