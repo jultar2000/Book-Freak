@@ -39,7 +39,7 @@ public class CommentDao {
 
     @Autowired
     public CommentDao(MongoClient mongoClient,
-                      @Value("${spring.mongodb.database}") String databaseName) {
+                      @Value("${spring.data.mongodb.database}") String databaseName) {
         log = LoggerFactory.getLogger(this.getClass());
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(
@@ -49,6 +49,12 @@ public class CommentDao {
                 database.getCollection(AUTHORS_COLLECTION, Comment.class).withCodecRegistry(pojoCodecRegistry);
     }
 
+    /**
+     * Inserts the comment object in the 'comments' collection.
+     *
+     * @param comment - Comment object to be inserted.
+     * @return True if successful, throw IncorrectDaoOperation otherwise.
+     */
     public boolean insertComment(Comment comment) {
         try {
             commentsCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(comment);
@@ -60,6 +66,12 @@ public class CommentDao {
         }
     }
 
+    /**
+     * Deletes the comment document from the 'comments' collection with the provided commentId.
+     *
+     * @param commentId - id of the comment to be deleted.
+     * @return True if successful, throw IncorrectDaoOperation otherwise.
+     */
     public boolean deleteComment(ObjectId commentId) {
         Bson find_query = Filters.in("_id", commentId);
         try {
@@ -75,6 +87,12 @@ public class CommentDao {
         }
     }
 
+    /**
+     * Given the commentId, finds the comment object in 'comments' collection.
+     *
+     * @param commentId - id of the comment.
+     * @return comment object, if null throws IncorrectDaoOperation.
+     */
     public Comment findComment(ObjectId commentId) {
         Bson find_query = Filters.in("_id", commentId);
         Comment comment = commentsCollection.find(find_query).first();
@@ -85,6 +103,12 @@ public class CommentDao {
         return comment;
     }
 
+    /**
+     * Finds all comments in 'comments' collection that belong to specific book.
+     *
+     * @param bookId - if of the book.
+     * @return list of found comments.
+     */
     public List<Comment> findBookComments(ObjectId bookId) {
         Bson find_query = Filters.in("book_oid", bookId);
         List<Comment> comments = new ArrayList<>();
@@ -94,6 +118,11 @@ public class CommentDao {
         return comments;
     }
 
+    /**
+     * Deletes the comment document from the 'comments' collection that belong to specific book.
+     *
+     * @param bookId - if of the book.
+     */
     public void deleteAllBookComments(ObjectId bookId) {
         Bson find_query = Filters.in("book_oid", bookId);
         try {
@@ -108,6 +137,13 @@ public class CommentDao {
         }
     }
 
+    /**
+     * Given the comment's id, finds comment object and updates text field.
+     *
+     * @param commentId - id of the comment to be updated
+     * @param text   - string value of text.
+     * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
+     */
     public boolean updateComment(ObjectId commentId, String text) {
         Bson find_query = Filters.in("_id", commentId);
         Bson update = Updates.combine(

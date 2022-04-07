@@ -4,6 +4,7 @@ import com.example.Authormodule.dto.CreateAuthorDto;
 import com.example.Authormodule.dto.AuthorNameSurnameRequest;
 import com.example.Authormodule.dto.GetAuthorsDto;
 import com.example.Authormodule.entity.Author;
+import com.example.Authormodule.event.EventClient;
 import com.example.Authormodule.service.AuthorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,13 @@ public class AuthorController {
 
     private final AuthorService authorService;
     private final ModelMapper mapper;
+    private final EventClient eventClient;
 
     @Autowired
-    public AuthorController(AuthorService authorService, ModelMapper mapper) {
+    public AuthorController(AuthorService authorService, ModelMapper mapper, EventClient eventClient) {
         this.authorService = authorService;
         this.mapper = mapper;
+        this.eventClient = eventClient;
     }
 
     @GetMapping("/all")
@@ -81,9 +84,11 @@ public class AuthorController {
 
     @PostMapping("")
     public ResponseEntity<Void> addAuthor(@RequestBody CreateAuthorDto request) {
-        if (!authorService.createAuthor(mapper.map(request, Author.class))) {
+        Author author = mapper.map(request, Author.class);
+        if (!authorService.createAuthor(author)) {
             return ResponseEntity.badRequest().build();
         }
+        eventClient.insertAuthor(author);
         return ResponseEntity.ok().build();
     }
 
@@ -101,6 +106,7 @@ public class AuthorController {
         if (!authorService.deleteAuthor(authorId)) {
             return ResponseEntity.notFound().build();
         }
+        eventClient.deleteAuthor(authorId);
         return ResponseEntity.accepted().build();
     }
 }

@@ -3,7 +3,7 @@ package com.example.Bookmodule.book.service;
 import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.book.dao.BookDao;
 import com.example.Bookmodule.book.entity.Book;
-import com.example.Bookmodule.book.entity.Genre;
+import com.example.Bookmodule.book.entity.ViewerRating;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class BookService {
 
-    private Logger log;
+    private final Logger log;
     private final BookDao bookDao;
+    private final static int NUMBER_OF_BOOKS_RETURNED = 10;
 
     @Autowired
     public BookService(BookDao bookDao) {
@@ -37,7 +39,13 @@ public class BookService {
     }
 
     public boolean insertBook(Book book, Author author) {
+        ViewerRating viewerRating = ViewerRating.builder()
+                .numReviews(0)
+                .rating(0)
+                .lastUpdated(new Date())
+                .build();
         book.setAuthor(author);
+        book.setViewerRating(viewerRating);
         return bookDao.insertBook(book);
     }
 
@@ -49,34 +57,44 @@ public class BookService {
         return bookDao.findBook(convertStringIdToObjectId(id));
     }
 
-    public List<Book> findBooksByKeyword(int limit, int skip, String keyword) {
-        return bookDao.findBooksByKeyword(limit, skip, keyword);
+    public List<Book> findBooksByKeyword(String keyword) {
+        return bookDao.findBooksByKeyword(NUMBER_OF_BOOKS_RETURNED, keyword);
     }
 
     public List<Book> findAllBooks() {
         return bookDao.findAllBooks();
     }
 
-    public List<Book> findBooksByRating(int limit, int skip) {
-        return bookDao.findBooksByRating(limit, skip);
+    public List<Book> findBooksByRating() {
+        return bookDao.findBooksByRating(NUMBER_OF_BOOKS_RETURNED);
     }
 
-    public List<Book> findBooksByAuthor(int limit, int skip, Author author) {
-        return bookDao.findBooksByAuthor(limit, skip, author);
+    public List<Book> findBooksByAuthor(Author author) {
+        return bookDao.findBooksByAuthor(NUMBER_OF_BOOKS_RETURNED, author);
     }
 
-    public List<Book> findBooksByGenre(int limit, int skip, String genre) {
-        return bookDao.findBooksByGenre(limit, skip, genre);
+    public List<Book> findBooksByGenre(String genre) {
+        return bookDao.findBooksByGenre(NUMBER_OF_BOOKS_RETURNED, genre);
+    }
+
+    public boolean updateRating(String bookId, double rating) {
+        Book book = bookDao.findBook(convertStringIdToObjectId(bookId));
+        int new_reviews_num = book.getViewerRating().getNumReviews() + 1;
+        ViewerRating viewerRating = ViewerRating.builder()
+                .numReviews(new_reviews_num)
+                .rating((book.getViewerRating().getRating() + rating)/new_reviews_num)
+                .lastUpdated(new Date())
+                .build();
+        return bookDao.updateRating(convertStringIdToObjectId(bookId), viewerRating);
     }
 
     public boolean updateBook(String bookId,
                               int numberOfPages,
                               String description,
                               String genre) {
-        return bookDao.updateBook(
-                        convertStringIdToObjectId(bookId),
-                        numberOfPages,
-                        description,
-                        genre);
+        return bookDao.updateBook(convertStringIdToObjectId(bookId),
+                numberOfPages,
+                description,
+                genre);
     }
 }

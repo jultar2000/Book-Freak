@@ -52,11 +52,11 @@ public class BookController {
         return ResponseEntity.ok(mapper.map(book, GetBookDto.class));
     }
 
-    @GetMapping("/keyword")
-    public ResponseEntity<List<GetBookDto>> getBooksByKeyword(@RequestBody BooksStringParameterRequest request) {
+    @GetMapping("/keyword/{keyword}")
+    public ResponseEntity<List<GetBookDto>> getBooksByKeyword(@PathVariable("keyword") String keyword) {
         List<GetBookDto> booksDto =
                 bookService
-                        .findBooksByKeyword(request.getLimit(), request.getSkip(), request.getParameter())
+                        .findBooksByKeyword(keyword)
                         .stream()
                         .map(book ->
                                 mapper.map(book, GetBookDto.class))
@@ -64,11 +64,11 @@ public class BookController {
         return ResponseEntity.ok(booksDto);
     }
 
-    @GetMapping("/genre")
-    public ResponseEntity<List<GetBookDto>> getBooksByGenre(@RequestBody BooksStringParameterRequest request) {
+    @GetMapping("/genre/{genre}")
+    public ResponseEntity<List<GetBookDto>> getBooksByGenre(@PathVariable("genre") String genre) {
         List<GetBookDto> booksDto =
                 bookService
-                        .findBooksByGenre(request.getLimit(), request.getSkip(), request.getParameter())
+                        .findBooksByGenre(genre)
                         .stream()
                         .map(book ->
                                 mapper.map(book, GetBookDto.class))
@@ -77,10 +77,10 @@ public class BookController {
     }
 
     @GetMapping("/rating")
-    public ResponseEntity<List<GetBookDto>> getBooksByRating(@RequestBody BooksRequest request) {
+    public ResponseEntity<List<GetBookDto>> getBooksByRating() {
         List<GetBookDto> booksDto =
                 bookService
-                        .findBooksByRating(request.getLimit(), request.getSkip())
+                        .findBooksByRating()
                         .stream()
                         .map(book ->
                                 mapper.map(book, GetBookDto.class))
@@ -89,15 +89,14 @@ public class BookController {
     }
 
     @GetMapping("/authors/id/{authorId}")
-    public ResponseEntity<List<GetBookDto>> getBooksByAuthor(@PathVariable("authorId") String authorId,
-                                                             @RequestBody BooksRequest request) {
+    public ResponseEntity<List<GetBookDto>> getBooksByAuthor(@PathVariable("authorId") String authorId) {
         Author author = authorService.findAuthor(authorId);
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
         List<GetBookDto> booksDto =
                 bookService
-                        .findBooksByAuthor(request.getLimit(), request.getSkip(), author)
+                        .findBooksByAuthor(author)
                         .stream()
                         .map(book ->
                                 mapper.map(book, GetBookDto.class))
@@ -118,14 +117,23 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/id/{bookId}/rating")
+    public ResponseEntity<Void> updateRating(@PathVariable("bookId") String bookId,
+                                             @RequestBody IntParameterRequest request) {
+        if (!bookService.updateRating(bookId, request.getParameter())) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
+
     @PutMapping("/id/{bookId}")
     public ResponseEntity<Void> updateBook(@PathVariable("bookId") String bookId,
                                            @RequestBody UpdateBookDto request) {
-        if(!bookService.updateBook(
+        if (!bookService.updateBook(
                 bookId,
                 request.getNumberOfPages(),
                 request.getDescription(),
-                request.getGenre())){
+                request.getGenre())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();

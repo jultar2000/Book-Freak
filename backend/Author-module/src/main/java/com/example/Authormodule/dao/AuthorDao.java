@@ -41,7 +41,7 @@ public class AuthorDao {
 
     @Autowired
     public AuthorDao(MongoClient mongoClient,
-                     @Value("${spring.mongodb.database}") String databaseName) {
+                     @Value("${spring.data.mongodb.database}") String databaseName) {
         log = LoggerFactory.getLogger(this.getClass());
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(

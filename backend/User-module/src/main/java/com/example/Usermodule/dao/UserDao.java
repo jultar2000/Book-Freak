@@ -1,19 +1,15 @@
 package com.example.Usermodule.dao;
 
-import com.example.Usermodule.entity.Gender;
 import com.example.Usermodule.entity.User;
 import com.example.Usermodule.exceptions.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
-import com.mongodb.WriteConcern;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -29,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.mongodb.client.model.Filters.in;
-import static com.mongodb.client.model.Updates.*;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -42,7 +37,7 @@ public class UserDao {
 
     @Autowired
     public UserDao(MongoClient mongoClient,
-                   @Value("${spring.mongodb.database}") String databaseName) {
+                   @Value("${spring.data.mongodb.database}") String databaseName) {
         log = LoggerFactory.getLogger(this.getClass());
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(

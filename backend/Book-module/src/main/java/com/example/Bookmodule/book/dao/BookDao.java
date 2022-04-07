@@ -44,7 +44,7 @@ public class BookDao {
 
     @Autowired
     public BookDao(MongoClient mongoClient,
-                   @Value("${spring.mongodb.database}") String databaseName) {
+                   @Value("${spring.data.mongodb.database}") String databaseName) {
         log = LoggerFactory.getLogger(this.getClass());
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(
@@ -55,7 +55,7 @@ public class BookDao {
     }
 
     /**
-     * Inserts the 'books' object in the 'books' collection.
+     * Inserts the book object in the 'books' collection.
      *
      * @param book - Book object to be inserted.
      * @return True if successful, throw IncorrectDaoOperation otherwise.
@@ -126,12 +126,11 @@ public class BookDao {
     /**
      * Performs text search by specified keyword in 'books' collection.
      *
-     * @param limit - number of documents to be returned.
-     * @param skip - number of documents to be skipped.
+     * @param limit   - number of documents to be returned.
      * @param keyword - string word from which text search is performed.
      * @return list of books that match specified criteria.
      */
-    public List<Book> findBooksByKeyword(int limit, int skip, String keyword) {
+    public List<Book> findBooksByKeyword(int limit, String keyword) {
         Bson textFilter = Filters.text(keyword);
         Bson projection = Projections.metaTextScore("score");
         Bson sort = Sorts.metaTextScore("textScore");
@@ -141,9 +140,7 @@ public class BookDao {
                 .projection(projection)
                 .sort(sort)
                 .limit(limit)
-                .skip(skip)
-                .iterator()
-                .forEachRemaining(books::add);
+                .into(books);
         return books;
     }
 
@@ -151,37 +148,32 @@ public class BookDao {
      * Finds books in 'books' collection and sorts them by rating in descending order.
      *
      * @param limit - number of documents to be returned.
-     * @param skip - number of documents to be skipped.
      * @return list of books sorted by rating.
      */
-    public List<Book> findBooksByRating(int limit, int skip) {
-        String sortKey = "viewerRating.rating";
+    public List<Book> findBooksByRating(int limit) {
         List<Book> books = new ArrayList<>();
-        Bson find_query = Sorts.descending(sortKey);
+        Bson sort = Sorts.descending("viewerRating.rating");
         booksCollection
-                .find(find_query)
-                .skip(skip)
+                .find()
+                .sort(sort)
                 .limit(limit)
-                .iterator()
-                .forEachRemaining(books::add);
+                .into(books);
         return books;
     }
 
     /**
      * Given the author object, finds all books in 'books' collection by author.
      *
-     * @param limit - number of documents to be returned.
-     * @param skip - number of documents to be skipped.
+     * @param limit  - number of documents to be returned.
      * @param author - author object.
      * @return list of books that match specified criteria.
      */
-    public List<Book> findBooksByAuthor(int limit, int skip, Author author) {
+    public List<Book> findBooksByAuthor(int limit, Author author) {
         Bson find_query = Filters.in("author", author);
         List<Book> books = new ArrayList<>();
         booksCollection
                 .find(find_query)
                 .limit(limit)
-                .skip(skip)
                 .into(books);
         return books;
     }
@@ -190,29 +182,26 @@ public class BookDao {
      * Finds all books in 'books' collection by genre.
      *
      * @param limit - number of documents to be returned.
-     * @param skip - number of documents to be skipped.
      * @param genre - string value of genre.
      * @return list of books that match specified criteria.
      */
-    public List<Book> findBooksByGenre(int limit, int skip, String genre) {
+    public List<Book> findBooksByGenre(int limit, String genre) {
         Bson find_query = Filters.in("genre", genre);
         List<Book> books = new ArrayList<>();
         booksCollection
                 .find(find_query)
                 .limit(limit)
-                .skip(skip)
-                .iterator()
-                .forEachRemaining(books::add);
+                .into(books);
         return books;
     }
 
     /**
      * Given the book's id, finds book object and updates numberOfPages, description and genre fields.
      *
-     * @param bookId - id of the book.
+     * @param bookId        - id of the book.
      * @param numberOfPages - integer number of pages value.
-     * @param description - string description value.
-     * @param genre - string genre value.
+     * @param description   - string description value.
+     * @param genre         - string genre value.
      * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
      */
     public boolean updateBook(ObjectId bookId,
@@ -221,16 +210,45 @@ public class BookDao {
                               String genre) {
         Bson find_query = Filters.in("_id", bookId);
         List<Bson> updatesList = new ArrayList<>();
-        if(numberOfPages > 0){
+        if (numberOfPages > 0) {
             updatesList.add(Updates.set("name", numberOfPages));
         }
-        if(description != null){
+        if (description != null) {
             updatesList.add(Updates.set("description", description));
         }
-        if(genre != null){
+        if (genre != null) {
             updatesList.add(Updates.set("genre", genre));
         }
         Bson update = Updates.combine(updatesList);
+        try {
+            UpdateResult updateResult = booksCollection.updateOne(find_query, update);
+            if (updateResult.getModifiedCount() < 1) {
+                log.warn(
+                        "Book `{}` was not updated. Some field might not exist.",
+                        bookId);
+                return false;
+            }
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Issue caught while trying to update book `{}`: {}",
+                            bookId,
+                            e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
+        return true;
+    }
+
+    /**
+     * Given the book's id, finds book object and updates viewer rating field.
+     *
+     * @param bookId - id of the book.
+     * @param rating - viewer rating object to be updated.
+     * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
+     */
+    public boolean updateRating(ObjectId bookId, ViewerRating rating) {
+        Bson find_query = Filters.in("_id", bookId);
+        Bson update = Updates.set("viewerRating", rating);
         try {
             UpdateResult updateResult = booksCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {

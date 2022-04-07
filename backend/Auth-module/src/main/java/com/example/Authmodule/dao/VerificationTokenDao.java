@@ -33,7 +33,7 @@ public class VerificationTokenDao {
 
     @Autowired
     public VerificationTokenDao(MongoClient mongoClient,
-                           @Value("${spring.mongodb.database}") String databaseName) {
+                           @Value("${spring.data.mongodb.database}") String databaseName) {
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         CodecRegistry pojoCodecRegistry = fromRegistries(
                 MongoClientSettings.getDefaultCodecRegistry(),

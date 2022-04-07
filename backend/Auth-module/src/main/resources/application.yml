@@ -1,0 +1,80 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://root:root@bookfreak.tcd27.mongodb.net/
+      database: users_db
+  application:
+    name: API-Gateway
+  mail:
+    host: smtp.mailtrap.io
+    port: 2525
+    username: ff4cbc0b7b5f17
+    password: 9c604a35bfda06
+    protocol: smtp
+
+server:
+  port: 8443
+  ssl:
+    key-store: classpath:https-springboot.jks
+    key-store-password: password
+    key-store-type: JKS
+    key-alias: https-springboot
+    key-password: password
+
+app:
+  security:
+    secretKey: 942P43hf2bnfrepqaskJfsj09fq2JFdeEKAFDMKmfl2FD
+    expirationTime: 600
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: false
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
+zuul:
+  host:
+    connect-timeout-millis: 600000
+    socket-timeout-millis: 600000
+  ignored-services: '*'
+  prefix: /api/v1
+  routes:
+    author-module:
+      url: http://localhost:8081
+      path: /authors/**
+      service-id: author-module
+    book-module:
+      url: http://localhost:8082
+      path: /api/v1/books/**
+      service-id: book-module
+    user-module:
+      url: http://localhost:8083
+      path: /users/**
+      service-id: user-module
+
+
+springdoc:
+  swagger-ui:
+    path: "/v3/api-docs/index.html"
+    disable-swagger-default-url: true
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000
+
+ribbon:
+  ConnectTimeout: 60000
+  ReadTimeout: 60000
+
+logging:
+  level:
+    web: TRACE
+    org.springframework:
+      web: TRACE

@@ -2,7 +2,6 @@ package com.example.Authormodule.service;
 
 import com.example.Authormodule.dao.AuthorDao;
 import com.example.Authormodule.entity.Author;
-import com.example.Authormodule.event.EventDao;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,13 +15,11 @@ import java.util.List;
 public class AuthorService {
 
     private final AuthorDao authorDao;
-    private final EventDao eventDao;
     private final Logger log;
 
     @Autowired
-    public AuthorService(AuthorDao authorDao, EventDao eventDao) {
+    public AuthorService(AuthorDao authorDao) {
         this.authorDao = authorDao;
-        this.eventDao = eventDao;
         log = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -55,13 +52,11 @@ public class AuthorService {
 
     public boolean createAuthor(Author author) {
         boolean result = authorDao.insertAuthor(author);
-        eventDao.insertAuthor(author);
         return result;
     }
 
     public boolean deleteAuthor(String id) {
         ObjectId oid = convertStringIdToObjectId(id);
-        eventDao.deleteAuthor(oid);
         return authorDao.deleteAuthor(oid);
     }
 

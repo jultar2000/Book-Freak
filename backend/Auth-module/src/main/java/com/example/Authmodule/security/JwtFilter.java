@@ -2,7 +2,6 @@ package com.example.Authmodule.security;
 
 import com.example.Authmodule.service.JwtService;
 import com.example.Authmodule.service.UserDetailService;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -36,9 +36,13 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         System.out.println(request.getRequestURL());
-        RequestMatcher ignoredPaths = new AntPathRequestMatcher("/api/v1/auth/**");
-        System.out.println(ignoredPaths.matches(request));
-        return ignoredPaths.matches(request);
+        List<RequestMatcher> ignoredPaths = List.of(
+                new AntPathRequestMatcher("/api/v1/auth/**"),
+                new AntPathRequestMatcher("/v3/api-docs/**"));
+        return ignoredPaths
+                .stream()
+                .anyMatch(requestMatcher ->
+                        requestMatcher.matches(request));
     }
 
     @Override

@@ -1,26 +1,17 @@
 package com.example.Authmodule;
 
-import com.example.Authmodule.configuration.ZuulFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 @EnableZuulProxy
 @EnableEurekaClient
-@EnableFeignClients
+@EnableAsync
 public class AuthModuleApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(AuthModuleApplication.class, args);
 	}
-
-	@Bean
-	public ZuulFilter simpleFilter() {
-		return new ZuulFilter();
-	}
-
 }
