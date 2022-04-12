@@ -144,7 +144,7 @@ public class CommentDao {
      * @param text   - string value of text.
      * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
      */
-    public boolean updateComment(ObjectId commentId, String text) {
+    public boolean updateComment(ObjectId commentId, String text, Comment comment) {
         Bson find_query = Filters.in("_id", commentId);
         Bson update = Updates.combine(
                 Updates.set("text", text),

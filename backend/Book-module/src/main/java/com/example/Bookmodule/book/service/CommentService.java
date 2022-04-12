@@ -35,17 +35,27 @@ public class CommentService {
         }
     }
 
-    public boolean insertComment(String bookId, String text) {
+    public List<Comment> findBookComments(String movieId) {
+        return commentDao.findBookComments(convertStringIdToObjectId(movieId));
+    }
+
+    public boolean insertComment(String bookId, String username, String text) {
         Comment comment = Comment
                 .builder()
                 .book_oid(convertStringIdToObjectId(bookId))
+                .username(username)
                 .date(new Date())
                 .text(text)
                 .build();
         return commentDao.insertComment(comment);
     }
 
-    public boolean deleteComment(String commentId) {
+    public boolean deleteComment(String commentId, String username) {
+        if (commentDao
+                .findComment(convertStringIdToObjectId(commentId))
+                .getUsername().equals(username)) {
+            log.error("Comment {} does not belong to user with username {}", commentId, username);
+        }
         return commentDao.deleteComment(convertStringIdToObjectId(commentId));
     }
 
@@ -53,15 +63,11 @@ public class CommentService {
         commentDao.deleteAllBookComments(convertStringIdToObjectId(bookId));
     }
 
-    public List<Comment> findBookComments(String movieId) {
-        return commentDao.findBookComments(convertStringIdToObjectId(movieId));
-    }
-
-    public Comment findComment(String id) {
-        return commentDao.findComment(convertStringIdToObjectId(id));
-    }
-
-    public boolean updateComment(String commentId, String text) {
-        return commentDao.updateComment(convertStringIdToObjectId(commentId), text);
+    public boolean updateComment(String commentId, String username, String text) {
+        Comment comment = commentDao.findComment(convertStringIdToObjectId(commentId));
+        if (comment.getUsername().equals(username)) {
+            log.error("Comment {} does not belong to user with username {}", commentId, username);
+        }
+        return commentDao.updateComment(convertStringIdToObjectId(commentId), text, comment);
     }
 }

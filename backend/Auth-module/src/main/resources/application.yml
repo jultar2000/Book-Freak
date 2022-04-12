@@ -4,7 +4,7 @@ spring:
       uri: mongodb+srv://root:root@bookfreak.tcd27.mongodb.net/
       database: users_db
   application:
-    name: API-Gateway
+    name: auth-module
   mail:
     host: smtp.mailtrap.io
     port: 2525
@@ -24,15 +24,18 @@ server:
 app:
   security:
     secretKey: 942P43hf2bnfrepqaskJfsj09fq2JFdeEKAFDMKmfl2FD
+    communicationKey: 4398052FNHJ392FPQP409TH341QGM245PAP0921098
     expirationTime: 600
 
 eureka:
   client:
     fetch-registry: true
-    register-with-eureka: false
+    register-with-eureka: true
     service-url:
       default-zone: http://localhost:8761/eureka/
   instance:
+    nonSecurePortEnabled: true
+    securePortEnabled: false
     hostname: localhost
 
 zuul:
@@ -40,21 +43,20 @@ zuul:
     connect-timeout-millis: 600000
     socket-timeout-millis: 600000
   ignored-services: '*'
-  prefix: /api/v1
+#  prefix: /api/v1
   routes:
     author-module:
       url: http://localhost:8081
-      path: /authors/**
-      service-id: author-module
+#      path: /authors/**
+#      service-id: author-module
     book-module:
       url: http://localhost:8082
-      path: /api/v1/books/**
-      service-id: book-module
+#      path: /books/**
+#      service-id: book-module
     user-module:
       url: http://localhost:8083
-      path: /users/**
-      service-id: user-module
-
+#      path: /users/**
+#      service-id: user-module
 
 springdoc:
   swagger-ui:
@@ -67,11 +69,13 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 15000
+            timeoutInMilliseconds: 150000
 
 ribbon:
-  ConnectTimeout: 60000
-  ReadTimeout: 60000
+  ConnectTimeout: 6000
+  ReadTimeout: 6000
+  eureka:
+    enabled: true
 
 logging:
   level:

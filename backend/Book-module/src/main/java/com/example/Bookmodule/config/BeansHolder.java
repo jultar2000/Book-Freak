@@ -10,6 +10,4 @@ public class BeansHolder {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
-
 }

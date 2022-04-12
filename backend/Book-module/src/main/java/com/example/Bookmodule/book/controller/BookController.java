@@ -150,8 +150,7 @@ public class BookController {
 
     @GetMapping("/id/{bookId}/comments")
     public ResponseEntity<List<GetCommentsDto>> getComments(@PathVariable("bookId") String bookId) {
-        Book book = bookService.findBook(bookId);
-        if (book == null) {
+        if (bookService.findBook(bookId) == null) {
             return ResponseEntity.notFound().build();
         }
         List<GetCommentsDto> commentsDto =
@@ -164,14 +163,16 @@ public class BookController {
         return ResponseEntity.ok(commentsDto);
     }
 
+    /*
+    >>TODO figure out a way to get a principal
+     */
     @PostMapping("/id/{bookId}/comments")
     public ResponseEntity<Void> addComment(@PathVariable("bookId") String bookId,
                                            @RequestBody StringParameterRequest request) {
-        Book book = bookService.findBook(bookId);
-        if (book == null) {
+        if (bookService.findBook(bookId) == null) {
             return ResponseEntity.notFound().build();
         }
-        if (!commentService.insertComment(bookId, request.getParameter())) {
+        if (!commentService.insertComment(bookId, response.getBody(), request.getParameter())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
@@ -180,7 +181,7 @@ public class BookController {
     @PutMapping("/comments/id/{commentId}")
     public ResponseEntity<Void> updateComment(@PathVariable("commentId") String commentId,
                                               @RequestBody StringParameterRequest request) {
-        if (!commentService.updateComment(commentId, request.getParameter())) {
+        if (!commentService.updateComment(commentId, response.getBody(), request.getParameter())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
@@ -188,7 +189,7 @@ public class BookController {
 
     @DeleteMapping("/comments/id/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId) {
-        if (!commentService.deleteComment(commentId)) {
+        if (!commentService.deleteComment(commentId, response.getBody())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

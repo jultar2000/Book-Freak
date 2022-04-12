@@ -7,8 +7,8 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-@EnableZuulProxy
 @EnableEurekaClient
+@EnableZuulProxy
 @EnableAsync
 public class AuthModuleApplication {
 	public static void main(String[] args) {

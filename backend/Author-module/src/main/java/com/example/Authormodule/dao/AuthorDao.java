@@ -59,7 +59,7 @@ public class AuthorDao {
      */
     public boolean insertAuthor(Author author) {
         try {
-                    authorsCollection
+            authorsCollection
                     .withWriteConcern(WriteConcern.MAJORITY)
                     .insertOne(author);
             return true;

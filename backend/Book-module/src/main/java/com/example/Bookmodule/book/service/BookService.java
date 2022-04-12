@@ -80,9 +80,13 @@ public class BookService {
     public boolean updateRating(String bookId, double rating) {
         Book book = bookDao.findBook(convertStringIdToObjectId(bookId));
         int new_reviews_num = book.getViewerRating().getNumReviews() + 1;
+        if (new_reviews_num > 10 || new_reviews_num < 0) {
+            log.warn("Wrong rating number!");
+            return false;
+        }
         ViewerRating viewerRating = ViewerRating.builder()
                 .numReviews(new_reviews_num)
-                .rating((book.getViewerRating().getRating() + rating)/new_reviews_num)
+                .rating((book.getViewerRating().getRating() + rating) / new_reviews_num)
                 .lastUpdated(new Date())
                 .build();
         return bookDao.updateRating(convertStringIdToObjectId(bookId), viewerRating);

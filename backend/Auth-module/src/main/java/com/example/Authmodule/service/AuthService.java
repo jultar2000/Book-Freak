@@ -21,7 +21,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static com.example.Authmodule.security.Role.ADMIN;
-import static com.example.Authmodule.security.Role.USER;
 
 @Service
 @Slf4j
@@ -124,9 +123,10 @@ public class AuthService {
                 .build();
     }
 
-    public AuthUser getCurrentUser() {
-        var principal = (org.springframework.security.core.userdetails.User)
-                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return authUserDao.findUserByUsername(principal.getUsername());
+    public String getCurrentUsername() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String cod = principal.toString();
+        System.out.println(cod);
+        return cod;
     }
 }

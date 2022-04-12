@@ -15,5 +15,9 @@ eureka:
   instance:
     hostname: localhost
 
+app:
+  security:
+    communicationKey: 4398052FNHJ392FPQP409TH341QGM245PAP0921098
+
 server:
   port: 8082
