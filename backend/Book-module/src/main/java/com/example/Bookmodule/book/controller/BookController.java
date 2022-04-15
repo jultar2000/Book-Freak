@@ -164,15 +164,15 @@ public class BookController {
     }
 
     /*
-    >>TODO figure out a way to get a principal
+    >>TODO figure out a  better way to get a principal
      */
     @PostMapping("/id/{bookId}/comments")
     public ResponseEntity<Void> addComment(@PathVariable("bookId") String bookId,
-                                           @RequestBody StringParameterRequest request) {
+                                           @RequestBody CommentDto request) {
         if (bookService.findBook(bookId) == null) {
             return ResponseEntity.notFound().build();
         }
-        if (!commentService.insertComment(bookId, response.getBody(), request.getParameter())) {
+        if (!commentService.insertComment(bookId, request.getUsername(), request.getText())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
@@ -180,16 +180,17 @@ public class BookController {
 
     @PutMapping("/comments/id/{commentId}")
     public ResponseEntity<Void> updateComment(@PathVariable("commentId") String commentId,
-                                              @RequestBody StringParameterRequest request) {
-        if (!commentService.updateComment(commentId, response.getBody(), request.getParameter())) {
+                                              @RequestBody CommentDto request) {
+        if (!commentService.updateComment(commentId, request.getUsername(), request.getText())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/comments/id/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId) {
-        if (!commentService.deleteComment(commentId, response.getBody())) {
+    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId,
+                                              @RequestBody CommentDto request) {
+        if (!commentService.deleteComment(commentId, request.getUsername())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

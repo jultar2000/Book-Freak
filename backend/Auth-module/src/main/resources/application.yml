@@ -24,18 +24,15 @@ server:
 app:
   security:
     secretKey: 942P43hf2bnfrepqaskJfsj09fq2JFdeEKAFDMKmfl2FD
-    communicationKey: 4398052FNHJ392FPQP409TH341QGM245PAP0921098
     expirationTime: 600
 
 eureka:
   client:
     fetch-registry: true
-    register-with-eureka: true
+    register-with-eureka: false
     service-url:
       default-zone: http://localhost:8761/eureka/
   instance:
-    nonSecurePortEnabled: true
-    securePortEnabled: false
     hostname: localhost
 
 zuul:
@@ -47,7 +44,7 @@ zuul:
   routes:
     author-module:
       url: http://localhost:8081
-#      path: /authors/**
+#      path: /api/v1/authors/**
 #      service-id: author-module
     book-module:
       url: http://localhost:8082
@@ -57,6 +54,12 @@ zuul:
       url: http://localhost:8083
 #      path: /users/**
 #      service-id: user-module
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 springdoc:
   swagger-ui:

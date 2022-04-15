@@ -14,13 +14,11 @@ eureka:
       default-zone: http://localhost:8761/eureka/
   instance:
     hostname: localhost
+    instance-id: book-module
 
 app:
   security:
     communicationKey: 4398052FNHJ392FPQP409TH341QGM245PAP0921098
-
-auth-server:
-  url: http://localhost:8080
 
 server:
   port: 8082

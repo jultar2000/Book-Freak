@@ -28,17 +28,17 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserDetailService userDetailService;
 
     @Autowired
-    public JwtFilter(JwtService jwrService, UserDetailService userDetailService) {
-        this.jwtService = jwrService;
+    public JwtFilter(JwtService jwtService, UserDetailService userDetailService) {
+        this.jwtService = jwtService;
         this.userDetailService = userDetailService;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        System.out.println(request.getRequestURL());
         List<RequestMatcher> ignoredPaths = List.of(
                 new AntPathRequestMatcher("/api/v1/auth/**"),
                 new AntPathRequestMatcher("/v3/api-docs/**"));
+
         return ignoredPaths
                 .stream()
                 .anyMatch(requestMatcher ->
@@ -49,7 +49,7 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String jwt = getJwtFromRequest(request);
+        String jwt = jwtService.getJwtFromRequest(request);
         String username = jwtService.extractUsernameFromToken(jwt);
         UserDetails userDetails = userDetailService.loadUserByUsername(username);
         if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt, userDetails)) {
@@ -57,15 +57,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     null, userDetails.getAuthorities());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
         filterChain.doFilter(request, response);
-    }
-
-    private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return bearerToken;
     }
 }

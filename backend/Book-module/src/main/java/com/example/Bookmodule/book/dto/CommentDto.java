@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class StringParameterRequest {
-    String parameter;
+public class CommentDto {
+    String text;
+    String username;
 }

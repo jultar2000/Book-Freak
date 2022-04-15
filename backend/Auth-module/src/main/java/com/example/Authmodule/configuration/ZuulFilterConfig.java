@@ -16,7 +16,7 @@ public class ZuulFilterConfig extends com.netflix.zuul.ZuulFilter {
 
     @Override
     public int filterOrder() {
-        return 1;
+        return -1;
     }
 
     @Override

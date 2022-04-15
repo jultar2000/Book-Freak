@@ -61,6 +61,9 @@ public class AuthService {
         if (authUserDao.isUserPresent(user.getUsername())) {
             throw new IllegalArgumentException(
                     MessageFormat.format("Username '{}' already taken!", user.getUsername()));
+        } else if (!mailService.validateEmail(user.getEmail())) {
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Email is invalid!", user.getEmail()));
         } else {
             String token = generateVerificationToken(user);
             authUserDao.insertUser(user);
@@ -121,12 +124,5 @@ public class AuthService {
                 .expiresAt(Instant.now().plusSeconds(jwtService.getExpirationTime()))
                 .username(request.getUsername())
                 .build();
-    }
-
-    public String getCurrentUsername() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String cod = principal.toString();
-        System.out.println(cod);
-        return cod;
     }
 }

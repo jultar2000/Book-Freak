@@ -1,32 +1,29 @@
 package com.example.Authmodule.controller;
 
-import com.example.Authmodule.service.AuthService;
+import com.example.Authmodule.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1")
 public class CommunicationController {
 
-    private final AuthService authService;
-
-    @Value("${app.security.communicationKey}")
-    private String communicationKey;
+    private final JwtService jwtService;
 
     @Autowired
-    public CommunicationController(AuthService authService) {
-        this.authService = authService;
+    public CommunicationController(JwtService jwtService) {
+        this.jwtService = jwtService;
     }
 
-    @GetMapping("/communication/{key}")
-    public ResponseEntity<String> getCurrentUsername(@PathVariable("key") String key) {
-        if(!key.equals(communicationKey))
-            return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok(authService.getCurrentUsername());
+    @GetMapping("/communication")
+    public ResponseEntity<String> getCurrentUsername(HttpServletRequest request) {
+        String jwt = jwtService.getJwtFromRequest(request);
+        String username = jwtService.extractUsernameFromToken(jwt);
+        return ResponseEntity.ok(username);
     }
 }

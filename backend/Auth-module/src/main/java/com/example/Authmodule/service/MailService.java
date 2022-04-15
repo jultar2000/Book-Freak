@@ -11,11 +11,18 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 @Slf4j
 public class MailService {
 
     private final JavaMailSender mailSender;
+
+    private static final String REGEX_EXPRESSION =
+            "^(?=.{1,64}@)[A-Za-z0-9_-]" +
+            "+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]" +
+            "+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     @Autowired
     public MailService(JavaMailSender mailSender) {
@@ -38,5 +45,11 @@ public class MailService {
             log.error("Exception occurred when sending mail", e);
             throw new EmailException("Exception when sending mail to " + verificationEmail.getToEmail(), e);
         }
+    }
+
+    public boolean validateEmail(String email) {
+        return Pattern.compile(REGEX_EXPRESSION)
+                .matcher(email)
+                .matches();
     }
 }

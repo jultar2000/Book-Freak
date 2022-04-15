@@ -40,6 +40,10 @@ public class CommentService {
     }
 
     public boolean insertComment(String bookId, String username, String text) {
+        if (username == null || username.equals("")) {
+            log.error("Incorrect username!");
+            return false;
+        }
         Comment comment = Comment
                 .builder()
                 .book_oid(convertStringIdToObjectId(bookId))
@@ -51,10 +55,9 @@ public class CommentService {
     }
 
     public boolean deleteComment(String commentId, String username) {
-        if (commentDao
-                .findComment(convertStringIdToObjectId(commentId))
-                .getUsername().equals(username)) {
+        if (!commentDao.findComment(convertStringIdToObjectId(commentId)).getUsername().equals(username)) {
             log.error("Comment {} does not belong to user with username {}", commentId, username);
+            return false;
         }
         return commentDao.deleteComment(convertStringIdToObjectId(commentId));
     }
@@ -65,8 +68,9 @@ public class CommentService {
 
     public boolean updateComment(String commentId, String username, String text) {
         Comment comment = commentDao.findComment(convertStringIdToObjectId(commentId));
-        if (comment.getUsername().equals(username)) {
+        if (!comment.getUsername().equals(username)) {
             log.error("Comment {} does not belong to user with username {}", commentId, username);
+            return false;
         }
         return commentDao.updateComment(convertStringIdToObjectId(commentId), text, comment);
     }
