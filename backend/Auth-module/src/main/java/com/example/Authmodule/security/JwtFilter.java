@@ -38,7 +38,6 @@ public class JwtFilter extends OncePerRequestFilter {
         List<RequestMatcher> ignoredPaths = List.of(
                 new AntPathRequestMatcher("/api/v1/auth/**"),
                 new AntPathRequestMatcher("/v3/api-docs/**"));
-
         return ignoredPaths
                 .stream()
                 .anyMatch(requestMatcher ->
