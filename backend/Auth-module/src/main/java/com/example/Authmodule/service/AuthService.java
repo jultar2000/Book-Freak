@@ -16,8 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.text.MessageFormat;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.UUID;
 
 import static com.example.Authmodule.security.Role.ADMIN;
@@ -67,10 +69,13 @@ public class AuthService {
         } else {
             String token = generateVerificationToken(user);
             authUserDao.insertUser(user);
+            HashMap<String, Object> properties = new HashMap<>();
+            properties.put("username", user.getUsername());
+            properties.put("message", "https://localhost:8443/api/v1/auth/verification/" + token);
             mailService.sendMail(new VerificationEmail(
                     "Activate acccount.",
                     user.getEmail(),
-                    "https://localhost:8443/api/v1/auth/verification/" + token));
+                    properties));
         }
     }
 

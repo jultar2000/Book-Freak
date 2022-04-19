@@ -3,6 +3,8 @@ package com.example.Authmodule.entity;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
+
 @Getter
 @Setter
 @Builder
@@ -14,5 +16,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class VerificationEmail {
     private String subject;
     private String toEmail;
-    private String body;
+    private HashMap<String, Object> properties;
 }

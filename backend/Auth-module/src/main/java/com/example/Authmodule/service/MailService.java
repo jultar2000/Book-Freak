@@ -10,7 +10,12 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 @Service
@@ -19,24 +24,30 @@ public class MailService {
 
     private final JavaMailSender mailSender;
 
+    private final SpringTemplateEngine templateEngine;
+
     private static final String REGEX_EXPRESSION =
             "^(?=.{1,64}@)[A-Za-z0-9_-]" +
-            "+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]" +
-            "+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
+                    "+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]" +
+                    "+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
 
     @Autowired
-    public MailService(JavaMailSender mailSender) {
+    public MailService(JavaMailSender mailSender, SpringTemplateEngine templateEngine) {
         this.mailSender = mailSender;
+        this.templateEngine = templateEngine;
     }
 
     @Async
     void sendMail(VerificationEmail verificationEmail) {
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            Context context = new Context();
+            context.setVariables(verificationEmail.getProperties());
             messageHelper.setFrom("BookFreak@gmail.com");
             messageHelper.setTo(verificationEmail.getToEmail());
             messageHelper.setSubject(verificationEmail.getSubject());
-            messageHelper.setText(verificationEmail.getBody());
+            String html = templateEngine.process("mailTemplate", context);
+            messageHelper.setText(html, true);
         };
         try {
             mailSender.send(messagePreparator);
