@@ -1,13 +1,42 @@
-.btn {
+.small-btn {
     border: none;
     cursor: pointer;
-    border-radius: 500px;
+    border-radius: 20px;
+    padding: 10px 10px;
+    font-weight: 800;
+    font: 20;
+}
+
+.medium-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 10px 40px;
+    font-weight: 800;
+    font: 20;
+}
+
+.large-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
     padding: 20px 40px;
     font-weight: 800;
     font: 20;
 }
 
-/* .btn:hover {
+.large-btn:hover {
     box-shadow: 0 0 2em #6ce65e;
     background-color: #6ce65e;
-} */
+}
+
+.href-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: white;
+    text-decoration: underline;
+    cursor: pointer;
+
+
+}

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import GithubIcon from '../Images/GitHub-Mark-Light-64px.png'
-import logo from '../Images/logo.png'
+import GithubIcon from '../../images/GitHub-Mark-Light-64px.png'
+import logo from '../../images/logo.png'
 import Button from '../Button/Button'
 import './Navbar.css'
 
@@ -25,7 +25,7 @@ function Navbar() {
                     </a>
                 </li>
                 <li>
-                    <Button text="SIGN UP" onClick={navigate} />
+                    <Button type="large-btn" text="SIGN UP" onClick={navigate} />
                 </li>
             </ul>
         </nav>

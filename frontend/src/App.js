@@ -1,9 +1,15 @@
 import './App.css';
 import React from 'react';
-import Navbar from './Components/Navbar/Navbar';
-import StartPage from './Components/StartPage/StartPage'
-import SignPage from './Components/SignPage/SignPage';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import StartPage from './pages/StartPage/StartPage'
+import SignPage from './pages/SignPage/SignPage';
+import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
+
+const Routes = () => useRoutes([
+  {path: '/sign-up', element: <SignPage/>},
+  {path: '/sign-in', element: <SignPage/>},
+  {path: '/', element: <StartPage/>}
+])
 
 function App() {
   return (
@@ -11,12 +17,7 @@ function App() {
       <div className='App'>
         <Router>
           <Navbar />
-          <Routes>
-            <Route exact path='/' element={<StartPage />} />
-          </Routes>
-          <Routes>
-            <Route exact path='/sign-up' element={<SignPage />} />
-          </Routes>
+            <Routes />
         </Router>
       </div>
     </>
