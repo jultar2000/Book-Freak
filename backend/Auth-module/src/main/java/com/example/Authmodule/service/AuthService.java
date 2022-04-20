@@ -62,10 +62,10 @@ public class AuthService {
     public void signup(AuthUser user) {
         if (authUserDao.isUserPresent(user.getUsername())) {
             throw new IllegalArgumentException(
-                    MessageFormat.format("Username '{}' already taken!", user.getUsername()));
+                    MessageFormat.format("Username `{0}` already taken!", user.getUsername()));
         } else if (!mailService.validateEmail(user.getEmail())) {
             throw new IllegalArgumentException(
-                    MessageFormat.format("Email is invalid!", user.getEmail()));
+                    MessageFormat.format("Email `{0}` is invalid!", user.getEmail()));
         } else {
             String token = generateVerificationToken(user);
             authUserDao.insertUser(user);

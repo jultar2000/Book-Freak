@@ -16,7 +16,7 @@ function Navbar() {
             <ul className='nav-list'>
                 <li className='logo'>
                     <img src={logo} width={70} height={70}></img>
-                    <figcaption> Book Freak </figcaption>
+                    <figcaption className='caption'> Book Freak </figcaption>
                 </li>
                 <li className='git-icon'>
                     <a href='https://github.com/jultar2000/BookFreak'>

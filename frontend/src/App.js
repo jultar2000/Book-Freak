@@ -1,8 +1,8 @@
 import './App.css';
 import React from 'react';
 import Navbar from './Components/Navbar/Navbar';
-import MainContent from './Components/MainContent/MainContent'
-import SignUp from './Components/SignUp/SignUp';
+import StartPage from './Components/StartPage/StartPage'
+import SignPage from './Components/SignPage/SignPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -12,10 +12,10 @@ function App() {
         <Router>
           <Navbar />
           <Routes>
-            <Route exact path='/' element={<MainContent />} />
+            <Route exact path='/' element={<StartPage />} />
           </Routes>
           <Routes>
-            <Route exact path='/sign-up' element={<SignUp />} />
+            <Route exact path='/sign-up' element={<SignPage />} />
           </Routes>
         </Router>
       </div>

@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'My Soul', cursive;
+    src: url('https://fonts.googleapis.com/css2?family=My+Soul&display=swap');
+}
+
 .navbar {
     background-color: rgb(7, 80, 52);
     width: 95%;
@@ -26,24 +31,14 @@
     align-items: center;
 }
 
+.caption {
+    font-family: 'Whisper', cursive;
+}
+
 .logo {
     text-decoration: none;
     font-size: 20px;
     font-weight: 600;
     color: white;
     text-align: center;
-}
-
-sign-btn {
-    padding: 20px 40px;
-    border: none;
-    cursor: pointer;
-    border-radius: 500px;
-    font-weight: 800;
-    font: 20px;
-}
-
-sign-btn:hover {
-    box-shadow: 0 0 2em #6ce65e;
-    background-color: #6ce65e;
 }
