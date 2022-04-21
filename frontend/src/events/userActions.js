@@ -28,3 +28,10 @@ export function login(userData) {
         }).catch((err) => console.log(err))
 }
 
+export function getCurrentUser() {
+    axiosInstance
+        .get("/communication")
+        .then((res) => {
+            console.log(res.data);
+        }).catch((err) => console.log(err))
+}

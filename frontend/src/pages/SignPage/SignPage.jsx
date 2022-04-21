@@ -8,11 +8,7 @@ import './SignPage.css'
 function SignPage() {
 
     const [state, setState] = useState(true);
-    let element = state ?
-        <>
-            <label htmlFor="email" >Email: </label>
-            <input className="sign-input" type="email" id="email" placeholder="email@mail.com"></input>
-        </> : null
+    const nav = useNavigate();
 
     const registerHandler = () => {
         const register_data = {
@@ -29,9 +25,9 @@ function SignPage() {
             "password": document.getElementById("password").value,
         };
         login(login_data)
+        nav("/main-page")
     }
 
-    const nav = useNavigate();
     function navigate() {
         state ? nav("/sign-in") : nav("/sign-up")
         setState(!state)
@@ -47,7 +43,11 @@ function SignPage() {
                     <label htmlFor="username" >Username: </label>
                     <input className="sign-input" type="text" id="username" placeholder="username"></input>
 
-                    {element}
+                    {state ?
+                        <>
+                            <label htmlFor="email" >Email: </label>
+                            <input className="sign-input" type="email" id="email" placeholder="email@mail.com"></input>
+                        </> : null}
 
                     <label htmlFor="password" >Password: </label>
                     <input className="sign-input" type="password" id="password" placeholder="···········" autoComplete="off"></input>

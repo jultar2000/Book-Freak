@@ -24,7 +24,7 @@ server:
 app:
   security:
     secretKey: 942P43hf2bnfrepqaskJfsj09fq2JFdeEKAFDMKmfl2FD
-    expirationTime: 600
+    expirationTime: 10
 
 eureka:
   client:

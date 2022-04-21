@@ -1,5 +1,6 @@
 package com.example.Authmodule.configuration;
 
+import com.example.Authmodule.security.JwtAuthEntryPoint;
 import com.example.Authmodule.security.JwtFilter;
 import com.example.Authmodule.service.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailService userDetailService;
 
+    private final JwtAuthEntryPoint unauthorizedHandler;
+
     @Autowired
-    public WebSecurityConfig(JwtFilter jwtFilter, UserDetailService userDetailService) {
+    public WebSecurityConfig(JwtFilter jwtFilter, UserDetailService userDetailService, JwtAuthEntryPoint unauthorizedHandler) {
         this.jwtFilter = jwtFilter;
         this.userDetailService = userDetailService;
+        this.unauthorizedHandler = unauthorizedHandler;
     }
 
     @Override
@@ -42,7 +46,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler);
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
