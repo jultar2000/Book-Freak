@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class UserDao {
             return true;
         } catch (Exception e) {
             String errorMessage = MessageFormat
-                    .format("Could not delete `{}` from 'users' collection: {}.", username, e.getMessage());
+                    .format("Could not delete `{0}` from 'users' collection: {1}.", username, e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
     }
@@ -111,7 +113,38 @@ public class UserDao {
         } catch (MongoWriteException e) {
             String errorMessage =
                     MessageFormat.format(
-                            "Issue caught while trying to update user `{}`: {}",
+                            "Issue caught while trying to update user `{0}`: {1}",
+                            username,
+                            e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
+        return true;
+    }
+    public boolean updateUserImage(String username, InputStream is) {
+        Bson find_query = in("username", username);
+        byte[] byte_stream;
+        try {
+            byte_stream = is.readAllBytes();
+        } catch (IOException ex) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Wrong byte data stream: {0}",
+                            ex.getMessage());
+            throw new IllegalStateException(errorMessage);
+        }
+        Bson update = Updates.set("image", byte_stream);
+        try {
+            UpdateResult updateResult = usersCollection.updateOne(find_query, update);
+            if (updateResult.getModifiedCount() < 1) {
+                log.warn(
+                        "User `{}` was not updated. User might not exist or all fields remain the same.",
+                        username);
+                return false;
+            }
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Issue caught while trying to update user `{0}`: {1}",
                             username,
                             e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);

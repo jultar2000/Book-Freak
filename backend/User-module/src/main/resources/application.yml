@@ -5,6 +5,10 @@ spring:
       database: users_db
   application:
     name: user-module
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 eureka:
   client:

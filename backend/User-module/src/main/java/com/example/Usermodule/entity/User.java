@@ -22,4 +22,6 @@ public class User {
     private String surname;
     private Gender gender;
     private LocalDate birthDate;
+    @ToString.Exclude
+    private byte[] image;
 }

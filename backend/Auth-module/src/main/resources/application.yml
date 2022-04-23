@@ -11,6 +11,10 @@ spring:
     username: ff4cbc0b7b5f17
     password: 9c604a35bfda06
     protocol: smtp
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 server:
   port: 8443
@@ -24,7 +28,7 @@ server:
 app:
   security:
     secretKey: 942P43hf2bnfrepqaskJfsj09fq2JFdeEKAFDMKmfl2FD
-    expirationTime: 10
+    expirationTime: 600
 
 eureka:
   client:
@@ -36,10 +40,11 @@ eureka:
     hostname: localhost
 
 zuul:
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
   host:
     connect-timeout-millis: 600000
     socket-timeout-millis: 600000
-  ignored-services: '*'
+#  ignored-services: '*'
 #  prefix: /api/v1
   routes:
     author-module:

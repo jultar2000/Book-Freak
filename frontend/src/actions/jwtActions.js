@@ -6,7 +6,7 @@ export function refreshToken() {
         "refreshToken": getItemFromLocalStorage("refreshToken"),
         "username": getItemFromLocalStorage("username")
     };
-    axiosInstance.post("/auth/refresh/token", data, {
+    axiosInstance.post("api/v1/auth/refresh/token", data, {
         headers: {
             "Content-Type": "application/json",
         }

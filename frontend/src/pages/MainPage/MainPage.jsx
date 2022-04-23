@@ -1,5 +1,5 @@
 import React from "react";
-import { getCurrentUser } from "../../events/userActions";
+import { getCurrentUser } from "../../actions/userActions";
 
 function MainPage() {
     return(

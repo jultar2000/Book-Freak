@@ -10,14 +10,10 @@ function Navbar() {
 
     const nav = useNavigate();
     const location = useLocation();
-    function navigate() {
-        console.log(location.pathname);
-        nav("/sign-up");
-    }
 
     function checkPathState() {
         let current_path = location.pathname;
-        if (current_path == "/sign-up" || current_path == "/sign-in" || current_path == "/")
+        if (current_path === "/sign-up" || current_path === "/sign-in" || current_path === "/")
             return true
         return false
     }
@@ -37,9 +33,9 @@ function Navbar() {
                 </li>
                 {
                     checkPathState() ?
-                        <li> <Button type="large-btn" text="SIGN UP" onClick={navigate} /> </li> :
+                        <li> <Button type="large-btn" text="SIGN UP" onClick={() => nav('/sign-up')} /> </li> :
                         <li className='user-icon'>
-                            <img src={user_icon} width={75} height={75}></img>
+                            <img src={user_icon} width={75} height={75} onClick={() => nav('/profile')}></img>
                             <figcaption className='caption'> Profile </figcaption>
                         </li>
                 }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Book from '../../images/book.jpg'
 import Button from "../../components/Button/Button";
-import { register, login } from '../../events/userActions'
+import { register, login } from '../../actions/userActions'
 import './SignPage.css'
 
 function SignPage() {
@@ -42,13 +42,12 @@ function SignPage() {
                 <form className="sign-form">
                     <label htmlFor="username" >Username: </label>
                     <input className="sign-input" type="text" id="username" placeholder="username"></input>
-
                     {state ?
                         <>
                             <label htmlFor="email" >Email: </label>
                             <input className="sign-input" type="email" id="email" placeholder="email@mail.com"></input>
-                        </> : null}
-
+                        </> : null
+                    }
                     <label htmlFor="password" >Password: </label>
                     <input className="sign-input" type="password" id="password" placeholder="···········" autoComplete="off"></input>
                 </form>

@@ -1,14 +1,18 @@
 package com.example.Usermodule.controller;
 
+import com.example.Usermodule.dto.GetUserDto;
 import com.example.Usermodule.dto.GetUsersDto;
 import com.example.Usermodule.dto.UpdateUserDto;
 import com.example.Usermodule.entity.User;
 import com.example.Usermodule.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,12 +31,12 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<User> getUser(@PathVariable("username") String username) {
+    public ResponseEntity<GetUserDto> getUser(@PathVariable("username") String username) {
         User user = userService.findUser(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(mapper.map(user, GetUserDto.class));
     }
 
     @GetMapping("/all")
@@ -47,10 +51,28 @@ public class UserController {
         return ResponseEntity.ok(commentsDto);
     }
 
+    @GetMapping(value = "/{username}/image", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getUserImage(@PathVariable("username") String username) {
+        User user = userService.findUser(username);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.getImage());
+    }
+
     @PutMapping("/{username}")
     public ResponseEntity<Void> updateUser(@PathVariable("username") String username,
                                            @RequestBody UpdateUserDto request) {
         if (!userService.updateUserFields(username, request)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping(value = "/{username}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Void> updateUserImage(@PathVariable("username") String username,
+                                                @RequestBody MultipartFile image) throws IOException {
+        if (!userService.updateImage(username, image.getInputStream())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();

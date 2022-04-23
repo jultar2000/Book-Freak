@@ -43,3 +43,7 @@
     color: white;
     text-align: center;
 }
+
+.user-icon {
+    cursor: pointer;
+}

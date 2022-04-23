@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.List;
 
@@ -51,5 +52,10 @@ public class UserService {
                 request.getSurname(),
                 request.getGender(),
                 request.getBirthDate());
+    }
+
+    public boolean updateImage(String username, InputStream is){
+        validateUsername(username);
+        return userDao.updateUserImage(username, is);
     }
 }

@@ -1,15 +1,16 @@
 import axios from "axios";
 import { getItemFromLocalStorage } from "./helpers";
-import { refreshToken } from '../events/jwtActions'
+import { refreshToken } from '../actions/jwtActions'
 
 const axiosInstance = axios.create({
-  baseURL: "https://localhost:8443/api/v1"
+  baseURL: "https://localhost:8443"
 });
 
 axiosInstance.interceptors.request.use(req => {
   if (!req.headers.Authorization) {
     req.headers.Authorization = `Bearer ${getItemFromLocalStorage("authenticationToken")}`
   }
+  console.log(req.headers)
   return req;
 },
   error => {
@@ -25,7 +26,6 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      console.log('elo')
       refreshToken();
       return axiosInstance(originalRequest);
     }

@@ -4,7 +4,7 @@ import { setItemToLocalStorage } from "../utils/helpers";
 export function register(userData) {
     try {
         axiosInstance
-            .post("/auth/signup", userData, {
+            .post("api/v1/auth/signup", userData, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -16,7 +16,7 @@ export function register(userData) {
 
 export function login(userData) {
     axiosInstance
-        .post("/auth/login", userData, {
+        .post("api/v1/auth/login", userData, {
             headers: {
                 "Content-Type": "application/json"
             }
@@ -28,10 +28,33 @@ export function login(userData) {
         }).catch((err) => console.log(err))
 }
 
+export function getUserImage() {
+    let username = getCurrentUser()
+    axiosInstance
+        .get("/user-module/api/v1/users/" + "username" + "/image")
+        .then((res) => {
+          
+        }).catch((err) => console.log(err))
+}
+
+export function getUserData() {
+    let username = getCurrentUser()
+    axiosInstance
+    .get("/user-module/api/v1/users/" + "username", {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then((res) => {
+        
+
+    }).catch((err) => console.log(err))
+}
+
 export function getCurrentUser() {
     axiosInstance
-        .get("/communication")
+        .get("api/v1/communication")
         .then((res) => {
-            console.log(res.data);
+            
         }).catch((err) => console.log(err))
 }
