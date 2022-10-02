@@ -7,6 +7,7 @@ import com.example.Authmodule.dto.RefreshTokenRequest;
 import com.example.Authmodule.entity.AuthUser;
 import com.example.Authmodule.entity.VerificationEmail;
 import com.example.Authmodule.entity.VerificationToken;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.HashMap;
@@ -26,6 +26,7 @@ import static com.example.Authmodule.security.Role.ADMIN;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class AuthService {
 
     private final VerificationTokenService verificationTokenService;
@@ -42,23 +43,6 @@ public class AuthService {
 
     private final JwtService jwtService;
 
-    @Autowired
-    public AuthService(VerificationTokenService verificationTokenService,
-                       AuthenticationManager authenticationManager,
-                       RefreshTokenService refreshTokenService,
-                       PasswordEncoder passwordEncoder,
-                       MailService mailService,
-                       AuthUserDao authUserDao,
-                       JwtService jwtService) {
-        this.verificationTokenService = verificationTokenService;
-        this.authenticationManager = authenticationManager;
-        this.refreshTokenService = refreshTokenService;
-        this.passwordEncoder = passwordEncoder;
-        this.mailService = mailService;
-        this.authUserDao = authUserDao;
-        this.jwtService = jwtService;
-    }
-
     public void signup(AuthUser user) {
         if (authUserDao.isUserPresent(user.getUsername())) {
             throw new IllegalArgumentException(
@@ -73,7 +57,7 @@ public class AuthService {
             properties.put("username", user.getUsername());
             properties.put("message", "https://localhost:8443/api/v1/auth/verification/" + token);
             mailService.sendMail(new VerificationEmail(
-                    "Activate acccount.",
+                    "Activate account.",
                     user.getEmail(),
                     properties));
         }

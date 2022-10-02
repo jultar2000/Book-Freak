@@ -13,7 +13,9 @@ import static com.example.Authmodule.security.Permission.*;
 @Getter
 @AllArgsConstructor
 public enum Role {
+
     USER(Sets.newHashSet(USER_WRITE, USER_READ)),
+
     ADMIN(Sets.newHashSet(USER_WRITE, USER_READ, ADMIN_READ, ADMIN_WRITE));
 
     private final Set<Permission> permissions;

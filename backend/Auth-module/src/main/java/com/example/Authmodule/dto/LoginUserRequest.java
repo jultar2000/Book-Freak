@@ -9,6 +9,8 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class LoginUserRequest {
+
     private String username;
+
     private String password;
 }

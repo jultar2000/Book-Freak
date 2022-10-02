@@ -4,6 +4,7 @@ package com.example.Authmodule.service;
 import com.example.Authmodule.security.JwtSecretKey;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,14 +17,10 @@ import java.util.Date;
 import java.util.function.Function;
 
 @Service
+@AllArgsConstructor
 public class JwtService {
 
     private final JwtSecretKey jwtSecretKey;
-
-    @Autowired
-    public JwtService(JwtSecretKey jwtSecretKey) {
-        this.jwtSecretKey = jwtSecretKey;
-    }
 
     public String generateToken(Authentication authentication) {
         var principal =

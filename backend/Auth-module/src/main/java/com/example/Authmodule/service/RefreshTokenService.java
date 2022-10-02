@@ -3,6 +3,7 @@ package com.example.Authmodule.service;
 import com.example.Authmodule.dao.RefreshTokenDao;
 import com.example.Authmodule.entity.RefreshToken;
 import com.example.Authmodule.exceptions.InvalidTokenException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +12,10 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class RefreshTokenService {
 
     private final RefreshTokenDao refreshTokenDao;
-
-    @Autowired
-    public RefreshTokenService(RefreshTokenDao refreshTokenDao) {
-        this.refreshTokenDao = refreshTokenDao;
-    }
 
     public RefreshToken generateRefreshToken() {
         RefreshToken refreshToken = new RefreshToken();

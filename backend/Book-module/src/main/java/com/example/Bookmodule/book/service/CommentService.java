@@ -2,6 +2,7 @@ package com.example.Bookmodule.book.service;
 
 import com.example.Bookmodule.book.dao.CommentDao;
 import com.example.Bookmodule.book.entity.Comment;
+import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,16 +14,18 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CommentService {
 
     private final CommentDao commentDao;
+
     private final Logger log;
 
-    @Autowired
-    public CommentService(CommentDao commentDao) {
-        log = LoggerFactory.getLogger(this.getClass());
-        this.commentDao = commentDao;
-    }
+//    @Autowired
+//    public CommentService(CommentDao commentDao) {
+//        log = LoggerFactory.getLogger(this.getClass());
+//        this.commentDao = commentDao;
+//    }
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {

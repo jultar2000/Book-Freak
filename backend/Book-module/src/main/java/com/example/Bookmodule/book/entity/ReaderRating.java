@@ -11,8 +11,10 @@ import java.util.Date;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
-public class ViewerRating {
+public class ReaderRating {
     private int numReviews;
+
     private double rating;
+
     private Date lastUpdated;
 }

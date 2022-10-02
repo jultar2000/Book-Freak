@@ -2,6 +2,7 @@ package com.example.Authmodule.service;
 
 import com.example.Authmodule.entity.VerificationEmail;
 import com.example.Authmodule.exceptions.EmailException;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -17,6 +18,7 @@ import java.util.regex.Pattern;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class MailService {
 
     private final JavaMailSender mailSender;
@@ -27,12 +29,6 @@ public class MailService {
             "^(?=.{1,64}@)[A-Za-z0-9_-]" +
                     "+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]" +
                     "+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
-
-    @Autowired
-    public MailService(JavaMailSender mailSender, SpringTemplateEngine templateEngine) {
-        this.mailSender = mailSender;
-        this.templateEngine = templateEngine;
-    }
 
     @Async
     void sendMail(VerificationEmail verificationEmail) {

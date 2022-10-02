@@ -9,6 +9,8 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class RefreshTokenRequest {
+
     private String refreshToken;
+
     private String username;
 }

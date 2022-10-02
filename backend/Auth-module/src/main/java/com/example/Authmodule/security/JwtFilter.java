@@ -3,6 +3,7 @@ package com.example.Authmodule.security;
 import com.example.Authmodule.service.JwtService;
 import com.example.Authmodule.service.UserDetailService;
 
+import lombok.AllArgsConstructor;
 import org.apache.http.HttpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,17 +23,13 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
     private final UserDetailService userDetailService;
 
-    @Autowired
-    public JwtFilter(JwtService jwtService, UserDetailService userDetailService) {
-        this.jwtService = jwtService;
-        this.userDetailService = userDetailService;
-    }
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         List<RequestMatcher> ignoredPaths = List.of(
@@ -43,6 +40,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 .anyMatch(requestMatcher ->
                         requestMatcher.matches(request));
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,

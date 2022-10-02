@@ -10,7 +10,6 @@ axiosInstance.interceptors.request.use(req => {
   if (!req.headers.Authorization) {
     req.headers.Authorization = `Bearer ${getItemFromLocalStorage("authenticationToken")}`
   }
-  console.log(req.headers)
   return req;
 },
   error => {

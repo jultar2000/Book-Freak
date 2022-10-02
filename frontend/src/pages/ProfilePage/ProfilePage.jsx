@@ -6,7 +6,11 @@ function ProfilePage() {
     return ( 
             <div className="main-container">
                 <div className="left-container">
-                    <button onClick={() => console.log(getUserImage())}></button>
+                    <form className="basic-data-form">
+                        <input class="user-image" name="user-image" type="file"> </input>
+                        
+                    </form>
+
                 </div>
                 <div className="right-container">
 
@@ -14,4 +18,5 @@ function ProfilePage() {
             </div>    
     );
 }
- export default ProfilePage
+
+export default ProfilePage

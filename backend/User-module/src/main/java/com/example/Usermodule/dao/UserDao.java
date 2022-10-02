@@ -76,50 +76,35 @@ public class UserDao {
 
     public List<User> findAllUsers() {
         List<User> users = new ArrayList<>();
-        for (User user : usersCollection.find()) {
-            users.add(user);
-        }
+        usersCollection
+                .find()
+                .into(users);
         return users;
     }
 
     public boolean updateUserFields(String username,
-                                   String name,
-                                   String surname,
-                                   String gender,
-                                   String birthDate) {
+                                    String name,
+                                    String surname,
+                                    String gender,
+                                    String birthDate) {
         Bson find_query = in("username", username);
         List<Bson> updatesList = new ArrayList<>();
-        if(name != null){
+        if (name != null) {
             updatesList.add(Updates.set("name", name));
         }
-        if(surname != null){
+        if (surname != null) {
             updatesList.add(Updates.set("surname", surname));
         }
-        if(gender != null){
+        if (gender != null) {
             updatesList.add(Updates.set("gender", gender));
         }
-        if(birthDate != null){
+        if (birthDate != null) {
             updatesList.add(Updates.set("birthDate", LocalDate.parse(birthDate)));
         }
         Bson update = Updates.combine(updatesList);
-        try {
-            UpdateResult updateResult = usersCollection.updateOne(find_query, update);
-            if (updateResult.getModifiedCount() < 1) {
-                log.warn(
-                        "User `{}` was not updated. User might not exist or all fields remain the same.",
-                        username);
-                return false;
-            }
-        } catch (MongoWriteException e) {
-            String errorMessage =
-                    MessageFormat.format(
-                            "Issue caught while trying to update user `{0}`: {1}",
-                            username,
-                            e.getMessage());
-            throw new IncorrectDaoOperation(errorMessage);
-        }
-        return true;
+        return performUpdate(username, find_query, update);
     }
+
     public boolean updateUserImage(String username, InputStream is) {
         Bson find_query = in("username", username);
         byte[] byte_stream;
@@ -133,6 +118,10 @@ public class UserDao {
             throw new IllegalStateException(errorMessage);
         }
         Bson update = Updates.set("image", byte_stream);
+        return performUpdate(username, find_query, update);
+    }
+
+    private boolean performUpdate(String username, Bson find_query, Bson update) {
         try {
             UpdateResult updateResult = usersCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {

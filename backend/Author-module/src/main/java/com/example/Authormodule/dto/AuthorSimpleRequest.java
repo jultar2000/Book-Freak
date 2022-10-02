@@ -5,7 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AuthorNameSurnameRequest {
+public class AuthorSimpleRequest {
+
     public String name;
+
     public String surname;
 }

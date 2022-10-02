@@ -3,7 +3,8 @@ package com.example.Bookmodule.book.service;
 import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.book.dao.BookDao;
 import com.example.Bookmodule.book.entity.Book;
-import com.example.Bookmodule.book.entity.ViewerRating;
+import com.example.Bookmodule.book.entity.ReaderRating;
+import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,17 +16,20 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class BookService {
 
     private final Logger log;
+
     private final BookDao bookDao;
+
     private final static int NUMBER_OF_BOOKS_RETURNED = 10;
 
-    @Autowired
-    public BookService(BookDao bookDao) {
-        log = LoggerFactory.getLogger(this.getClass());
-        this.bookDao = bookDao;
-    }
+//    @Autowired
+//    public BookService(BookDao bookDao) {
+//        log = LoggerFactory.getLogger(this.getClass());
+//        this.bookDao = bookDao;
+//    }
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -39,13 +43,13 @@ public class BookService {
     }
 
     public boolean insertBook(Book book, Author author) {
-        ViewerRating viewerRating = ViewerRating.builder()
+        ReaderRating readerRating = ReaderRating.builder()
                 .numReviews(0)
                 .rating(0)
                 .lastUpdated(new Date())
                 .build();
         book.setAuthor(author);
-        book.setViewerRating(viewerRating);
+        book.setViewerRating(readerRating);
         return bookDao.insertBook(book);
     }
 
@@ -84,12 +88,12 @@ public class BookService {
             log.warn("Wrong rating number!");
             return false;
         }
-        ViewerRating viewerRating = ViewerRating.builder()
+        ReaderRating readerRating = ReaderRating.builder()
                 .numReviews(new_reviews_num)
                 .rating((book.getViewerRating().getRating() + rating) / new_reviews_num)
                 .lastUpdated(new Date())
                 .build();
-        return bookDao.updateRating(convertStringIdToObjectId(bookId), viewerRating);
+        return bookDao.updateRating(convertStringIdToObjectId(bookId), readerRating);
     }
 
     public boolean updateBook(String bookId,

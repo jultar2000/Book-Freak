@@ -9,7 +9,10 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 public class RegisterUserRequest {
+
     private String username;
+
     private String password;
+
     private String email;
 }

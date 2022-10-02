@@ -2,6 +2,7 @@ package com.example.Authormodule.service;
 
 import com.example.Authormodule.dao.AuthorDao;
 import com.example.Authormodule.entity.Author;
+import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,16 +13,17 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AuthorService {
 
     private final AuthorDao authorDao;
     private final Logger log;
 
-    @Autowired
-    public AuthorService(AuthorDao authorDao) {
-        this.authorDao = authorDao;
-        log = LoggerFactory.getLogger(this.getClass());
-    }
+//    @Autowired
+//    public AuthorService(AuthorDao authorDao) {
+//        this.authorDao = authorDao;
+//        log = LoggerFactory.getLogger(this.getClass());
+//    }
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -51,8 +53,7 @@ public class AuthorService {
     }
 
     public boolean createAuthor(Author author) {
-        boolean result = authorDao.insertAuthor(author);
-        return result;
+        return authorDao.insertAuthor(author);
     }
 
     public boolean deleteAuthor(String id) {

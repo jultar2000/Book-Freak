@@ -11,8 +11,12 @@ import java.time.Instant;
 @ToString
 @EqualsAndHashCode
 public class AuthUserResponse {
+
     private String authenticationToken;
+
     private String refreshToken;
+
     private Instant expiresAt;
+
     private String username;
 }

@@ -1,6 +1,6 @@
 package com.example.Bookmodule.book.dto;
 
-import com.example.Bookmodule.book.entity.ViewerRating;
+import com.example.Bookmodule.book.entity.ReaderRating;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +8,10 @@ import lombok.Setter;
 @Getter
 public class UpdateBookDto {
     private int numberOfPages;
+
     private String description;
+
     private String genre;
-    private ViewerRating viewerRating;
+
+    private ReaderRating viewerRating;
 }

@@ -1,10 +1,10 @@
 package com.example.Usermodule.controller;
 
 import com.example.Usermodule.dto.GetUserDto;
-import com.example.Usermodule.dto.GetUsersDto;
 import com.example.Usermodule.dto.UpdateUserDto;
 import com.example.Usermodule.entity.User;
 import com.example.Usermodule.service.UserService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,17 +18,12 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     private final ModelMapper mapper;
-
-    @Autowired
-    public UserController(UserService userService, ModelMapper mapper) {
-        this.userService = userService;
-        this.mapper = mapper;
-    }
 
     @GetMapping("/{username}")
     public ResponseEntity<GetUserDto> getUser(@PathVariable("username") String username) {
@@ -40,13 +35,13 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GetUsersDto>> getUsers() {
-        List<GetUsersDto> commentsDto =
+    public ResponseEntity<List<GetUserDto>> getUsers() {
+        List<GetUserDto> commentsDto =
                 userService
                         .findAllUsers()
                         .stream()
                         .map(comment ->
-                                mapper.map(comment, GetUsersDto.class))
+                                mapper.map(comment, GetUserDto.class))
                         .collect(Collectors.toList());
         return ResponseEntity.ok(commentsDto);
     }

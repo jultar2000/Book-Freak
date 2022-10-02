@@ -2,9 +2,7 @@ package com.example.Bookmodule.book.dao;
 
 import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.book.entity.Book;
-import com.example.Bookmodule.book.entity.Comment;
-import com.example.Bookmodule.book.entity.Genre;
-import com.example.Bookmodule.book.entity.ViewerRating;
+import com.example.Bookmodule.book.entity.ReaderRating;
 import com.example.Bookmodule.exceptions.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
@@ -220,23 +218,7 @@ public class BookDao {
             updatesList.add(Updates.set("genre", genre));
         }
         Bson update = Updates.combine(updatesList);
-        try {
-            UpdateResult updateResult = booksCollection.updateOne(find_query, update);
-            if (updateResult.getModifiedCount() < 1) {
-                log.warn(
-                        "Book `{}` was not updated. Some field might not exist.",
-                        bookId);
-                return false;
-            }
-        } catch (MongoWriteException e) {
-            String errorMessage =
-                    MessageFormat.format(
-                            "Issue caught while trying to update book `{}`: {}",
-                            bookId,
-                            e.getMessage());
-            throw new IncorrectDaoOperation(errorMessage);
-        }
-        return true;
+        return performUpdate(bookId, find_query, update);
     }
 
     /**
@@ -246,9 +228,13 @@ public class BookDao {
      * @param rating - viewer rating object to be updated.
      * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
      */
-    public boolean updateRating(ObjectId bookId, ViewerRating rating) {
+    public boolean updateRating(ObjectId bookId, ReaderRating rating) {
         Bson find_query = Filters.in("_id", bookId);
         Bson update = Updates.set("viewerRating", rating);
+        return performUpdate(bookId, find_query, update);
+    }
+
+    private boolean performUpdate(ObjectId bookId, Bson find_query, Bson update) {
         try {
             UpdateResult updateResult = booksCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {

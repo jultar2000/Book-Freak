@@ -20,11 +20,18 @@ public class Book {
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
+
     private int year;
-    private int numberOfPages;
+
     private String title;
-    private String description;
+
     private Genre genre;
+
     private Author author;
-    private ViewerRating viewerRating;
+
+    private String description;
+
+    private int numberOfPages;
+
+    private ReaderRating viewerRating;
 }

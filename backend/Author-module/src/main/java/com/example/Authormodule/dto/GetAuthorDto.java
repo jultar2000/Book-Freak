@@ -8,11 +8,17 @@ import java.time.LocalDate;
 
 @Setter
 @Getter
-public class GetAuthorsDto {
+public class GetAuthorDto {
+
     private String oid;
+
     private String name;
+
     private String surname;
+
     private String nationality;
+
     private Gender gender;
+
     private LocalDate birthDate;
 }

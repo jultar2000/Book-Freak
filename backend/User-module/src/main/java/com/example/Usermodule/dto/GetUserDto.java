@@ -9,10 +9,16 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class GetUserDto {
+
     private String username;
+
     private String email;
+
     private String name;
+
     private String surname;
+
     private Gender gender;
+
     private LocalDate birthDate;
 }

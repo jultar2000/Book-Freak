@@ -7,6 +7,7 @@ import com.example.Authmodule.dto.RegisterUserRequest;
 import com.example.Authmodule.entity.AuthUser;
 import com.example.Authmodule.service.AuthService;
 import com.example.Authmodule.service.RefreshTokenService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@AllArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
@@ -21,15 +23,6 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     private final ModelMapper mapper;
-
-    @Autowired
-    public AuthController(AuthService authService,
-                          RefreshTokenService refreshTokenService,
-                          ModelMapper mapper) {
-        this.authService = authService;
-        this.refreshTokenService = refreshTokenService;
-        this.mapper = mapper;
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterUserRequest registerUserRequest) {

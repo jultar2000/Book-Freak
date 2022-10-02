@@ -16,12 +16,19 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Document
 public class User {
+
     private String username;
+
     private String email;
+
     private String name;
+
     private String surname;
+
     private Gender gender;
+
     private LocalDate birthDate;
+
     @ToString.Exclude
     private byte[] image;
 }

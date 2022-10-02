@@ -6,6 +6,7 @@ import com.example.Bookmodule.book.dto.*;
 import com.example.Bookmodule.book.entity.Book;
 import com.example.Bookmodule.book.service.BookService;
 import com.example.Bookmodule.book.service.CommentService;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,23 +17,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/books")
+@AllArgsConstructor
 public class BookController {
 
     private final BookService bookService;
-    private final CommentService commentService;
-    private final AuthorService authorService;
-    private final ModelMapper mapper;
 
-    @Autowired
-    public BookController(BookService bookService,
-                          CommentService commentService,
-                          AuthorService authorService,
-                          ModelMapper mapper) {
-        this.bookService = bookService;
-        this.commentService = commentService;
-        this.authorService = authorService;
-        this.mapper = mapper;
-    }
+    private final CommentService commentService;
+
+    private final AuthorService authorService;
+
+    private final ModelMapper mapper;
 
     @GetMapping("/all")
     public ResponseEntity<List<GetBookDto>> getAllBooks() {
@@ -46,7 +40,7 @@ public class BookController {
         return ResponseEntity.ok(booksDto);
     }
 
-    @GetMapping("/id/{bookId}")
+    @GetMapping("/{bookId}")
     public ResponseEntity<GetBookDto> getBookById(@PathVariable("bookId") String bookId) {
         Book book = bookService.findBook(bookId);
         return ResponseEntity.ok(mapper.map(book, GetBookDto.class));
@@ -88,7 +82,7 @@ public class BookController {
         return ResponseEntity.ok(booksDto);
     }
 
-    @GetMapping("/authors/id/{authorId}")
+    @GetMapping("/authors/{authorId}")
     public ResponseEntity<List<GetBookDto>> getBooksByAuthor(@PathVariable("authorId") String authorId) {
         Author author = authorService.findAuthor(authorId);
         if (author == null) {
@@ -104,7 +98,7 @@ public class BookController {
         return ResponseEntity.ok(booksDto);
     }
 
-    @PostMapping("/authors/id/{authorId}")
+    @PostMapping("/authors/{authorId}")
     public ResponseEntity<Void> addBook(@PathVariable("authorId") String authorId,
                                         @RequestBody CreateBookDto request) {
         Author author = authorService.findAuthor(authorId);
@@ -117,7 +111,7 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/id/{bookId}/rating")
+    @PutMapping("/{bookId}/rating")
     public ResponseEntity<Void> updateRating(@PathVariable("bookId") String bookId,
                                              @RequestBody IntParameterRequest request) {
         if (!bookService.updateRating(bookId, request.getParameter())) {
@@ -126,7 +120,7 @@ public class BookController {
         return ResponseEntity.accepted().build();
     }
 
-    @PutMapping("/id/{bookId}")
+    @PutMapping("/{bookId}")
     public ResponseEntity<Void> updateBook(@PathVariable("bookId") String bookId,
                                            @RequestBody UpdateBookDto request) {
         if (!bookService.updateBook(
@@ -139,7 +133,7 @@ public class BookController {
         return ResponseEntity.accepted().build();
     }
 
-    @DeleteMapping("/id/{bookId}")
+    @DeleteMapping("/{bookId}")
     public ResponseEntity<Void> deleteBook(@PathVariable("bookId") String bookId) {
         if (!bookService.deleteBook(bookId)) {
             return ResponseEntity.notFound().build();
@@ -148,7 +142,7 @@ public class BookController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping("/id/{bookId}/comments")
+    @GetMapping("/{bookId}/comments")
     public ResponseEntity<List<GetCommentsDto>> getComments(@PathVariable("bookId") String bookId) {
         if (bookService.findBook(bookId) == null) {
             return ResponseEntity.notFound().build();
@@ -166,7 +160,7 @@ public class BookController {
     /*
     >>TODO figure out a  better way to get a principal
      */
-    @PostMapping("/id/{bookId}/comments")
+    @PostMapping("/{bookId}/comments")
     public ResponseEntity<Void> addComment(@PathVariable("bookId") String bookId,
                                            @RequestBody CommentDto request) {
         if (bookService.findBook(bookId) == null) {
@@ -178,7 +172,7 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/comments/id/{commentId}")
+    @PutMapping("/comments/{commentId}")
     public ResponseEntity<Void> updateComment(@PathVariable("commentId") String commentId,
                                               @RequestBody CommentDto request) {
         if (!commentService.updateComment(commentId, request.getUsername(), request.getText())) {
@@ -187,7 +181,7 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/comments/id/{commentId}")
+    @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId,
                                               @RequestBody CommentDto request) {
         if (!commentService.deleteComment(commentId, request.getUsername())) {

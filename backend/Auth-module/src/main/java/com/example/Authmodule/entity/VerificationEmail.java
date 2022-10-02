@@ -14,7 +14,10 @@ import java.util.HashMap;
 @EqualsAndHashCode
 @Document
 public class VerificationEmail {
+
     private String subject;
+
     private String toEmail;
+
     private HashMap<String, Object> properties;
 }

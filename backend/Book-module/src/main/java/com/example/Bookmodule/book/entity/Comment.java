@@ -22,9 +22,14 @@ public class Comment {
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
+
     private ObjectId book_oid;
+
     private String username;
+
     private String text;
+
     private String email;
+
     private Date date;
 }

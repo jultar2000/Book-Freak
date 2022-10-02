@@ -1,6 +1,7 @@
 package com.example.Authmodule.controller;
 
 import com.example.Authmodule.service.JwtService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,14 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1")
+@AllArgsConstructor
 public class CommunicationController {
 
     private final JwtService jwtService;
-
-    @Autowired
-    public CommunicationController(JwtService jwtService) {
-        this.jwtService = jwtService;
-    }
 
     @GetMapping("/communication")
     public ResponseEntity<String> getCurrentUsername(HttpServletRequest request) {
