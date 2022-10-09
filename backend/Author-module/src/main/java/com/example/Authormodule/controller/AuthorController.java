@@ -4,11 +4,10 @@ import com.example.Authormodule.dto.CreateAuthorDto;
 import com.example.Authormodule.dto.AuthorSimpleRequest;
 import com.example.Authormodule.dto.GetAuthorDto;
 import com.example.Authormodule.entity.Author;
-import com.example.Authormodule.event.EventClient;
+import com.example.Authormodule.event.BookModuleEventClient;
 import com.example.Authormodule.service.AuthorService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class AuthorController {
 
     private final ModelMapper mapper;
 
-    private final EventClient eventClient;
+    private final BookModuleEventClient bookModuleEventClient;
 
     @GetMapping("/all")
     public ResponseEntity<List<GetAuthorDto>> getAllAuthors() {
@@ -85,7 +84,7 @@ public class AuthorController {
         if (!authorService.createAuthor(author)) {
             return ResponseEntity.badRequest().build();
         }
-        eventClient.insertAuthor(author);
+        bookModuleEventClient.insertAuthor(author.getOid());
         return ResponseEntity.ok().build();
     }
 
@@ -103,7 +102,7 @@ public class AuthorController {
         if (!authorService.deleteAuthor(authorId)) {
             return ResponseEntity.notFound().build();
         }
-        eventClient.deleteAuthor(authorId);
+        bookModuleEventClient.deleteAuthor(authorId);
         return ResponseEntity.accepted().build();
     }
 }

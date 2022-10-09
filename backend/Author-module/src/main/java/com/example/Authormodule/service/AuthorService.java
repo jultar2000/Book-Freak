@@ -3,6 +3,7 @@ package com.example.Authormodule.service;
 import com.example.Authormodule.dao.AuthorDao;
 import com.example.Authormodule.entity.Author;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,16 +15,10 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthorService {
 
     private final AuthorDao authorDao;
-    private final Logger log;
-
-//    @Autowired
-//    public AuthorService(AuthorDao authorDao) {
-//        this.authorDao = authorDao;
-//        log = LoggerFactory.getLogger(this.getClass());
-//    }
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {

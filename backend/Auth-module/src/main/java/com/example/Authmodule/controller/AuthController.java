@@ -9,7 +9,6 @@ import com.example.Authmodule.service.AuthService;
 import com.example.Authmodule.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +25,8 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody RegisterUserRequest registerUserRequest) {
-        authService.signup(mapper.map(registerUserRequest, AuthUser.class));
+        AuthUser authUser = mapper.map(registerUserRequest, AuthUser.class);
+        authService.signup(authUser);
         return ResponseEntity.ok("Registration successful");
     }
 

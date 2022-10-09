@@ -4,19 +4,18 @@ import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.author.service.AuthorService;
 import com.example.Bookmodule.book.dto.*;
 import com.example.Bookmodule.book.entity.Book;
+import com.example.Bookmodule.book.event.OrderModuleEventClient;
 import com.example.Bookmodule.book.service.BookService;
 import com.example.Bookmodule.book.service.CommentService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/books")
+@RequestMapping("/api/v1/books")
 @AllArgsConstructor
 public class BookController {
 
@@ -28,16 +27,11 @@ public class BookController {
 
     private final ModelMapper mapper;
 
+    private final OrderModuleEventClient orderModuleEventClient;
+
     @GetMapping("/all")
     public ResponseEntity<List<GetBookDto>> getAllBooks() {
-        List<GetBookDto> booksDto =
-                bookService
-                        .findAllBooks()
-                        .stream()
-                        .map(book ->
-                                mapper.map(book, GetBookDto.class))
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(booksDto);
+        return ResponseEntity.ok(bookService.findAllBooks());
     }
 
     @GetMapping("/{bookId}")
@@ -48,38 +42,17 @@ public class BookController {
 
     @GetMapping("/keyword/{keyword}")
     public ResponseEntity<List<GetBookDto>> getBooksByKeyword(@PathVariable("keyword") String keyword) {
-        List<GetBookDto> booksDto =
-                bookService
-                        .findBooksByKeyword(keyword)
-                        .stream()
-                        .map(book ->
-                                mapper.map(book, GetBookDto.class))
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(booksDto);
+        return ResponseEntity.ok(bookService.findBooksByKeyword(keyword));
     }
 
     @GetMapping("/genre/{genre}")
     public ResponseEntity<List<GetBookDto>> getBooksByGenre(@PathVariable("genre") String genre) {
-        List<GetBookDto> booksDto =
-                bookService
-                        .findBooksByGenre(genre)
-                        .stream()
-                        .map(book ->
-                                mapper.map(book, GetBookDto.class))
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(booksDto);
+        return ResponseEntity.ok(bookService.findBooksByGenre(genre));
     }
 
     @GetMapping("/rating")
     public ResponseEntity<List<GetBookDto>> getBooksByRating() {
-        List<GetBookDto> booksDto =
-                bookService
-                        .findBooksByRating()
-                        .stream()
-                        .map(book ->
-                                mapper.map(book, GetBookDto.class))
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(booksDto);
+        return ResponseEntity.ok(bookService.findBooksByRating());
     }
 
     @GetMapping("/authors/{authorId}")
@@ -88,14 +61,7 @@ public class BookController {
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
-        List<GetBookDto> booksDto =
-                bookService
-                        .findBooksByAuthor(author)
-                        .stream()
-                        .map(book ->
-                                mapper.map(book, GetBookDto.class))
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(booksDto);
+        return ResponseEntity.ok(bookService.findBooksByAuthor(author));
     }
 
     @PostMapping("/authors/{authorId}")
@@ -105,9 +71,11 @@ public class BookController {
         if (author == null) {
             return ResponseEntity.notFound().build();
         }
-        if (!bookService.insertBook(mapper.map(request, Book.class), author)) {
+        Book book = mapper.map(request, Book.class);
+        if (!bookService.insertBook(book, author)) {
             return ResponseEntity.badRequest().build();
         }
+        orderModuleEventClient.insertBook(book.getOid());
         return ResponseEntity.ok().build();
     }
 
@@ -138,6 +106,7 @@ public class BookController {
         if (!bookService.deleteBook(bookId)) {
             return ResponseEntity.notFound().build();
         }
+        orderModuleEventClient.deleteBook(bookId);
         commentService.deleteAllBookComments(bookId);
         return ResponseEntity.accepted().build();
     }
@@ -147,14 +116,7 @@ public class BookController {
         if (bookService.findBook(bookId) == null) {
             return ResponseEntity.notFound().build();
         }
-        List<GetCommentsDto> commentsDto =
-                commentService
-                        .findBookComments(bookId)
-                        .stream()
-                        .map(comment ->
-                                mapper.map(comment, GetCommentsDto.class))
-                        .collect(Collectors.toList());
-        return ResponseEntity.ok(commentsDto);
+        return ResponseEntity.ok(commentService.findBookComments(bookId));
     }
 
     /*

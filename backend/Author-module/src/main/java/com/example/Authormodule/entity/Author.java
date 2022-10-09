@@ -21,10 +21,16 @@ public class Author {
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
+
     private String name;
+
     private String surname;
+
     private String nationality;
+
     private Gender gender;
+
     private LocalDate birthDate;
+
     private boolean alive;
 }

@@ -28,7 +28,7 @@ server:
 app:
   security:
     secretKey: 942P43hf2bnfrepqaskJfsj09fq2JFdeEKAFDMKmfl2FD
-    expirationTime: 600
+    expirationTime: 6000
 
 eureka:
   client:
@@ -59,6 +59,8 @@ zuul:
       url: http://localhost:8083
 #      path: /users/**
 #      service-id: user-module
+    order-module:
+      url: http://localhost:8084
 
 management:
   endpoints:

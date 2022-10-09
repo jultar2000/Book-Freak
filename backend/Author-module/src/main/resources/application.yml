@@ -5,6 +5,8 @@ spring:
       database: authors_db
   application:
     name: author-module
+  main:
+    allow-bean-definition-overriding: true
 
 eureka:
   client:

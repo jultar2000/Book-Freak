@@ -1,4 +1,4 @@
-package com.example.Bookmodule.config;
+package com.example.Ordermodule.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

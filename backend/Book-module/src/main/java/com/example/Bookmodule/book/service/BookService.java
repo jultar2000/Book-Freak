@@ -2,34 +2,34 @@ package com.example.Bookmodule.book.service;
 
 import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.book.dao.BookDao;
+import com.example.Bookmodule.book.dto.GetBookDto;
 import com.example.Bookmodule.book.entity.Book;
 import com.example.Bookmodule.book.entity.ReaderRating;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BookService {
-
-    private final Logger log;
 
     private final BookDao bookDao;
 
     private final static int NUMBER_OF_BOOKS_RETURNED = 10;
 
-//    @Autowired
-//    public BookService(BookDao bookDao) {
-//        log = LoggerFactory.getLogger(this.getClass());
-//        this.bookDao = bookDao;
-//    }
+    private final ModelMapper mapper;
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -61,24 +61,44 @@ public class BookService {
         return bookDao.findBook(convertStringIdToObjectId(id));
     }
 
-    public List<Book> findBooksByKeyword(String keyword) {
-        return bookDao.findBooksByKeyword(NUMBER_OF_BOOKS_RETURNED, keyword);
+    public List<GetBookDto> findBooksByKeyword(String keyword) {
+        return bookDao.findBooksByKeyword(NUMBER_OF_BOOKS_RETURNED, keyword)
+                .stream()
+                .map(book ->
+                        mapper.map(book, GetBookDto.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Book> findAllBooks() {
-        return bookDao.findAllBooks();
+    public List<GetBookDto> findAllBooks() {
+        return bookDao.findAllBooks()
+                .stream()
+                .map(book ->
+                        mapper.map(book, GetBookDto.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Book> findBooksByRating() {
-        return bookDao.findBooksByRating(NUMBER_OF_BOOKS_RETURNED);
+    public List<GetBookDto> findBooksByRating() {
+        return bookDao.findBooksByRating(NUMBER_OF_BOOKS_RETURNED)
+                .stream()
+                .map(book ->
+                        mapper.map(book, GetBookDto.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Book> findBooksByAuthor(Author author) {
-        return bookDao.findBooksByAuthor(NUMBER_OF_BOOKS_RETURNED, author);
+    public List<GetBookDto> findBooksByAuthor(Author author) {
+        return bookDao.findBooksByAuthor(NUMBER_OF_BOOKS_RETURNED, author)
+                .stream()
+                .map(book ->
+                        mapper.map(book, GetBookDto.class))
+                .collect(Collectors.toList());
     }
 
-    public List<Book> findBooksByGenre(String genre) {
-        return bookDao.findBooksByGenre(NUMBER_OF_BOOKS_RETURNED, genre);
+    public List<GetBookDto> findBooksByGenre(String genre) {
+        return bookDao.findBooksByGenre(NUMBER_OF_BOOKS_RETURNED, genre)
+                .stream()
+                .map(book ->
+                        mapper.map(book, GetBookDto.class))
+                .collect(Collectors.toList());
     }
 
     public boolean updateRating(String bookId, double rating) {

@@ -4,6 +4,7 @@ import com.example.Usermodule.dao.UserDao;
 import com.example.Usermodule.dto.UpdateUserDto;
 import com.example.Usermodule.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,10 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserDao userDao;
-
-    private final Logger log;
-
-//    @Autowired
-//    public UserService(UserDao userDao) {
-//        this.userDao = userDao;
-//        log = LoggerFactory.getLogger(this.getClass());
-//    }
 
     private void validateUsername(String username) {
         if (username == null || username.isEmpty()) {

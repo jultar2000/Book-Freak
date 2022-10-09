@@ -1,9 +1,12 @@
 package com.example.Bookmodule.book.service;
 
 import com.example.Bookmodule.book.dao.CommentDao;
+import com.example.Bookmodule.book.dto.GetCommentsDto;
 import com.example.Bookmodule.book.entity.Comment;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,20 +15,16 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CommentService {
 
     private final CommentDao commentDao;
 
-    private final Logger log;
-
-//    @Autowired
-//    public CommentService(CommentDao commentDao) {
-//        log = LoggerFactory.getLogger(this.getClass());
-//        this.commentDao = commentDao;
-//    }
+    private final ModelMapper mapper;
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -38,8 +37,12 @@ public class CommentService {
         }
     }
 
-    public List<Comment> findBookComments(String movieId) {
-        return commentDao.findBookComments(convertStringIdToObjectId(movieId));
+    public List<GetCommentsDto> findBookComments(String movieId) {
+        return commentDao.findBookComments(convertStringIdToObjectId(movieId))
+                .stream()
+                .map(comment ->
+                        mapper.map(comment, GetCommentsDto.class))
+                .collect(Collectors.toList());
     }
 
     public boolean insertComment(String bookId, String username, String text) {

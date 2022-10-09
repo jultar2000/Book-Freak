@@ -2,6 +2,8 @@ package com.example.Bookmodule.author.service;
 
 import com.example.Bookmodule.author.dao.AuthorDao;
 import com.example.Bookmodule.author.entity.Author;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,16 +13,11 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 
 @Service
+@AllArgsConstructor
+@Slf4j
 public class AuthorService {
 
     private final AuthorDao authorDao;
-    private final Logger log;
-
-    @Autowired
-    public AuthorService(AuthorDao authorDao) {
-        log = LoggerFactory.getLogger(this.getClass());
-        this.authorDao = authorDao;
-    }
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -33,7 +30,8 @@ public class AuthorService {
         }
     }
 
-    public boolean insertAuthor(Author author) {
+    public boolean insertAuthor(ObjectId oid) {
+        Author author = Author.builder().oid(oid).build();
         return authorDao.insertAuthor(author);
     }
 
