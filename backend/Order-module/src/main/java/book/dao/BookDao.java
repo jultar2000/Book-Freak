@@ -1,6 +1,6 @@
-package com.example.Ordermodule.book.dao;
+package book.dao;
 
-import com.example.Ordermodule.book.entity.Book;
+import book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
@@ -15,8 +15,6 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

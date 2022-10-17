@@ -1,6 +1,6 @@
-package com.example.Ordermodule.book.controller;
+package book.controller;
 
-import com.example.Ordermodule.book.service.BookService;
+import book.service.BookService;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping("insert/{oid}")
+    @PostMapping("/{oid}")
     public ResponseEntity<Void> addBook(@PathVariable("oid") ObjectId oid) {
         if (!bookService.insertBoot(oid)) {
             return ResponseEntity.badRequest().build();

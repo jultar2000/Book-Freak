@@ -16,7 +16,7 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    @PostMapping("insert/{oid}")
+    @PostMapping("/{oid}")
     public ResponseEntity<Void> addAuthor(@PathVariable("oid") ObjectId oid) {
         if (!authorService.insertAuthor(oid)) {
             return ResponseEntity.badRequest().build();
