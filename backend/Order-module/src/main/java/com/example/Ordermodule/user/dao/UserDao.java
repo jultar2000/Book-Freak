@@ -15,8 +15,6 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -70,7 +68,7 @@ public class UserDao {
         }
     }
 
-    public User findBook(ObjectId id) {
+    public User findUser(ObjectId id) {
         Bson find_query = Filters.eq("_id", id);
         User user = userCollection.find(find_query).first();
         if (user == null) {

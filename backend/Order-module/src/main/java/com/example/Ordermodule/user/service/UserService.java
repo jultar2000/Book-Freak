@@ -32,7 +32,7 @@ public class UserService {
     }
 
     public User findUser(String id) {
-        return userDao.findBook(convertStringIdToObjectId(id));
+        return userDao.findUser(convertStringIdToObjectId(id));
     }
 
     public boolean deleteUser(String id) {
