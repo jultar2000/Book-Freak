@@ -3,6 +3,7 @@ package com.example.Usermodule.controller;
 import com.example.Usermodule.dto.GetAddressDto;
 import com.example.Usermodule.dto.AddressDto;
 import com.example.Usermodule.entity.Address;
+import com.example.Usermodule.event.OrderModuleEventClient;
 import com.example.Usermodule.service.AddressService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 public class AddressController {
 
     private final AddressService addressService;
+
+    private final OrderModuleEventClient orderModuleEventClient;
 
     private final ModelMapper mapper;
 
@@ -49,7 +52,7 @@ public class AddressController {
         if (!addressService.insertAddress(address, username)) {
             return ResponseEntity.badRequest().build();
         }
-//        bookModuleEventClient.insertAuthor(author.getOid());
+        orderModuleEventClient.insertAddress(address.getOid());
         return ResponseEntity.ok().build();
     }
 
@@ -67,6 +70,7 @@ public class AddressController {
         if (!addressService.deleteAddress(addressId)) {
             return ResponseEntity.notFound().build();
         }
+        orderModuleEventClient.deleteAddress(addressId);
         return ResponseEntity.accepted().build();
     }
 

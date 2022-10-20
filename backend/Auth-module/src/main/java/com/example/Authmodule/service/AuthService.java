@@ -7,9 +7,9 @@ import com.example.Authmodule.dto.RefreshTokenRequest;
 import com.example.Authmodule.entity.AuthUser;
 import com.example.Authmodule.entity.VerificationEmail;
 import com.example.Authmodule.entity.VerificationToken;
+import com.example.Authmodule.event.OrderModuleEventClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +30,8 @@ import static com.example.Authmodule.security.Role.ADMIN;
 public class AuthService {
 
     private final VerificationTokenService verificationTokenService;
+
+    private final OrderModuleEventClient orderModuleEventClient;
 
     private final AuthenticationManager authenticationManager;
 
@@ -82,6 +84,7 @@ public class AuthService {
     public void registerUser(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         authUserDao.updateUser(username, true, "USER");
+        orderModuleEventClient.insertUser(authUserDao.findUserByUsername(username).getOid(), username);
     }
 
     public void createAdminUser(AuthUser admin) {

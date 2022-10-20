@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class AddressDto {
 
+    private String oid;
+
     private String country;
 
     private String city;

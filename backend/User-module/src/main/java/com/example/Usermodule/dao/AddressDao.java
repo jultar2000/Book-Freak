@@ -56,9 +56,7 @@ public class AddressDao {
      */
     public boolean insertAddress(Address address) {
         try {
-            addressCollection
-                    .withWriteConcern(WriteConcern.MAJORITY)
-                    .insertOne(address);
+            addressCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(address);
             return true;
         } catch (MongoWriteException e) {
             log.error("Could not insert `{}` into 'addresses' collection: {}", address.getOid(), e.getMessage());
@@ -68,7 +66,7 @@ public class AddressDao {
     }
 
     /**
-     * Deletes the address document from the 'addresses' collection with the provided authorId.
+     * Deletes the address document from the 'addresses' collection with the provided addressId.
      *
      * @param addressId - id of the address to be deleted.
      * @return True if successful, throw IncorrectDaoOperation otherwise.

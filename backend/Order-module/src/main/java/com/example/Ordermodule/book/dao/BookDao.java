@@ -1,6 +1,6 @@
-package book.dao;
+package com.example.Ordermodule.book.dao;
 
-import book.entity.Book;
+import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;

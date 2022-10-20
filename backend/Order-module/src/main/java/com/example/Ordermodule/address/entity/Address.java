@@ -1,4 +1,4 @@
-package book.entity;
+package com.example.Ordermodule.address.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 @EqualsAndHashCode
 @Document
-public class Book {
+public class Address {
 
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)

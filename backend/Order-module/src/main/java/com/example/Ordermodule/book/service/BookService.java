@@ -1,7 +1,7 @@
-package book.service;
+package com.example.Ordermodule.book.service;
 
-import book.dao.BookDao;
-import book.entity.Book;
+import com.example.Ordermodule.book.dao.BookDao;
+import com.example.Ordermodule.book.entity.Book;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -27,7 +27,7 @@ public class BookService {
         }
     }
 
-    public boolean insertBoot(ObjectId oid) {
+    public boolean insertBook(ObjectId oid) {
         Book book = Book.builder().oid(oid).build();
         return bookDao.insertBook(book);
     }
