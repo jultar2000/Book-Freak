@@ -49,10 +49,9 @@ public class OrderDao {
                 database.getCollection(BOOK_COLLECTION, Order.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public boolean insertOrder(Order order) {
+    public void insertOrder(Order order) {
         try {
             ordersCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(order);
-            return true;
         } catch (MongoWriteException e) {
             log.error("Could not insert `{}` into 'orders' collection: {}", order.getOid(), e.getMessage());
             throw new IncorrectDaoOperation(
@@ -60,14 +59,13 @@ public class OrderDao {
         }
     }
 
-    public boolean deleteOrder(ObjectId id) {
+    public void deleteOrder(ObjectId id) {
         Bson find_query = Filters.eq("_id", id);
         try {
             DeleteResult result = ordersCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
                 log.warn("Id '{}' not found in 'orders' collection. No order deleted.", id);
             }
-            return true;
         } catch (Exception e) {
             String errorMessage = MessageFormat
                     .format("Could not delete `{0}` from 'orders' collection: {1}.", id, e.getMessage());

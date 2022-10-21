@@ -27,12 +27,13 @@ public class OrderService {
             throw new IllegalArgumentException(errorMessage);
         }
     }
-    public boolean insertOrder(Order order) {
-        return orderDao.insertOrder(order);
+
+    public void insertOrder(Order order) {
+        orderDao.insertOrder(order);
     }
 
-    public boolean deleteOrder(String id) {
-        return orderDao.deleteOrder(convertStringIdToObjectId(id));
+    public void deleteOrder(String id) {
+        orderDao.deleteOrder(convertStringIdToObjectId(id));
     }
 
     public Order findByUserAndOrdered(User user, boolean ordered) {

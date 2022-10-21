@@ -35,6 +35,5 @@ public class User {
 
     private LocalDate birthDate;
 
-    @ToString.Exclude
     private byte[] image;
 }

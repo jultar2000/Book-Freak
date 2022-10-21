@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class OrderItemDto {
 
-    private String book_id;
+    private String bookId;
 
     private BookCover bookCover;
 
