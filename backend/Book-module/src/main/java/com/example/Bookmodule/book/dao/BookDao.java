@@ -209,7 +209,7 @@ public class BookDao {
         Bson find_query = Filters.in("_id", bookId);
         List<Bson> updatesList = new ArrayList<>();
         if (numberOfPages > 0) {
-            updatesList.add(Updates.set("name", numberOfPages));
+            updatesList.add(Updates.set("numberOfPages", numberOfPages));
         }
         if (description != null) {
             updatesList.add(Updates.set("description", description));

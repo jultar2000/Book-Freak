@@ -2,6 +2,8 @@ package com.example.Ordermodule.order.dao;
 
 import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
+import com.example.Ordermodule.order.dto.OrderDto;
+import com.example.Ordermodule.order.entity.Order;
 import com.example.Ordermodule.order.entity.OrderItem;
 import com.example.Ordermodule.user.entity.User;
 import com.mongodb.MongoClientSettings;
@@ -30,6 +32,7 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.mongodb.client.model.Filters.in;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -53,22 +56,47 @@ public class OrderItemDao {
                 database.getCollection(BOOK_COLLECTION, OrderItem.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public OrderItem findOrderItemByIdAndUser(ObjectId orderId, User user) {
+    public OrderItem findOrderItemByBookAndUser(Book book, User user) {
         Bson find_query = Filters.and(
-                Filters.in("_id", orderId),
+                Filters.in("book", book),
                 Filters.in("user", user));
         OrderItem orderItem = orderItemCollection.find(find_query).first();
         if (orderItem == null) {
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("Book with Id `{0}` does not exist.", orderId));
+            log.info("Order with book `{}` and user `{}` does not exist.", book, user);
         }
         return orderItem;
     }
 
-    public boolean insertOrderItem(OrderItem orderItem) {
+    public List<OrderItem> findAllOrdersItemsByOrder(Order order) {
+        Bson find_query = Filters.in("order", order);
+        List<OrderItem> orderItems = new ArrayList<>();
+        orderItemCollection
+                .find(find_query)
+                .into(orderItems);
+        return orderItems;
+    }
+
+    public List<OrderItem> findAllOrdersItems() {
+        List<OrderItem> orderItems = new ArrayList<>();
+        orderItemCollection
+                .find()
+                .into(orderItems);
+        return orderItems;
+    }
+
+    public OrderItem findOrderItem(ObjectId orderItemId) {
+        Bson find_query = Filters.in("_id", orderItemId);
+        OrderItem orderItem = orderItemCollection.find(find_query).first();
+        if (orderItem == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("Order item with Id `{0}` does not exist.", orderItemId));
+        }
+        return orderItem;
+    }
+
+    public void insertOrderItem(OrderItem orderItem) {
         try {
             orderItemCollection.withWriteConcern(WriteConcern.MAJORITY).insertOne(orderItem);
-            return true;
         } catch (MongoWriteException e) {
             log.error("Could not insert `{}` into 'order_items' collection: {}", orderItem.getOid(), e.getMessage());
             throw new IncorrectDaoOperation(
@@ -91,16 +119,28 @@ public class OrderItemDao {
         }
     }
 
-    public boolean updateOrderItem(ObjectId objectId, int quantity) {
+    public void updateOrderItem(ObjectId objectId,
+                                String bookCover,
+                                String bookLanguage,
+                                int quantity) {
         Bson find_query = Filters.in("_id", objectId);
-        Bson update = Updates.set("quantity", quantity);
+        List<Bson> updatesList = new ArrayList<>();
+        if (bookCover != null) {
+            updatesList.add(Updates.set("bookCover", bookCover));
+        }
+        if (bookLanguage != null) {
+            updatesList.add(Updates.set("bookLanguage", bookLanguage));
+        }
+        if (quantity > 0) {
+            updatesList.add(Updates.set("quantity", quantity));
+        }
+        Bson update = Updates.combine(updatesList);
         try {
             UpdateResult updateResult = orderItemCollection.updateOne(find_query, update);
             if (updateResult.getModifiedCount() < 1) {
                 log.warn(
                         "Order item `{}` was not updated. Some field might not exist.",
                         objectId);
-                return false;
             }
         } catch (MongoWriteException e) {
             String errorMessage =
@@ -110,6 +150,5 @@ public class OrderItemDao {
                             e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
-        return true;
     }
 }

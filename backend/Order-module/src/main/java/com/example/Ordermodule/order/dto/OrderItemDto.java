@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 public class OrderItemDto {
 
+    private String oid;
+
     private String bookId;
 
     private BookCover bookCover;

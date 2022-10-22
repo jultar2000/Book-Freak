@@ -1,14 +1,20 @@
 package com.example.Ordermodule.order.service;
 
 import com.example.Ordermodule.order.dao.OrderDao;
+import com.example.Ordermodule.order.dto.OrderDto;
+import com.example.Ordermodule.order.dto.OrderItemDto;
 import com.example.Ordermodule.order.entity.Order;
 import com.example.Ordermodule.user.entity.User;
+import com.example.Ordermodule.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +22,10 @@ import java.text.MessageFormat;
 public class OrderService {
 
     private final OrderDao orderDao;
+
+    private final ModelMapper mapper;
+
+    private final UserService userService;
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -36,13 +46,33 @@ public class OrderService {
         orderDao.deleteOrder(convertStringIdToObjectId(id));
     }
 
+    public List<OrderDto> findAllOrdersByUser(String username) {
+        User user = userService.findUserByUsername(username);
+        return orderDao.findAllOrdersByUser(user)
+                .stream()
+                .map(order ->
+                        mapper.map(order, OrderDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderDto> findAllOrders() {
+        return orderDao.findAllOrders()
+                .stream()
+                .map(order ->
+                        mapper.map(order, OrderDto.class))
+                .collect(Collectors.toList());
+    }
+
     public Order findByUserAndOrdered(User user, boolean ordered) {
         return orderDao.findByUserAndOrdered(user, ordered);
+    }
+
+    public OrderDto findOrderDto(String id) {
+        Order order = orderDao.findOrder(convertStringIdToObjectId(id));
+        return mapper.map(order, OrderDto.class);
     }
 
     public Order findOrder(String id) {
         return orderDao.findOrder(convertStringIdToObjectId(id));
     }
-
-
 }

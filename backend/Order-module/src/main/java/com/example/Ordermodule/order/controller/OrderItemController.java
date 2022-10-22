@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/order-items")
 @AllArgsConstructor
@@ -13,10 +15,32 @@ public class OrderItemController {
 
     private final OrderItemService orderItemService;
 
+    @GetMapping("all")
+    public ResponseEntity<List<OrderItemDto>> getAllOrderItems() {
+        return ResponseEntity.ok(orderItemService.findAllOrderItems());
+    }
+    @GetMapping("all/orders/{Id}")
+    public ResponseEntity<List<OrderItemDto>> getAllOrderItemsByOrder(@PathVariable("Id") String id) {
+        return ResponseEntity.ok(orderItemService.findAllOrderItemsByOrder(id));
+    }
+
+    @GetMapping("/{orderItemId}")
+    public ResponseEntity<OrderItemDto> getOrderItemById(@PathVariable("orderItemId") String orderItemId) {
+        return ResponseEntity.ok(orderItemService.findOrderItemDto(orderItemId));
+    }
+
+    @DeleteMapping("/{orderItemId}")
+    public ResponseEntity<Void> deleteOrderItem(@PathVariable("orderItemId") String orderItemId) {
+        if (!orderItemService.deleteOrderItem(orderItemId)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
+
     @PostMapping("/{username}")
     public ResponseEntity<Void> addItemToCart(@PathVariable("username") String username,
-                                           @RequestBody OrderItemDto request) {
-        orderItemService.addOrderItemToCart(request, username);
+                                              @RequestBody OrderItemDto request) {
+        orderItemService.addOrUpdateOrderItem(request, username);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.Ordermodule.order.dao;
 
-import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
 import com.example.Ordermodule.order.entity.Order;
 import com.example.Ordermodule.order.entity.OrderItem;
@@ -12,7 +11,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -21,7 +19,6 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -81,12 +78,36 @@ public class OrderDao {
         return order;
     }
 
+    /**
+     * Finds all orders in 'orders' collection owned by user.
+     *
+     * @param user - user that order should be serached for
+     *
+     * @return list of found books.
+     */
+    public List<Order> findAllOrdersByUser(User user) {
+        Bson find_query = Filters.in("user", user);
+        List<Order> orders = new ArrayList<>();
+        ordersCollection
+                .find(find_query)
+                .into(orders);
+        return orders;
+    }
+
+    public List<Order> findAllOrders() {
+        List<Order> orders = new ArrayList<>();
+        ordersCollection
+                .find()
+                .into(orders);
+        return orders;
+    }
+
     public Order findOrder(ObjectId orderId) {
         Bson find_query = Filters.in("_id", orderId);
         Order order = ordersCollection.find(find_query).first();
         if (order == null) {
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("Book with Id `{0}` does not exist.", orderId));
+                    MessageFormat.format("Order with Id `{0}` does not exist.", orderId));
         }
         return order;
     }

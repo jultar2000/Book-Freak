@@ -15,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -42,22 +44,54 @@ public class OrderItemService {
         }
     }
 
-    public void addOrderItemToCart(OrderItemDto request, String username) {
+    public List<OrderItemDto> findAllOrderItems() {
+        return orderItemDao.findAllOrdersItems()
+                .stream()
+                .map(orderItem ->
+                        mapper.map(orderItem, OrderItemDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderItemDto> findAllOrderItemsByOrder(String orderId) {
+        Order order = orderService.findOrder(orderId);
+        return orderItemDao.findAllOrdersItemsByOrder(order)
+                .stream()
+                .map(orderItem ->
+                        mapper.map(orderItem, OrderItemDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public boolean deleteOrderItem(String id) {
+        return orderItemDao.deleteOrderItem(convertStringIdToObjectId(id));
+    }
+
+    public OrderItem findOrderItem(String id) {
+        return orderItemDao.findOrderItem(convertStringIdToObjectId(id));
+    }
+
+    public OrderItemDto findOrderItemDto(String id) {
+        OrderItem orderItem = orderItemDao.findOrderItem(convertStringIdToObjectId(id));
+        return mapper.map(orderItem, OrderItemDto.class);
+    }
+
+    /*
+        TODO > case when we want to order same order item but with different language/cover not handled.
+     */
+    public void addOrUpdateOrderItem(OrderItemDto request, String username) {
         User user = userService.findUserByUsername(username);
         Order order = orderService.findByUserAndOrdered(user, false);
         if (order == null) {
             Order newOrder = Order.builder().ordered(false).user(user).build();
             orderService.insertOrder(newOrder);
         } else {
-            OrderItem orderItem = orderItemDao
-                    .findOrderItemByIdAndUser(convertStringIdToObjectId(request.getBookId()), user);
+            Book book = bookService.findBook(convertStringIdToObjectId(request.getBookId()));
+            OrderItem orderItem = orderItemDao.findOrderItemByBookAndUser(book, user);
             if (orderItem != null) {
-                orderItemDao.updateOrderItem(orderItem.getOid(), orderItem.getQuantity() + 1);
-
+                orderItemDao.updateOrderItem(orderItem.getOid(), orderItem.getBookCover().name(),
+                        orderItem.getBookLanguage().name(), orderItem.getQuantity() + 1);
             } else {
                 OrderItem newOrderItem = mapper.map(request, OrderItem.class);
                 newOrderItem.setOrder(order);
-                Book book = bookService.findBook(convertStringIdToObjectId(request.getBookId()));
                 newOrderItem.setBook(book);
                 orderItemDao.insertOrderItem(newOrderItem);
             }
