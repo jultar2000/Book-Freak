@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Book from '../../images/book.jpg'
-import Button from "../../components/Button/Button";
-import { register, login } from '../../actions/userActions'
+import Book from '../../public/book.jpg'
+import Button from "../../Components/Button/Button";
+import { register, login } from '../../services/authService'
 import './SignPage.css'
 
 function SignPage() {

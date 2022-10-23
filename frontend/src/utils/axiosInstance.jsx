@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getItemFromLocalStorage } from "./helpers";
-import { refreshToken } from '../actions/jwtActions'
+import { refreshToken } from '../services/jwtService'
 
 const axiosInstance = axios.create({
   baseURL: "https://localhost:8443"

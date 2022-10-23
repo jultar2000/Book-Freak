@@ -1,5 +1,5 @@
 import axiosInstance from "../utils/axiosInstance";
-import { setItemToLocalStorage , getItemFromLocalStorage } from "../utils/helpers";
+import { setItemToLocalStorage, getItemFromLocalStorage } from "../utils/helpers";
 
 export function refreshToken() {
     const data = {

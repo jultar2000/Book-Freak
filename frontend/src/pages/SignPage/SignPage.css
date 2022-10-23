@@ -16,7 +16,6 @@
     border-bottom-right-radius: 20px;
     border-top-right-radius: 20px;
     background-color: rgb(212, 156, 87);
-    box-shadow: 0 0 2em rgb(158, 117, 66);
 }
 
 .sign-picture {
@@ -24,7 +23,6 @@
     height: 400px;
     border-bottom-left-radius: 20px;
     border-top-left-radius: 20px;
-    box-shadow: 0 0 3em rgb(158, 117, 66);
 }
 
 .sign-form {

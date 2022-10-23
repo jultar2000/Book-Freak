@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
-import GithubIcon from '../../images/GitHub-Mark-Light-64px.png'
-import logo from '../../images/logo.png'
-import user_icon from '../../images/user_icon.png'
+import GithubIcon from '../../public/GitHub-Mark-Light-64px.png'
+import logo from '../../public/logo.png'
+import user_icon from '../../public/userIcon.png'
 import Button from '../Button/Button'
 import './Navbar.css'
 
