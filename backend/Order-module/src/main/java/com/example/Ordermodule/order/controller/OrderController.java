@@ -19,12 +19,12 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @GetMapping("/user/{username}/all")
+    @GetMapping("all/user/{username}")
     public ResponseEntity<List<OrderDto>> getAllOrdersByUser(@PathVariable("username") String username) {
         return ResponseEntity.ok(orderService.findAllOrdersByUser(username));
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     public ResponseEntity<List<OrderDto>> getAllOrders() {
         return ResponseEntity.ok(orderService.findAllOrders());
     }
@@ -33,5 +33,4 @@ public class OrderController {
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") String orderId) {
         return ResponseEntity.ok(orderService.findOrderDto(orderId));
     }
-
 }

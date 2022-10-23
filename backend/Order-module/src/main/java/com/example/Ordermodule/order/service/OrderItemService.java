@@ -77,24 +77,25 @@ public class OrderItemService {
     /*
         TODO > case when we want to order same order item but with different language/cover not handled.
      */
-    public void addOrUpdateOrderItem(OrderItemDto request, String username) {
+    public void addOrUpdateOrderItem(OrderItemDto request, String username, String bookId) {
         User user = userService.findUserByUsername(username);
         Order order = orderService.findByUserAndOrdered(user, false);
+        Book book = bookService.findBook(convertStringIdToObjectId(bookId));
+        OrderItem orderItem = orderItemDao.findOrderItemByOrderAndBook(order, book);
         if (order == null) {
             Order newOrder = Order.builder().ordered(false).user(user).build();
             orderService.insertOrder(newOrder);
-        } else {
-            Book book = bookService.findBook(convertStringIdToObjectId(request.getBookId()));
-            OrderItem orderItem = orderItemDao.findOrderItemByBookAndUser(book, user);
-            if (orderItem != null) {
-                orderItemDao.updateOrderItem(orderItem.getOid(), orderItem.getBookCover().name(),
-                        orderItem.getBookLanguage().name(), orderItem.getQuantity() + 1);
-            } else {
-                OrderItem newOrderItem = mapper.map(request, OrderItem.class);
-                newOrderItem.setOrder(order);
-                newOrderItem.setBook(book);
-                orderItemDao.insertOrderItem(newOrderItem);
-            }
+            order = newOrder;
+        } else if (orderItem != null) {
+            int newQuantity = request.getQuantity() == null ? orderItem.getQuantity() + 1 : request.getQuantity();
+            orderItemDao.updateOrderItem(orderItem.getOid(), orderItem.getBookCover().name(),
+                    orderItem.getBookLanguage().name(), newQuantity);
+            return;
         }
+        request.setQuantity(request.getQuantity() == null ? 1 : request.getQuantity());
+        OrderItem newOrderItem = mapper.map(request, OrderItem.class);
+        newOrderItem.setOrder(order);
+        newOrderItem.setBook(book);
+        orderItemDao.insertOrderItem(newOrderItem);
     }
 }

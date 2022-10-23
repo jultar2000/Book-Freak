@@ -27,14 +27,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.mongodb.client.model.Filters.in;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -56,13 +52,14 @@ public class OrderItemDao {
                 database.getCollection(BOOK_COLLECTION, OrderItem.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public OrderItem findOrderItemByBookAndUser(Book book, User user) {
+    public OrderItem findOrderItemByOrderAndBook(Order order, Book book) {
         Bson find_query = Filters.and(
-                Filters.in("book", book),
-                Filters.in("user", user));
+                Filters.in("order", order),
+                Filters.in("book", book)
+               );
         OrderItem orderItem = orderItemCollection.find(find_query).first();
         if (orderItem == null) {
-            log.info("Order with book `{}` and user `{}` does not exist.", book, user);
+            log.info("Order item with order '{} book `{}` does not exist.", order, book);
         }
         return orderItem;
     }

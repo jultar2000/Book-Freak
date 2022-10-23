@@ -78,13 +78,6 @@ public class OrderDao {
         return order;
     }
 
-    /**
-     * Finds all orders in 'orders' collection owned by user.
-     *
-     * @param user - user that order should be serached for
-     *
-     * @return list of found books.
-     */
     public List<Order> findAllOrdersByUser(User user) {
         Bson find_query = Filters.in("user", user);
         List<Order> orders = new ArrayList<>();
@@ -111,6 +104,4 @@ public class OrderDao {
         }
         return order;
     }
-
-
 }

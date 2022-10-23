@@ -1,5 +1,6 @@
 package com.example.Ordermodule.order.dto;
 
+import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.order.entity.BookCover;
 import com.example.Ordermodule.order.entity.BookLanguage;
 import lombok.Getter;
@@ -11,7 +12,9 @@ public class OrderItemDto {
 
     private String oid;
 
-    private String bookId;
+    private Book book;
+
+    private Integer quantity;
 
     private BookCover bookCover;
 
