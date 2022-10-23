@@ -52,20 +52,20 @@ public class OrderItemDao {
                 database.getCollection(BOOK_COLLECTION, OrderItem.class).withCodecRegistry(pojoCodecRegistry);
     }
 
-    public OrderItem findOrderItemByOrderAndBook(Order order, Book book) {
+    public OrderItem findOrderItemByOrderIdAndBook(ObjectId orderId, Book book) {
         Bson find_query = Filters.and(
-                Filters.in("order", order),
+                Filters.in("orderId", orderId),
                 Filters.in("book", book)
                );
         OrderItem orderItem = orderItemCollection.find(find_query).first();
         if (orderItem == null) {
-            log.info("Order item with order '{} book `{}` does not exist.", order, book);
+            log.info("Order item with order '{} book `{}` does not exist.", orderId, book);
         }
         return orderItem;
     }
 
-    public List<OrderItem> findAllOrdersItemsByOrder(Order order) {
-        Bson find_query = Filters.in("order", order);
+    public List<OrderItem> findAllOrdersItemsByOrderId(ObjectId orderId) {
+        Bson find_query = Filters.in("orderId", orderId);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItemCollection
                 .find(find_query)
@@ -116,11 +116,11 @@ public class OrderItemDao {
         }
     }
 
-    public void updateOrderItem(ObjectId objectId,
+    public void updateOrderItem(ObjectId orderItemId,
                                 String bookCover,
                                 String bookLanguage,
                                 int quantity) {
-        Bson find_query = Filters.in("_id", objectId);
+        Bson find_query = Filters.in("_id", orderItemId);
         List<Bson> updatesList = new ArrayList<>();
         if (bookCover != null) {
             updatesList.add(Updates.set("bookCover", bookCover));
@@ -137,13 +137,13 @@ public class OrderItemDao {
             if (updateResult.getModifiedCount() < 1) {
                 log.warn(
                         "Order item `{}` was not updated. Some field might not exist.",
-                        objectId);
+                        orderItemId);
             }
         } catch (MongoWriteException e) {
             String errorMessage =
                     MessageFormat.format(
                             "Issue caught while trying to update order item `{}`: {}",
-                            objectId,
+                            orderItemId,
                             e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }

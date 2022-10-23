@@ -7,7 +7,8 @@ import com.example.Authmodule.dto.RefreshTokenRequest;
 import com.example.Authmodule.entity.AuthUser;
 import com.example.Authmodule.entity.VerificationEmail;
 import com.example.Authmodule.entity.VerificationToken;
-import com.example.Authmodule.event.OrderModuleEventClient;
+import com.example.Authmodule.event.OrderModuleAction;
+import com.example.Authmodule.event.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,11 +32,11 @@ public class AuthService {
 
     private final VerificationTokenService verificationTokenService;
 
-    private final OrderModuleEventClient orderModuleEventClient;
-
     private final AuthenticationManager authenticationManager;
 
     private final RefreshTokenService refreshTokenService;
+
+    private final OrderModuleAction orderModuleAction;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -84,7 +85,11 @@ public class AuthService {
     public void registerUser(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
         authUserDao.updateUser(username, true, "USER");
-        orderModuleEventClient.insertUser(authUserDao.findUserByUsername(username).getOid(), username);
+        UserDto userDto = UserDto.builder()
+                .objectId(authUserDao.findUserByUsername(username).getOid())
+                .username(username)
+                .build();
+        orderModuleAction.insertUser(userDto);
     }
 
     public void createAdminUser(AuthUser admin) {

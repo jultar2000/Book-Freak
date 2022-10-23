@@ -1,8 +1,6 @@
 package com.example.Ordermodule.order.dto;
 
 import com.example.Ordermodule.book.entity.Book;
-import com.example.Ordermodule.order.entity.BookCover;
-import com.example.Ordermodule.order.entity.BookLanguage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +12,12 @@ public class OrderItemDto {
 
     private Book book;
 
+    private String orderId;
+
     private Integer quantity;
 
-    private BookCover bookCover;
+    private String bookCover;
 
-    private BookLanguage bookLanguage;
+    private String bookLanguage;
 
 }

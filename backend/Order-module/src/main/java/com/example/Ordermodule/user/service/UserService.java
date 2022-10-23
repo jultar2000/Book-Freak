@@ -4,6 +4,7 @@ import com.example.Ordermodule.book.dao.BookDao;
 import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.order.entity.Order;
 import com.example.Ordermodule.user.dao.UserDao;
+import com.example.Ordermodule.user.dto.UserDto;
 import com.example.Ordermodule.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,8 @@ public class UserService {
         }
     }
 
-    public boolean insertUser(ObjectId oid, String username) {
-        User user = User.builder().oid(oid).username(username).build();
+    public boolean insertUser(UserDto userDto) {
+        User user = User.builder().oid(userDto.getObjectId()).username(userDto.getUsername()).build();
         return userDao.insertUser(user);
     }
 

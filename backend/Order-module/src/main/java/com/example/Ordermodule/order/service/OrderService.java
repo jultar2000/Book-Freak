@@ -42,8 +42,13 @@ public class OrderService {
         orderDao.insertOrder(order);
     }
 
-    public void deleteOrder(String id) {
-        orderDao.deleteOrder(convertStringIdToObjectId(id));
+    public boolean deleteOrder(String orderId) {
+        return orderDao.deleteOrder(convertStringIdToObjectId(orderId));
+    }
+
+    public boolean updateOrder(String orderId, OrderDto orderDto) {
+        return orderDao.updateOrder(convertStringIdToObjectId(orderId),
+                orderDto.isOrdered(), orderDto.getShippingStatus());
     }
 
     public List<OrderDto> findAllOrdersByUser(String username) {
@@ -61,6 +66,12 @@ public class OrderService {
                 .map(order ->
                         mapper.map(order, OrderDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public OrderDto findByUsernameAndOrdered(String username, boolean ordered) {
+        User user = userService.findUserByUsername(username);
+        Order order = orderDao.findByUserAndOrdered(user, ordered);
+        return mapper.map(order, OrderDto.class);
     }
 
     public Order findByUserAndOrdered(User user, boolean ordered) {

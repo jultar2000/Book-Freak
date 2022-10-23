@@ -1,5 +1,6 @@
 package com.example.Ordermodule.user.controller;
 
+import com.example.Ordermodule.user.dto.UserDto;
 import com.example.Ordermodule.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
@@ -13,9 +14,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/{oid}/{username}")
-    public ResponseEntity<Void> addUser(@PathVariable("oid") ObjectId oid, @PathVariable("username") String username) {
-        if (!userService.insertUser(oid, username)) {
+    @PostMapping("")
+    public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
+        if (!userService.insertUser(userDto)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

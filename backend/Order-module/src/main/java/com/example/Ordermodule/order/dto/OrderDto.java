@@ -1,6 +1,5 @@
 package com.example.Ordermodule.order.dto;
 
-import com.example.Ordermodule.order.entity.ShippingStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +15,6 @@ public class OrderDto {
 
     private LocalDate orderDate;
 
-    private ShippingStatus shippingStatus;
+    private String shippingStatus;
 
 }

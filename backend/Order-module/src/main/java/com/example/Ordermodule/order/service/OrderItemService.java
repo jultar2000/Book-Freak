@@ -54,7 +54,19 @@ public class OrderItemService {
 
     public List<OrderItemDto> findAllOrderItemsByOrder(String orderId) {
         Order order = orderService.findOrder(orderId);
-        return orderItemDao.findAllOrdersItemsByOrder(order)
+        ObjectId orderOid = order.getOid();
+        return orderItemDao.findAllOrdersItemsByOrderId(orderOid)
+                .stream()
+                .map(orderItem ->
+                        mapper.map(orderItem, OrderItemDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public List<OrderItemDto> findAllOrderItemsByActiveOrder(String username) {
+        User user = userService.findUserByUsername(username);
+        Order order = orderService.findByUserAndOrdered(user, false);
+        ObjectId orderOid = order.getOid();
+        return orderItemDao.findAllOrdersItemsByOrderId(orderOid)
                 .stream()
                 .map(orderItem ->
                         mapper.map(orderItem, OrderItemDto.class))
@@ -79,22 +91,24 @@ public class OrderItemService {
      */
     public void addOrUpdateOrderItem(OrderItemDto request, String username, String bookId) {
         User user = userService.findUserByUsername(username);
-        Order order = orderService.findByUserAndOrdered(user, false);
         Book book = bookService.findBook(convertStringIdToObjectId(bookId));
-        OrderItem orderItem = orderItemDao.findOrderItemByOrderAndBook(order, book);
-        if (order == null) {
+        Order order = orderService.findByUserAndOrdered(user, false);
+        ObjectId orderOid = order == null ? null : order.getOid();
+        OrderItem orderItem = orderItemDao.findOrderItemByOrderIdAndBook(orderOid, book);
+        if (orderOid == null) {
             Order newOrder = Order.builder().ordered(false).user(user).build();
             orderService.insertOrder(newOrder);
-            order = newOrder;
+            orderOid = newOrder.getOid();
         } else if (orderItem != null) {
             int newQuantity = request.getQuantity() == null ? orderItem.getQuantity() + 1 : request.getQuantity();
-            orderItemDao.updateOrderItem(orderItem.getOid(), orderItem.getBookCover().name(),
-                    orderItem.getBookLanguage().name(), newQuantity);
+            String bookCover = orderItem.getBookCover() == null ? null : orderItem.getBookCover().name();
+            String bookLanguage = orderItem.getBookLanguage() == null ? null : orderItem.getBookLanguage().name();
+            orderItemDao.updateOrderItem(orderItem.getOid(), bookCover, bookLanguage, newQuantity);
             return;
         }
         request.setQuantity(request.getQuantity() == null ? 1 : request.getQuantity());
         OrderItem newOrderItem = mapper.map(request, OrderItem.class);
-        newOrderItem.setOrder(order);
+        newOrderItem.setOrderId(orderOid);
         newOrderItem.setBook(book);
         orderItemDao.insertOrderItem(newOrderItem);
     }

@@ -1,14 +1,10 @@
 package com.example.Ordermodule.order.controller;
 
 import com.example.Ordermodule.order.dto.OrderDto;
-import com.example.Ordermodule.order.dto.OrderItemDto;
 import com.example.Ordermodule.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +28,27 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderDto> getOrderById(@PathVariable("orderId") String orderId) {
         return ResponseEntity.ok(orderService.findOrderDto(orderId));
+    }
+
+    @GetMapping("/active/users/{username}")
+    public ResponseEntity<OrderDto> getActiveOrder(@PathVariable("username") String username) {
+        return ResponseEntity.ok(orderService.findByUsernameAndOrdered(username, false));
+    }
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<Void> updateOrder(@PathVariable("orderId") String orderId,
+                                            @RequestBody OrderDto request) {
+        if (!orderService.updateOrder(orderId, request)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable("orderId") String orderId) {
+        if (!orderService.deleteOrder(orderId)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.accepted().build();
     }
 }

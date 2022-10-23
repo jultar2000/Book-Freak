@@ -22,7 +22,7 @@ public class OrderItem {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
 
-    private Order order;
+    private ObjectId orderId;
 
     private Book book;
 

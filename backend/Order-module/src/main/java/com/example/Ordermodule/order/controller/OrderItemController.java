@@ -19,9 +19,15 @@ public class OrderItemController {
     public ResponseEntity<List<OrderItemDto>> getAllOrderItems() {
         return ResponseEntity.ok(orderItemService.findAllOrderItems());
     }
+
     @GetMapping("/all/orders/{Id}")
     public ResponseEntity<List<OrderItemDto>> getAllOrderItemsByOrder(@PathVariable("Id") String id) {
         return ResponseEntity.ok(orderItemService.findAllOrderItemsByOrder(id));
+    }
+
+    @GetMapping("/active/users/{username}")
+    public ResponseEntity<List<OrderItemDto>> getAllOrderItemsByActiveOrder(@PathVariable("username") String username) {
+        return ResponseEntity.ok(orderItemService.findAllOrderItemsByActiveOrder(username));
     }
 
     @GetMapping("/{orderItemId}")
