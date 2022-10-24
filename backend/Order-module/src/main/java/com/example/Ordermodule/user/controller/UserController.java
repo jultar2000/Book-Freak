@@ -1,24 +1,22 @@
 package com.example.Ordermodule.user.controller;
 
-import com.example.Ordermodule.user.entity.User;
+import com.example.Ordermodule.user.dto.UserDto;
 import com.example.Ordermodule.user.service.UserService;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
+import org.bson.types.ObjectId;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/order-module/api/v1/users")
+@RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    private final ModelMapper mapper;
-
     @PostMapping("")
-    public ResponseEntity<Void> addUser(@RequestBody User user) {
-        if (!userService.insertUser(mapper.map(user, User.class))) {
+    public ResponseEntity<Void> addUser(@RequestBody UserDto userDto) {
+        if (!userService.insertUser(userDto)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

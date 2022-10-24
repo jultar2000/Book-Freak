@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "book-module")
 public interface BookModuleEventClient {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/authors/insert/{oid}")
+    @RequestMapping(method = RequestMethod.POST, value = "/api/v1/authors/{oid}")
     void insertAuthor(@PathVariable("oid") ObjectId oid);
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/api/v1/authors/{Id}")

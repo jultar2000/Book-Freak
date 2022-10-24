@@ -1,11 +1,8 @@
 package com.example.Bookmodule.author.controller;
 
-import com.example.Bookmodule.author.dto.CreateAuthorDto;
-import com.example.Bookmodule.author.entity.Author;
 import com.example.Bookmodule.author.service.AuthorService;
 import lombok.AllArgsConstructor;
 import org.bson.types.ObjectId;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +13,7 @@ public class AuthorController {
 
     private final AuthorService authorService;
 
-    @PostMapping("insert/{oid}")
+    @PostMapping("/{oid}")
     public ResponseEntity<Void> addAuthor(@PathVariable("oid") ObjectId oid) {
         if (!authorService.insertAuthor(oid)) {
             return ResponseEntity.badRequest().build();

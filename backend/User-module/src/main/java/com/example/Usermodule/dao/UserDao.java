@@ -54,7 +54,7 @@ public class UserDao {
         try {
             DeleteResult result = usersCollection.deleteOne(find_query);
             if (result.getDeletedCount() < 1) {
-                log.warn("Email '{}' not found in 'users' collection. No user deleted.", username);
+                log.warn("Username '{}' not found in 'users' collection. No user deleted.", username);
             }
             return true;
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class UserDao {
         User user = usersCollection.find(find_query).first();
         if (user == null) {
             throw new IncorrectDaoOperation(
-                    MessageFormat.format("User with email `{0}` does not exist.", username));
+                    MessageFormat.format("User with username `{0}` does not exist.", username));
         }
         return user;
     }

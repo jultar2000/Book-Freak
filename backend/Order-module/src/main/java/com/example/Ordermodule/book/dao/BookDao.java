@@ -2,6 +2,7 @@ package com.example.Ordermodule.book.dao;
 
 import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
+import com.example.Ordermodule.user.entity.User;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
 import com.mongodb.WriteConcern;
@@ -15,8 +16,6 @@ import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -42,6 +41,28 @@ public class BookDao {
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
         this.booksCollection =
                 database.getCollection(BOOK_COLLECTION, Book.class).withCodecRegistry(pojoCodecRegistry);
+    }
+
+    public Book findBook(ObjectId orderId) {
+        Bson find_query = Filters.in("_id", orderId);
+        Book book = booksCollection.find(find_query).first();
+        if (book == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("Book with Id `{0}` does not exist.", orderId));
+        }
+        return book;
+    }
+
+    public Book findBookByIdAndUser(ObjectId orderId, User user) {
+        Bson find_query = Filters.and(
+                Filters.in("_id", orderId),
+                Filters.in("user", user));
+        Book book = booksCollection.find(find_query).first();
+        if (book == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("Book with Id `{0}` does not exist.", orderId));
+        }
+        return book;
     }
 
     public boolean insertBook(Book book) {

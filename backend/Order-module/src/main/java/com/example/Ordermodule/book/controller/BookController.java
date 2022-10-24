@@ -13,9 +13,9 @@ public class BookController {
 
     private final BookService bookService;
 
-    @PostMapping("insert/{oid}")
+    @PostMapping("/{oid}")
     public ResponseEntity<Void> addBook(@PathVariable("oid") ObjectId oid) {
-        if (!bookService.insertBoot(oid)) {
+        if (!bookService.insertBook(oid)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

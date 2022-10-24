@@ -1,6 +1,5 @@
-package com.example.Ordermodule.order.entity;
+package com.example.Usermodule.entity;
 
-import com.example.Ordermodule.book.entity.Book;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
@@ -16,20 +15,26 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 @EqualsAndHashCode
 @Document
-public class OrderItem {
+public class Address {
 
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
 
-    private ObjectId orderId;
+    private String country;
 
-    private Book book;
+    private String city;
 
-    private int quantity;
+    private String street;
 
-    private BookCover bookCover;
+    private String houseNumber;
 
-    private BookLanguage bookLanguage;
+    private String zip;
+
+    private boolean defaultChoice;
+
+    private AddressType addressType;
+
+    private User user;
 
 }

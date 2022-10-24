@@ -1,0 +1,24 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://root:root@bookfreak.tcd27.mongodb.net/
+      database: orders_db
+  application:
+    name: order-module
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    instance-id: order-module
+
+server:
+  port: 8084

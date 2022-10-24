@@ -1,6 +1,8 @@
 package com.example.Ordermodule.user.dao;
 
+import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
+import com.example.Ordermodule.order.entity.Order;
 import com.example.Ordermodule.user.entity.User;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
@@ -53,6 +55,26 @@ public class UserDao {
         }
     }
 
+    public User findUser(ObjectId orderId) {
+        Bson find_query = Filters.in("_id", orderId);
+        User user = userCollection.find(find_query).first();
+        if (user == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("User with Id `{0}` does not exist.", orderId));
+        }
+        return user;
+    }
+
+    public User findUserByUsername(String username) {
+        Bson find_query = Filters.in("username", username);
+        User user = userCollection.find(find_query).first();
+        if (user == null) {
+            throw new IncorrectDaoOperation(
+                    MessageFormat.format("User with username `{0}` does not exist.", username));
+        }
+        return user;
+    }
+
     public boolean deleteUser(ObjectId id) {
         Bson find_query = Filters.eq("_id", id);
         try {
@@ -66,15 +88,5 @@ public class UserDao {
                     .format("Could not delete `{0}` from 'users' collection: {1}.", id, e.getMessage());
             throw new IncorrectDaoOperation(errorMessage);
         }
-    }
-
-    public User findUser(ObjectId id) {
-        Bson find_query = Filters.eq("_id", id);
-        User user = userCollection.find(find_query).first();
-        if (user == null) {
-            throw new IncorrectDaoOperation(
-                    MessageFormat.format("User with Id `{0}` does not exist.", id));
-        }
-        return user;
     }
 }

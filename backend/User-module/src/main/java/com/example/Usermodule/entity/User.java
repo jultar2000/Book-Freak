@@ -1,5 +1,7 @@
 package com.example.Usermodule.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
@@ -17,6 +19,10 @@ import java.time.LocalDate;
 @Document
 public class User {
 
+    @BsonId
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId oid;
+
     private String username;
 
     private String email;
@@ -29,6 +35,5 @@ public class User {
 
     private LocalDate birthDate;
 
-    @ToString.Exclude
     private byte[] image;
 }
