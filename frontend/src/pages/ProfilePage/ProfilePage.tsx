@@ -7,7 +7,7 @@ function ProfilePage() {
         <div className="main-container">
             <div className="left-container">
                 <form className="basic-data-form">
-                    <input class="user-image" name="user-image" type="file"> </input>
+                    <input className="user-image" name="user-image" type="file"> </input>
                 </form>
             </div>
             

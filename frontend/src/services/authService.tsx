@@ -1,7 +1,8 @@
+import { UserData } from "../interfaces/UserData";
 import axiosInstance from "../utils/axiosInstance";
 import { setItemToLocalStorage } from "../utils/helpers";
 
-export function register(userData) {
+export function register(userData: UserData) {
     try {
         axiosInstance
             .post("api/v1/auth/signup", userData);
@@ -10,7 +11,7 @@ export function register(userData) {
     }
 }
 
-export function login(userData) {
+export function login(userData: UserData) {
     axiosInstance
         .post("api/v1/auth/login", userData)
         .then((res) => {
