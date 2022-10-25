@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "commonjs",
+    "strict": true,  
+    "esModuleInterop": true,  
+    "forceConsistentCasingInFileNames": true,   
+    "skipLibCheck": true, 
+    "jsx": "react",
+    "target": "es2016"   
+  },
+  "include": ["./src/declarations.d.ts"]
+}

@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Book from '../../public/book.jpg'
 import Button from "../../Components/Button/Button";
 import { register, login } from '../../services/authService'
 import { UserData } from "../../interfaces/UserData";
@@ -35,7 +34,7 @@ function SignPage() {
     return (
         <div className="main-container">
             <div className="picture-container">
-                <img className="sign-picture" src={Book} ></img>
+                <img className="sign-picture" src='/images/book.jpg' ></img>
             </div>
             <div className="form-container">
                 <form className="sign-form">
