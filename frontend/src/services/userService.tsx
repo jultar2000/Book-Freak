@@ -1,6 +1,5 @@
 import axiosInstance from "../utils/axiosInstance";
 import { getCurrentUser } from "./authService";
-import { setItemToLocalStorage } from "../utils/helpers";
 
 export async function getUserImage() {
     let username = await getCurrentUser()

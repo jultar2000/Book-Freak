@@ -25,6 +25,12 @@
     border-top-left-radius: 20px;
 }
 
+.form-element {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
 .sign-form {
     font-family: 'Whisper', cursive;
     font-weight: 1000;
@@ -36,9 +42,12 @@
 }
 
 .sign-input {
-    margin-bottom: 30px;
     border: none;
     border-radius: 5px;
     padding: 5px;
     background-color: antiquewhite;
+}
+
+.validation-message {
+    font-size: 10px;
 }

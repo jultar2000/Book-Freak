@@ -1,6 +1,4 @@
 import axiosInstance from "../utils/axiosInstance";
-import { getCurrentUser } from "./authService";
-import { setItemToLocalStorage } from "../utils/helpers";
 
 const booksBasicUrl = "/book-module/api/v1/"
 const extentedBooksUrl = booksBasicUrl + "comments/"
