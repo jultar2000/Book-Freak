@@ -1,9 +1,11 @@
 package com.example.Ordermodule.order.service;
 
 import com.example.Ordermodule.order.dao.OrderDao;
+import com.example.Ordermodule.order.dao.OrderItemDao;
 import com.example.Ordermodule.order.dto.OrderDto;
 import com.example.Ordermodule.order.dto.OrderItemDto;
 import com.example.Ordermodule.order.entity.Order;
+import com.example.Ordermodule.order.entity.OrderItem;
 import com.example.Ordermodule.user.entity.User;
 import com.example.Ordermodule.user.service.UserService;
 import lombok.AllArgsConstructor;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderDao orderDao;
+
+    private final OrderItemDao orderItemDao;
 
     private final ModelMapper mapper;
 
@@ -78,12 +82,25 @@ public class OrderService {
         return orderDao.findByUserAndOrdered(user, ordered);
     }
 
-    public OrderDto findOrderDto(String id) {
-        Order order = orderDao.findOrder(convertStringIdToObjectId(id));
+    public OrderDto findOrderDto(String orderId) {
+        Order order = orderDao.findOrder(convertStringIdToObjectId(orderId));
         return mapper.map(order, OrderDto.class);
     }
 
-    public Order findOrder(String id) {
-        return orderDao.findOrder(convertStringIdToObjectId(id));
+    public Order findOrder(String orderId) {
+        return orderDao.findOrder(convertStringIdToObjectId(orderId));
+    }
+
+    public void makeOrder(String username, String orderId) {
+        Order order = orderDao.findOrder(convertStringIdToObjectId(orderId));
+        User user = userService.findUserByUsername(username);
+        double totalOrderPrice = orderItemDao.findAllOrdersItemsByOrderId(order.getOid())
+                .stream()
+                .mapToDouble(OrderItem::getTotalPrice)
+                .sum();
+        if (user.getFunds() >= totalOrderPrice) {
+            orderDao.updateOrder(order.getOid(), true, "BEING_PREPARED");
+            userService.updateUser(username, user.getFunds() - totalOrderPrice);
+        }
     }
 }

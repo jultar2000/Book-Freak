@@ -2,7 +2,6 @@ package com.example.Ordermodule.order.dao;
 
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
 import com.example.Ordermodule.order.entity.Order;
-import com.example.Ordermodule.order.entity.OrderItem;
 import com.example.Ordermodule.order.entity.ShippingStatus;
 import com.example.Ordermodule.user.entity.User;
 import com.mongodb.MongoClientSettings;

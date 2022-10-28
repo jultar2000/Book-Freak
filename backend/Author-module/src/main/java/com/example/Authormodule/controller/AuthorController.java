@@ -37,8 +37,7 @@ public class AuthorController {
     }
 
     @GetMapping("/nationality/{nationality}")
-    public ResponseEntity<List<GetAuthorDto>> getAuthorByNationality(@PathVariable("nationality")
-                                                                              String nationality) {
+    public ResponseEntity<List<GetAuthorDto>> getAuthorByNationality(@PathVariable("nationality") String nationality) {
         List<GetAuthorDto> authorsDto =
                 authorService.findAuthorsByNationality(nationality)
                         .stream()

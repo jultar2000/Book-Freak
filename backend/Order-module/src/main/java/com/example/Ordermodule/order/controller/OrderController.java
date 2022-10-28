@@ -44,6 +44,13 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{orderId}/users/{username}")
+    public ResponseEntity<Void> makeOrder(@PathVariable("username") String username,
+                                          @PathVariable("orderId") String orderId) {
+        orderService.makeOrder(username, orderId);
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> deleteOrder(@PathVariable("orderId") String orderId) {
         if (!orderService.deleteOrder(orderId)) {

@@ -20,9 +20,9 @@ public class OrderItemController {
         return ResponseEntity.ok(orderItemService.findAllOrderItems());
     }
 
-    @GetMapping("/all/orders/{Id}")
-    public ResponseEntity<List<OrderItemDto>> getAllOrderItemsByOrder(@PathVariable("Id") String id) {
-        return ResponseEntity.ok(orderItemService.findAllOrderItemsByOrder(id));
+    @GetMapping("/all/orders/{orderId}")
+    public ResponseEntity<List<OrderItemDto>> getAllOrderItemsByOrder(@PathVariable("orderId") String orderId) {
+        return ResponseEntity.ok(orderItemService.findAllOrderItemsByOrder(orderId));
     }
 
     @GetMapping("/active/users/{username}")
@@ -44,7 +44,7 @@ public class OrderItemController {
     }
 
     @PostMapping("/users/{username}/books/{bookId}")
-    public ResponseEntity<Void> addItemToCart(@PathVariable("username") String username,
+    public ResponseEntity<Void> addOrUpdateItem(@PathVariable("username") String username,
                                               @PathVariable("bookId") String bookId,
                                               @RequestBody OrderItemDto request) {
         orderItemService.addOrUpdateOrderItem(request, username, bookId);

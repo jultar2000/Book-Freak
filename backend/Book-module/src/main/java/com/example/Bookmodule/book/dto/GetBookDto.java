@@ -25,4 +25,6 @@ public class GetBookDto {
     private Author author;
 
     private ReaderRating viewerRating;
+
+    private double price;
 }

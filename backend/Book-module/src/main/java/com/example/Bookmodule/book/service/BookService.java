@@ -119,10 +119,12 @@ public class BookService {
     public boolean updateBook(String bookId,
                               int numberOfPages,
                               String description,
-                              String genre) {
+                              String genre,
+                              double price) {
         return bookDao.updateBook(convertStringIdToObjectId(bookId),
                 numberOfPages,
                 description,
-                genre);
+                genre,
+                price);
     }
 }

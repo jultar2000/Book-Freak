@@ -75,14 +75,14 @@ public class BookController {
         if (!bookService.insertBook(book, author)) {
             return ResponseEntity.badRequest().build();
         }
-        orderModuleEventClient.insertBook(book.getOid());
+        orderModuleEventClient.insertBook(book.getOid(), request.getPrice());
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{bookId}/rating")
     public ResponseEntity<Void> updateRating(@PathVariable("bookId") String bookId,
-                                             @RequestBody IntParameterRequest request) {
-        if (!bookService.updateRating(bookId, request.getParameter())) {
+                                             @RequestBody RatingRequest request) {
+        if (!bookService.updateRating(bookId, request.getRating())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();
@@ -95,7 +95,8 @@ public class BookController {
                 bookId,
                 request.getNumberOfPages(),
                 request.getDescription(),
-                request.getGenre())) {
+                request.getGenre(),
+                request.getPrice())) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();
@@ -112,7 +113,7 @@ public class BookController {
     }
 
     @GetMapping("/{bookId}/comments")
-    public ResponseEntity<List<GetCommentsDto>> getComments(@PathVariable("bookId") String bookId) {
+    public ResponseEntity<List<GetCommentsDto>> getBookComments(@PathVariable("bookId") String bookId) {
         if (bookService.findBook(bookId) == null) {
             return ResponseEntity.notFound().build();
         }
@@ -143,10 +144,10 @@ public class BookController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @DeleteMapping("/comments/{commentId}/users/{username}")
     public ResponseEntity<Void> deleteComment(@PathVariable("commentId") String commentId,
-                                              @RequestBody CommentDto request) {
-        if (!commentService.deleteComment(commentId, request.getUsername())) {
+                                              @PathVariable("username") String username) {
+        if (!commentService.deleteComment(commentId, username)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok().build();

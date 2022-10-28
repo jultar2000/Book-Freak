@@ -86,7 +86,8 @@ public class UserDao {
                                     String name,
                                     String surname,
                                     String gender,
-                                    String birthDate) {
+                                    String birthDate,
+                                    int funds) {
         Bson find_query = in("username", username);
         List<Bson> updatesList = new ArrayList<>();
         if (name != null) {
@@ -100,6 +101,9 @@ public class UserDao {
         }
         if (birthDate != null) {
             updatesList.add(Updates.set("birthDate", LocalDate.parse(birthDate)));
+        }
+        if (funds > 0) {
+            updatesList.add(Updates.set("funds", funds));
         }
         Bson update = Updates.combine(updatesList);
         return performUpdate(username, find_query, update);

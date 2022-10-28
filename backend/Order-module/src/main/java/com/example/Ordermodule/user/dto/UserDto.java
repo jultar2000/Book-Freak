@@ -13,4 +13,6 @@ public class UserDto {
     private ObjectId objectId;
 
     private String username;
+
+    private float funds;
 }

@@ -18,6 +18,8 @@ public class GetUserDto {
 
     private String surname;
 
+    private float funds;
+
     private Gender gender;
 
     private LocalDate birthDate;

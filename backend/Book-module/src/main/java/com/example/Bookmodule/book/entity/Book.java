@@ -23,6 +23,8 @@ public class Book {
 
     private int year;
 
+    private double price;
+
     private String title;
 
     private Genre genre;

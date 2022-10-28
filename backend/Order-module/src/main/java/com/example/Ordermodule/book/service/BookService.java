@@ -40,8 +40,8 @@ public class BookService {
        return bookDao.findBook(orderId);
     }
 
-    public boolean insertBook(ObjectId oid) {
-        Book book = Book.builder().oid(oid).build();
+    public boolean insertBook(ObjectId oid, double price) {
+        Book book = Book.builder().oid(oid).price(price).build();
         return bookDao.insertBook(book);
     }
 

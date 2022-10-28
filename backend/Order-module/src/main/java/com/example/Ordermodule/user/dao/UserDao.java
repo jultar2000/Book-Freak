@@ -11,7 +11,9 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -22,7 +24,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import static com.mongodb.client.model.Filters.in;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
@@ -53,6 +59,33 @@ public class UserDao {
             throw new IncorrectDaoOperation(
                     MessageFormat.format("User with Id `{0}` already exists.", user.getOid()));
         }
+    }
+
+    public boolean updateUserFields(String username,
+                                    double funds) {
+        Bson find_query = in("username", username);
+        List<Bson> updatesList = new ArrayList<>();
+        if (funds > 0) {
+            updatesList.add(Updates.set("funds", funds));
+        }
+        Bson update = Updates.combine(updatesList);
+        try {
+            UpdateResult updateResult = userCollection.updateOne(find_query, update);
+            if (updateResult.getModifiedCount() < 1) {
+                log.warn(
+                        "User `{}` was not updated. User might not exist or all fields remain the same.",
+                        username);
+                return false;
+            }
+        } catch (MongoWriteException e) {
+            String errorMessage =
+                    MessageFormat.format(
+                            "Issue caught while trying to update user `{0}`: {1}",
+                            username,
+                            e.getMessage());
+            throw new IncorrectDaoOperation(errorMessage);
+        }
+        return true;
     }
 
     public User findUser(ObjectId orderId) {

@@ -8,6 +8,6 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class IntParameterRequest {
-    int parameter;
+public class RatingRequest {
+    int rating;
 }

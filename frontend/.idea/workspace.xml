@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0e5dffa4-5be0-4311-86cd-70897d3e2fd5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/configuration/BeansHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/author/service/configuration/BeansHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/configuration/MongoDBConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/author/service/configuration/MongoDBConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderItemDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderItemDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/User-module/src/main/java/com/example/Usermodule/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/User-module/src/main/java/com/example/Usermodule/controller/UserController.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2GY8ikWw4gA7V6Lp66PR8WHzhkT" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/dev_java/BookFreak/Book-Freak/frontend",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0e5dffa4-5be0-4311-86cd-70897d3e2fd5" name="Changes" comment="" />
+      <created>1666554286303</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1666554286303</updated>
+      <workItem from="1666554288619" duration="331000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
