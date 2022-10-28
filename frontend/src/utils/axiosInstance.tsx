@@ -1,13 +1,13 @@
 import axios from "axios";
 import { getItemFromLocalStorage } from "./helpers";
-import { refreshToken } from '../actions/jwtActions'
+import { refreshToken } from '../services/jwtService'
 
 const axiosInstance = axios.create({
   baseURL: "https://localhost:8443"
 });
 
 axiosInstance.interceptors.request.use(req => {
-  if (!req.headers.Authorization) {
+  if (req.headers && !req.headers.Authorization) {
     req.headers.Authorization = `Bearer ${getItemFromLocalStorage("authenticationToken")}`
   }
   return req;

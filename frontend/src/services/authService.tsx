@@ -1,17 +1,18 @@
+import { UserData } from "../interfaces/UserData";
 import axiosInstance from "../utils/axiosInstance";
 import { setItemToLocalStorage } from "../utils/helpers";
 
-export function register(userData) {
+export async function register(userData: UserData) {
     try {
-        axiosInstance
+        await axiosInstance
             .post("api/v1/auth/signup", userData);
     } catch (err) {
         console.error(err);
     }
 }
 
-export function login(userData) {
-    axiosInstance
+export async function login(userData: UserData) {
+    await axiosInstance
         .post("api/v1/auth/login", userData)
         .then((res) => {
             setItemToLocalStorage("authenticationToken", res.data.authenticationToken)
@@ -21,26 +22,8 @@ export function login(userData) {
         }).catch((err) => console.log(err))
 }
 
-export async function getUserImage() {
-    let username = await getCurrentUser()
-    axiosInstance
-        .get("/user-module/api/v1/users/" + username + "/image")
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
-}
-
-export async function getUserData() {
-    let username = await getCurrentUser()
-    axiosInstance
-        .get("/user-module/api/v1/users/" + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
-}
-
-export function getCurrentUser() {
-    return axiosInstance
+export async function getCurrentUser() {
+    await axiosInstance
         .get("api/v1/communication")
         .then(res => res.data)
         .catch((err) => console.log(err))
