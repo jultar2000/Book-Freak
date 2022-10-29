@@ -1,5 +1,6 @@
 package com.example.Ordermodule.user.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +15,5 @@ public class UserDto {
 
     private String username;
 
-    private float funds;
+    private double funds;
 }

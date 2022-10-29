@@ -66,6 +66,15 @@ public class UserController {
         return ResponseEntity.accepted().build();
     }
 
+    @PutMapping("/{username}/user-funds")
+    public ResponseEntity<Void> updateUserFunds(@PathVariable("username") String username,
+                                                @RequestBody double funds) {
+        if (!userService.updateUserFunds(username, funds)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.accepted().build();
+    }
+
     @PutMapping(value = "/{username}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateUserImage(@PathVariable("username") String username,
                                                 @RequestBody MultipartFile image) throws IOException {

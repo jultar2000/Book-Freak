@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @Document
 public class Order {
+
     @BsonId
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;

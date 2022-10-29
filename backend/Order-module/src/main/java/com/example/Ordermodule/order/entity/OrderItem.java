@@ -32,6 +32,4 @@ public class OrderItem {
 
     private BookLanguage bookLanguage;
 
-    private double totalPrice = quantity * book.getPrice();
-
 }

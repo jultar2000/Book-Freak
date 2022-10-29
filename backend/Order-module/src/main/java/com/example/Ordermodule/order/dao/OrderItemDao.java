@@ -50,16 +50,16 @@ public class OrderItemDao {
     public OrderItem findOrderItemByOrderIdAndBook(ObjectId orderId, Book book) {
         Bson find_query = Filters.and(
                 Filters.in("orderId", orderId),
-                Filters.in("book", book)
+                Filters.in("book.oid", book.getOid())
                );
         OrderItem orderItem = orderItemCollection.find(find_query).first();
         if (orderItem == null) {
-            log.info("Order item with order '{} book `{}` does not exist.", orderId, book);
+            log.info("Order item with order '{}' and book `{}` does not exist.", orderId, book);
         }
         return orderItem;
     }
 
-    public List<OrderItem> findAllOrdersItemsByOrderId(ObjectId orderId) {
+    public List<OrderItem> findAllOrderItemsByOrderId(ObjectId orderId) {
         Bson find_query = Filters.in("orderId", orderId);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItemCollection

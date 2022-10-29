@@ -87,7 +87,7 @@ public class UserDao {
                                     String surname,
                                     String gender,
                                     String birthDate,
-                                    int funds) {
+                                    double funds) {
         Bson find_query = in("username", username);
         List<Bson> updatesList = new ArrayList<>();
         if (name != null) {

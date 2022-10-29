@@ -52,6 +52,11 @@ public class UserService {
                 request.getFunds());
     }
 
+    public boolean updateUserFunds(String username, double funds) {
+        validateUsername(username);
+        return userDao.updateUserFields(username, null, null, null, null, funds);
+    }
+
     public boolean updateImage(String username, InputStream is) {
         validateUsername(username);
         return userDao.updateUserImage(username, is);

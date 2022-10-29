@@ -1,12 +1,13 @@
 package com.example.Ordermodule.order.service;
 
+import com.example.Ordermodule.exception.OrderException;
 import com.example.Ordermodule.order.dao.OrderDao;
 import com.example.Ordermodule.order.dao.OrderItemDao;
 import com.example.Ordermodule.order.dto.OrderDto;
-import com.example.Ordermodule.order.dto.OrderItemDto;
 import com.example.Ordermodule.order.entity.Order;
-import com.example.Ordermodule.order.entity.OrderItem;
+import com.example.Ordermodule.user.dto.UserDto;
 import com.example.Ordermodule.user.entity.User;
+import com.example.Ordermodule.user.event.UserModuleEventClient;
 import com.example.Ordermodule.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class OrderService {
     private final ModelMapper mapper;
 
     private final UserService userService;
+
+    private final UserModuleEventClient userModuleEventClient;
 
     private ObjectId convertStringIdToObjectId(String id) {
         try {
@@ -57,6 +60,7 @@ public class OrderService {
 
     public List<OrderDto> findAllOrdersByUser(String username) {
         User user = userService.findUserByUsername(username);
+        System.out.println(user);
         return orderDao.findAllOrdersByUser(user)
                 .stream()
                 .map(order ->
@@ -72,14 +76,16 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public OrderDto findByUsernameAndOrdered(String username, boolean ordered) {
+    public OrderDto findOrderDtoByUsernameAndOrdered(String username, boolean ordered) {
         User user = userService.findUserByUsername(username);
         Order order = orderDao.findByUserAndOrdered(user, ordered);
         return mapper.map(order, OrderDto.class);
     }
 
-    public Order findByUserAndOrdered(User user, boolean ordered) {
-        return orderDao.findByUserAndOrdered(user, ordered);
+    public Order findOrderByUsernameAndOrdered(String username, boolean ordered) {
+        User user = userService.findUserByUsername(username);
+        Order order = orderDao.findByUserAndOrdered(user, ordered);
+        return order;
     }
 
     public OrderDto findOrderDto(String orderId) {
@@ -91,16 +97,24 @@ public class OrderService {
         return orderDao.findOrder(convertStringIdToObjectId(orderId));
     }
 
-    public void makeOrder(String username, String orderId) {
-        Order order = orderDao.findOrder(convertStringIdToObjectId(orderId));
+    public void makeOrder(String username) {
+        Order order = findOrderByUsernameAndOrdered(username, false);
         User user = userService.findUserByUsername(username);
-        double totalOrderPrice = orderItemDao.findAllOrdersItemsByOrderId(order.getOid())
-                .stream()
-                .mapToDouble(OrderItem::getTotalPrice)
-                .sum();
-        if (user.getFunds() >= totalOrderPrice) {
-            orderDao.updateOrder(order.getOid(), true, "BEING_PREPARED");
-            userService.updateUser(username, user.getFunds() - totalOrderPrice);
+        if (order != null) {
+            double totalOrderPrice = orderItemDao.findAllOrderItemsByOrderId(order.getOid())
+                    .stream()
+                    .mapToDouble(orderItem -> orderItem.getQuantity() * orderItem.getBook().getPrice())
+                    .sum();
+            if (user.getFunds() >= totalOrderPrice) {
+                double balanceAfterOrder = user.getFunds() - totalOrderPrice;
+                orderDao.updateOrder(order.getOid(), true, "BEING_PREPARED");
+                userService.updateUser(username, balanceAfterOrder);
+                userModuleEventClient.updateUser(username, balanceAfterOrder);
+            } else {
+                throw new OrderException("Not enough funds!");
+            }
+        } else {
+            throw new OrderException(("There is no active order"));
         }
     }
 }

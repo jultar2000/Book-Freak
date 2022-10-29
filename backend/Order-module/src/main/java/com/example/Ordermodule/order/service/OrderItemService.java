@@ -56,7 +56,7 @@ public class OrderItemService {
     public List<OrderItemDto> findAllOrderItemsByOrder(String orderId) {
         Order order = orderDao.findOrder(convertStringIdToObjectId(orderId));
         ObjectId orderOid = order.getOid();
-        return orderItemDao.findAllOrdersItemsByOrderId(orderOid)
+        return orderItemDao.findAllOrderItemsByOrderId(orderOid)
                 .stream()
                 .map(orderItem ->
                         mapper.map(orderItem, OrderItemDto.class))
@@ -67,7 +67,7 @@ public class OrderItemService {
         User user = userService.findUserByUsername(username);
         Order order = orderDao.findByUserAndOrdered(user, false);
         ObjectId orderOid = order.getOid();
-        return orderItemDao.findAllOrdersItemsByOrderId(orderOid)
+        return orderItemDao.findAllOrderItemsByOrderId(orderOid)
                 .stream()
                 .map(orderItem ->
                         mapper.map(orderItem, OrderItemDto.class))
