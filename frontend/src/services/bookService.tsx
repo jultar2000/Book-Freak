@@ -1,6 +1,7 @@
 import axiosInstance from "../utils/axiosInstance";
+import { getCurrentUser } from "./authService";
 
-const booksBasicUrl = "/book-module/api/v1/"
+const booksBasicUrl = "/book-module/api/v1/books/"
 const extentedBooksUrl = booksBasicUrl + "comments/"
 
 export async function getAllBooks() {
@@ -70,9 +71,9 @@ export async function getBookComments(bookId: string) {
         }).catch((err) => console.log(err))
 }
 
-export async function addComment(commentId: string) {
+export async function addComment(bookId: string) {
     axiosInstance
-        .post(extentedBooksUrl + commentId)
+        .post(booksBasicUrl + bookId + "/comments")
         .then((res) => {
             return res.data
         }).catch((err) => console.log(err))
@@ -86,7 +87,8 @@ export async function updateComment(commentId: string) {
         }).catch((err) => console.log(err))
 }
 
-export async function deleteComment(commentId: string, username: string) {
+export async function deleteComment(commentId: string) {
+    let username = await getCurrentUser()
     axiosInstance
         .delete(extentedBooksUrl + commentId + "/users/" + username)
         .then((res) => {

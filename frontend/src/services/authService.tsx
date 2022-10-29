@@ -1,11 +1,13 @@
-import { UserData } from "../interfaces/UserData";
+import { UserData } from "../interfaces/User/UserData";
 import axiosInstance from "../utils/axiosInstance";
 import { setItemToLocalStorage } from "../utils/helpers";
+
+const basicAuthUrl = "api/v1/auth/"
 
 export async function register(userData: UserData) {
     try {
         await axiosInstance
-            .post("api/v1/auth/signup", userData);
+            .post(basicAuthUrl + "signup", userData);
     } catch (err) {
         console.error(err);
     }
@@ -13,7 +15,7 @@ export async function register(userData: UserData) {
 
 export async function login(userData: UserData) {
     await axiosInstance
-        .post("api/v1/auth/login", userData)
+        .post(basicAuthUrl + "login", userData)
         .then((res) => {
             setItemToLocalStorage("authenticationToken", res.data.authenticationToken)
             setItemToLocalStorage("refreshToken", res.data.refreshToken);

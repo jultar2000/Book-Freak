@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../Button/Button'
 import './Navbar.css'
+import { getItemFromLocalStorage } from "../../utils/helpers";
+import { getUserImage } from "../../services/userService";
 
 function Navbar() {
 
@@ -33,7 +35,7 @@ function Navbar() {
                         <li> <Button type="large-btn" text="SIGN UP" onClick={() => nav('/sign-up')} /> </li> :
                         <li className='user-icon'>
                             <img src='/images/book.jpg' width={75} height={75} onClick={() => nav('/profile')}></img>
-                            <figcaption className='caption'> Profile </figcaption>
+                            <figcaption className='caption'> { getItemFromLocalStorage("username") } </figcaption>
                         </li>
                 }
             </ul>

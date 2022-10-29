@@ -2,9 +2,8 @@ import React, { ChangeEvent, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from "../../Components/Button/Button";
 import { register, login } from '../../services/authService'
-import { UserData } from "../../interfaces/UserData";
+import { UserData } from "../../interfaces/User/UserData";
 import './SignPage.css'
-import { validateEmail, validatePassword, validateUsername } from "../../services/validatorService";
 
 function SignPage() {
 
@@ -83,8 +82,9 @@ function SignPage() {
                 </form>
                 <Button type="medium-btn"
                     style={{ marginTop: 10 }}
-                    text={isLoginPage ? "Sign up" : "Sign in"}
-                    onClick={isLoginPage ? registerHandler : loginHandler} />
+                    text={isLoginPage ? "Sign in" : "Sign up"}
+                    disabled={isLoginPage || (isUsernameValid && isEmailValid && isPasswordValid) ? null: "disabled"}
+                    onClick={isLoginPage ? loginHandler : registerHandler} />
                 <br />
                 <Button type="href-btn"
                     style={{ marginTop: 30 }}

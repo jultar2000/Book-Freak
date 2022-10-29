@@ -1,54 +1,45 @@
 import axiosInstance from "../utils/axiosInstance";
 import { getCurrentUser } from "./authService";
 
-const basicOrderUrl = "/order-module/api/v1/orders/"
+const basicOrderItemUrl = "/order-module/api/v1/order-items/"
 
-export async function getAllOrdersByUser() {
+export async function getAllOrderItemsByOrder(orderId: string) {
+    axiosInstance
+        .get(basicOrderItemUrl + "all/orders/" + orderId)
+        .then((res) => {
+            return res.data
+        }).catch((err) => console.log(err))
+}
+
+export async function getAllOrderItemsByActiveOrder() {
     let username = await getCurrentUser()
     axiosInstance
-        .get(basicOrderUrl + "all/user/" + username)
+        .get(basicOrderItemUrl + "active/users/" + username)
         .then((res) => {
             return res.data
         }).catch((err) => console.log(err))
 }
 
-export async function getOrderById(orderId: string) {
+export async function getOrderItemById(orderItemId: string) {
     axiosInstance
-        .get(basicOrderUrl + orderId)
+        .get(basicOrderItemUrl + orderItemId)
         .then((res) => {
             return res.data
         }).catch((err) => console.log(err))
 }
 
-export async function getActiveOrder() {
+export async function addOrUpdateItem(bookId: string) {
     let username = await getCurrentUser()
     axiosInstance
-        .get(basicOrderUrl + "active/users/" + username)
+        .post(basicOrderItemUrl + "users/" + username + "/books/" + bookId)
         .then((res) => {
             return res.data
         }).catch((err) => console.log(err))
 }
 
-export async function updateOrder(orderId: string) {
+export async function deleteOrderItem(orderItemId: string) {
     axiosInstance
-        .put(basicOrderUrl + orderId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
-}
-
-export async function makeOrder() {
-    let username = await getCurrentUser()
-    axiosInstance
-        .put(basicOrderUrl + "users/" + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
-}
-
-export async function deleteOrder(orderId: string) {
-    axiosInstance
-        .delete(basicOrderUrl + orderId)
+        .delete(basicOrderItemUrl + orderItemId)
         .then((res) => {
             return res.data
         }).catch((err) => console.log(err))
