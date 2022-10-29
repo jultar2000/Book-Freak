@@ -15,5 +15,7 @@ public class CreateBookDto {
 
     private String description;
 
+    private double price;
+
     private String genre;
 }

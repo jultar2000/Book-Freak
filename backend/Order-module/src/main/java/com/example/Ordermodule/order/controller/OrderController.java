@@ -32,7 +32,7 @@ public class OrderController {
 
     @GetMapping("/active/users/{username}")
     public ResponseEntity<OrderDto> getActiveOrder(@PathVariable("username") String username) {
-        return ResponseEntity.ok(orderService.findByUsernameAndOrdered(username, false));
+        return ResponseEntity.ok(orderService.findOrderDtoByUsernameAndOrdered(username, false));
     }
 
     @PutMapping("/{orderId}")
@@ -41,6 +41,12 @@ public class OrderController {
         if (!orderService.updateOrder(orderId, request)) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/users/{username}")
+    public ResponseEntity<Void> makeOrder(@PathVariable("username") String username) {
+        orderService.makeOrder(username);
         return ResponseEntity.ok().build();
     }
 

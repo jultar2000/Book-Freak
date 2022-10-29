@@ -1,4 +1,4 @@
-package com.example.Bookmodule.configuration;
+package com.example.Bookmodule.author.service.configuration;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;

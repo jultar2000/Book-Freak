@@ -3,10 +3,10 @@ package com.example.Usermodule.controller;
 import com.example.Usermodule.dto.GetUserDto;
 import com.example.Usermodule.dto.UpdateUserDto;
 import com.example.Usermodule.entity.User;
+import com.example.Usermodule.event.OrderModuleEventClient;
 import com.example.Usermodule.service.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserController {
 
+    private final OrderModuleEventClient orderModuleEventClient;
     private final UserService userService;
 
     private final ModelMapper mapper;
@@ -59,6 +60,16 @@ public class UserController {
     public ResponseEntity<Void> updateUser(@PathVariable("username") String username,
                                            @RequestBody UpdateUserDto request) {
         if (!userService.updateUserFields(username, request)) {
+            return ResponseEntity.badRequest().build();
+        }
+        orderModuleEventClient.updateUser(username, request.getFunds());
+        return ResponseEntity.accepted().build();
+    }
+
+    @PutMapping("/{username}/user-funds")
+    public ResponseEntity<Void> updateUserFunds(@PathVariable("username") String username,
+                                                @RequestBody double funds) {
+        if (!userService.updateUserFunds(username, funds)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.accepted().build();

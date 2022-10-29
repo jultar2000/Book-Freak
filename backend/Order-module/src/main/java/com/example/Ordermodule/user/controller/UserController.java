@@ -22,6 +22,15 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{username}")
+    public ResponseEntity<Void> updateUser(@PathVariable("username") String username,
+                                           @RequestBody double funds) {
+        if (!userService.updateUser(username, funds)) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
         if (!userService.deleteUser(id)) {

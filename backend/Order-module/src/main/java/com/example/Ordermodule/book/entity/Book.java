@@ -21,4 +21,6 @@ public class Book {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId oid;
 
+    private double price;
+
 }

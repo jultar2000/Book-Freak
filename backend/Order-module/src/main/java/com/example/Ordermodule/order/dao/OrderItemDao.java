@@ -2,10 +2,7 @@ package com.example.Ordermodule.order.dao;
 
 import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
-import com.example.Ordermodule.order.dto.OrderDto;
-import com.example.Ordermodule.order.entity.Order;
 import com.example.Ordermodule.order.entity.OrderItem;
-import com.example.Ordermodule.user.entity.User;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoWriteException;
 import com.mongodb.WriteConcern;
@@ -13,8 +10,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.Projections;
-import com.mongodb.client.model.Sorts;
 import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
@@ -55,16 +50,16 @@ public class OrderItemDao {
     public OrderItem findOrderItemByOrderIdAndBook(ObjectId orderId, Book book) {
         Bson find_query = Filters.and(
                 Filters.in("orderId", orderId),
-                Filters.in("book", book)
+                Filters.in("book.oid", book.getOid())
                );
         OrderItem orderItem = orderItemCollection.find(find_query).first();
         if (orderItem == null) {
-            log.info("Order item with order '{} book `{}` does not exist.", orderId, book);
+            log.info("Order item with order '{}' and book `{}` does not exist.", orderId, book);
         }
         return orderItem;
     }
 
-    public List<OrderItem> findAllOrdersItemsByOrderId(ObjectId orderId) {
+    public List<OrderItem> findAllOrderItemsByOrderId(ObjectId orderId) {
         Bson find_query = Filters.in("orderId", orderId);
         List<OrderItem> orderItems = new ArrayList<>();
         orderItemCollection

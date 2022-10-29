@@ -48,10 +48,16 @@ public class UserService {
                 request.getName(),
                 request.getSurname(),
                 request.getGender(),
-                request.getBirthDate());
+                request.getBirthDate(),
+                request.getFunds());
     }
 
-    public boolean updateImage(String username, InputStream is){
+    public boolean updateUserFunds(String username, double funds) {
+        validateUsername(username);
+        return userDao.updateUserFields(username, null, null, null, null, funds);
+    }
+
+    public boolean updateImage(String username, InputStream is) {
         validateUsername(username);
         return userDao.updateUserImage(username, is);
     }

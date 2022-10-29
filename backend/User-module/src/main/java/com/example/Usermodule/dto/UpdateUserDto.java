@@ -11,6 +11,8 @@ public class UpdateUserDto {
 
     private String surname;
 
+    private double funds;
+
     private String gender;
 
     private String birthDate;

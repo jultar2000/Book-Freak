@@ -31,6 +31,10 @@ public class UserService {
         }
     }
 
+    public boolean updateUser(String username, double funds) {
+        return userDao.updateUserFields(username, funds);
+    }
+
     public boolean insertUser(UserDto userDto) {
         User user = User.builder().oid(userDto.getObjectId()).username(userDto.getUsername()).build();
         return userDao.insertUser(user);

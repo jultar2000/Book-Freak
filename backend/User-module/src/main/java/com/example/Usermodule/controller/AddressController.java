@@ -73,5 +73,4 @@ public class AddressController {
         orderModuleEventClient.deleteAddress(addressId);
         return ResponseEntity.accepted().build();
     }
-
 }

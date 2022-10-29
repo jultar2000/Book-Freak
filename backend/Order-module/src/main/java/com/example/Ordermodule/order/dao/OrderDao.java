@@ -2,7 +2,6 @@ package com.example.Ordermodule.order.dao;
 
 import com.example.Ordermodule.exception.IncorrectDaoOperation;
 import com.example.Ordermodule.order.entity.Order;
-import com.example.Ordermodule.order.entity.OrderItem;
 import com.example.Ordermodule.order.entity.ShippingStatus;
 import com.example.Ordermodule.user.entity.User;
 import com.mongodb.MongoClientSettings;
@@ -105,14 +104,14 @@ public class OrderDao {
 
     public Order findByUserAndOrdered(User user, boolean ordered) {
         Bson find_query = Filters.and(
-                Filters.in("user", user),
+                Filters.in("user.username", user.getUsername()),
                 Filters.in("ordered", ordered));
         Order order = ordersCollection.find(find_query).first();
         return order;
     }
 
     public List<Order> findAllOrdersByUser(User user) {
-        Bson find_query = Filters.in("user", user);
+        Bson find_query = Filters.in("user.username", user.getUsername());
         List<Order> orders = new ArrayList<>();
         ordersCollection
                 .find(find_query)

@@ -27,6 +27,8 @@ public class User {
 
     private String email;
 
+    private double funds;
+
     private String name;
 
     private String surname;

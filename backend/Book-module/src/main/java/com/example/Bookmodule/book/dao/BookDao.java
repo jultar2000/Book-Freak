@@ -200,12 +200,14 @@ public class BookDao {
      * @param numberOfPages - integer number of pages value.
      * @param description   - string description value.
      * @param genre         - string genre value.
+     * @param price         - float price value.
      * @return true if successful, false if not, throws IncorrectDaoOperation if field cannot be updated.
      */
     public boolean updateBook(ObjectId bookId,
                               int numberOfPages,
                               String description,
-                              String genre) {
+                              String genre,
+                              double price) {
         Bson find_query = Filters.in("_id", bookId);
         List<Bson> updatesList = new ArrayList<>();
         if (numberOfPages > 0) {
@@ -216,6 +218,9 @@ public class BookDao {
         }
         if (genre != null) {
             updatesList.add(Updates.set("genre", genre));
+        }
+        if (price > 0) {
+            updatesList.add(Updates.set("price", price));
         }
         Bson update = Updates.combine(updatesList);
         return performUpdate(bookId, find_query, update);

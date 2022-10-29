@@ -1,4 +1,4 @@
-package com.example.Bookmodule.configuration;
+package com.example.Bookmodule.author.service.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

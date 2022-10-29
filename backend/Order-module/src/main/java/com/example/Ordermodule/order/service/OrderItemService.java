@@ -2,6 +2,7 @@ package com.example.Ordermodule.order.service;
 
 import com.example.Ordermodule.book.entity.Book;
 import com.example.Ordermodule.book.service.BookService;
+import com.example.Ordermodule.order.dao.OrderDao;
 import com.example.Ordermodule.order.dao.OrderItemDao;
 import com.example.Ordermodule.order.dto.OrderItemDto;
 import com.example.Ordermodule.order.entity.Order;
@@ -25,7 +26,7 @@ public class OrderItemService {
 
     private final OrderItemDao orderItemDao;
 
-    private final OrderService orderService;
+    private final OrderDao orderDao;
 
     private final UserService userService;
 
@@ -53,9 +54,9 @@ public class OrderItemService {
     }
 
     public List<OrderItemDto> findAllOrderItemsByOrder(String orderId) {
-        Order order = orderService.findOrder(orderId);
+        Order order = orderDao.findOrder(convertStringIdToObjectId(orderId));
         ObjectId orderOid = order.getOid();
-        return orderItemDao.findAllOrdersItemsByOrderId(orderOid)
+        return orderItemDao.findAllOrderItemsByOrderId(orderOid)
                 .stream()
                 .map(orderItem ->
                         mapper.map(orderItem, OrderItemDto.class))
@@ -64,9 +65,9 @@ public class OrderItemService {
 
     public List<OrderItemDto> findAllOrderItemsByActiveOrder(String username) {
         User user = userService.findUserByUsername(username);
-        Order order = orderService.findByUserAndOrdered(user, false);
+        Order order = orderDao.findByUserAndOrdered(user, false);
         ObjectId orderOid = order.getOid();
-        return orderItemDao.findAllOrdersItemsByOrderId(orderOid)
+        return orderItemDao.findAllOrderItemsByOrderId(orderOid)
                 .stream()
                 .map(orderItem ->
                         mapper.map(orderItem, OrderItemDto.class))
@@ -92,12 +93,12 @@ public class OrderItemService {
     public void addOrUpdateOrderItem(OrderItemDto request, String username, String bookId) {
         User user = userService.findUserByUsername(username);
         Book book = bookService.findBook(convertStringIdToObjectId(bookId));
-        Order order = orderService.findByUserAndOrdered(user, false);
+        Order order = orderDao.findByUserAndOrdered(user, false);
         ObjectId orderOid = order == null ? null : order.getOid();
         OrderItem orderItem = orderItemDao.findOrderItemByOrderIdAndBook(orderOid, book);
         if (orderOid == null) {
             Order newOrder = Order.builder().ordered(false).user(user).build();
-            orderService.insertOrder(newOrder);
+            orderDao.insertOrder(newOrder);
             orderOid = newOrder.getOid();
         } else if (orderItem != null) {
             int newQuantity = request.getQuantity() == null ? orderItem.getQuantity() + 1 : request.getQuantity();
