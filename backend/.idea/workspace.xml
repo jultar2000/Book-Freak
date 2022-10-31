@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="e8698187-1c42-41ab-99fd-6592cd8d2592" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Components/Button/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Components/Button/Button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/Components/Navbar/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/Components/Navbar/Navbar.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/pages/SignPage/SignPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/pages/SignPage/SignPage.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/services/authorService.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/authorService.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/services/bookService.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/bookService.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/services/orderService.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/orderService.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/services/addressService.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/addressService.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/services/authService.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/authService.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend/src/services/userService.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/services/userService.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend/src/services/validatorService.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/src/utils/axiosInstance.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/src/utils/axiosInstance.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +29,16 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectId" id="2GmWhd0SrfHII30yldyvm2LLL9x" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -27,12 +47,25 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "C:/dev_java/Book-Freak/backend"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="AuthModuleApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="Auth-module" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.Authmodule.AuthModuleApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -42,6 +75,9 @@
       <option name="presentableId" value="Default" />
       <updated>1666994359884</updated>
       <workItem from="1666994361283" duration="19000" />
+      <workItem from="1667065203156" duration="29000" />
+      <workItem from="1667073184251" duration="606000" />
+      <workItem from="1667079675266" duration="509000" />
     </task>
     <servers />
   </component>

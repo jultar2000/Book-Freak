@@ -3,17 +3,11 @@ import axiosInstance from "../utils/axiosInstance";
 const basicAuthorUrl = "/author-module/api/v1/"
 
 export async function getAuthorsByNationality(nationality: string) {
-    axiosInstance
-        .get(basicAuthorUrl + "nationality/" + nationality)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
+    return await axiosInstance
+        .get(basicAuthorUrl + "nationality/" + nationality);
 }
 
 export async function getAuthor(authorId: string) {
-    axiosInstance
+    return await axiosInstance
         .get(basicAuthorUrl + authorId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }

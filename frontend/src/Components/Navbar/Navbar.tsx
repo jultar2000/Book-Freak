@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from '../Button/Button'
 import './Navbar.css'
 import { getItemFromLocalStorage } from "../../utils/helpers";
-import { getUserImage } from "../../services/userService";
+import { getUserData, getUserImage } from "../../services/userService";
 
-function Navbar() {
+const Navbar = () => {
 
     const nav = useNavigate();
     const location = useLocation();
+    const [userImage, setUserImage] = useState()
 
-    function checkPathState() {
+    const checkPathState = () => {
         let current_path = location.pathname;
         if (current_path === "/sign-up" || current_path === "/sign-in" || current_path === "/")
             return true
         return false
     }
+
+    useEffect(() => {
+        getUserImage()
+            .then((res) => {
+                console.log(res.data)
+                setUserImage(res.data)
+            }).catch((err) => {
+                console.log(err)
+            })
+    })
 
     return (
         <nav className='navbar'>
@@ -35,7 +46,7 @@ function Navbar() {
                         <li> <Button type="large-btn" text="SIGN UP" onClick={() => nav('/sign-up')} /> </li> :
                         <li className='user-icon'>
                             <img src='/images/book.jpg' width={75} height={75} onClick={() => nav('/profile')}></img>
-                            <figcaption className='caption'> { getItemFromLocalStorage("username") } </figcaption>
+                            <figcaption className='caption'> {getItemFromLocalStorage("username")} </figcaption>
                         </li>
                 }
             </ul>

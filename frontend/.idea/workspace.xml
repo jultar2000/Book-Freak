@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0e5dffa4-5be0-4311-86cd-70897d3e2fd5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/configuration/BeansHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/author/service/configuration/BeansHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/configuration/MongoDBConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Book-module/src/main/java/com/example/Bookmodule/author/service/configuration/MongoDBConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderItemDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Order-module/src/main/java/com/example/Ordermodule/order/dao/OrderItemDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/User-module/src/main/java/com/example/Usermodule/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/User-module/src/main/java/com/example/Usermodule/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +26,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/dev_java/BookFreak/Book-Freak/frontend",
+    "last_opened_file_path": "C:/dev_java/Book-Freak/frontend",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
@@ -44,6 +40,7 @@
       <option name="presentableId" value="Default" />
       <updated>1666554286303</updated>
       <workItem from="1666554288619" duration="331000" />
+      <workItem from="1667063940016" duration="47000" />
     </task>
     <servers />
   </component>

@@ -2,19 +2,31 @@ import React, { ChangeEvent, useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import Button from "../../Components/Button/Button";
 import { register, login } from '../../services/authService'
-import { UserData } from "../../interfaces/User/UserData";
+import { UserData } from '../../shared/interfaces/User/UserData'
 import './SignPage.css'
+import { setItemToLocalStorage } from "../../utils/helpers";
+import MessagePopup from "../../Components/MessagePopup/MessagePopup";
+import { ResponseStatus } from "../../shared/enums/ResponseStatus";
+import { getUserData } from "../../services/userService";
 
-function SignPage() {
+const SignPage = () => {
 
-    const USERNAME_REGEX = /^\[A-z\][A-z0-9-_]{3,23}$/;
-    const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+    const USERNAME_REGEX = /^[a-zA-Z0-9]+$/;
+    const PASSWORD_REGEX = /[a-zA-Z0-9]{8,}/;
     const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    const location = useLocation();
+    const errorLoginMessage = "Wrong login or password!"
+    const errorRegisterMessage = "Cannot register!"
+    const successRegisterMessage = "Please check your email to confirm your account."
+
     const nav = useNavigate()
+    const location = useLocation();
+
     const [userData, setUserData] = useState<UserData>({})
-    const [isLoginPage, setIsLoginPage] = useState(location.pathname === '/sign-in')
+    const [popupTrigger, setPopupTrigger] = useState(false)
+    const [responseStatus, setResponseStatus] = useState<ResponseStatus>(ResponseStatus.ERROR)
+    const [popupMessage, setPopupMessage] = useState("")
+    const [isLoginPage, setIsLoginPage] = useState(location.pathname === "/sign-in")
     const [isUsernameValid, setIsUsernameValid] = useState(false)
     const [isPasswordValid, setIsPasswordValid] = useState(false)
     const [isEmailValid, setIsEmailValid] = useState(false)
@@ -38,14 +50,33 @@ function SignPage() {
 
     const registerHandler = () => {
         register(userData)
+            .then(() => {
+                setPopupProps(successRegisterMessage, ResponseStatus.SUCCESS)
+            })
+            .catch((err) => {
+                setPopupProps(errorRegisterMessage, ResponseStatus.ERROR)
+                console.log(err)
+            })
     }
 
-    /*
-        >>TODO handle navigate only when request is good
-    */
     const loginHandler = () => {
-        login(userData)
-        nav('/main')
+        login(userData).then((res) => {
+            console.log('as')
+            setItemToLocalStorage("authenticationToken", res.data.authenticationToken)
+            setItemToLocalStorage("refreshToken", res.data.refreshToken);
+            setItemToLocalStorage("expiresAt", res.data.expiresAt);
+            setItemToLocalStorage("username", res.data.username);
+            nav('/main')
+        }).catch((err) => {
+            setPopupProps(errorLoginMessage, ResponseStatus.ERROR)
+            console.log(err)
+        })
+    }
+
+    const setPopupProps = (message: string, status: ResponseStatus) => {
+        setPopupTrigger(!popupTrigger)
+        setPopupMessage(message)
+        setResponseStatus(status)
     }
 
     function navigate() {
@@ -54,7 +85,9 @@ function SignPage() {
     }
 
     return (
-        <div className="main-container">
+        <div className="sign-container">
+            <MessagePopup trigger={popupTrigger} setTrigger={setPopupTrigger}
+                status={responseStatus} description={popupMessage}></MessagePopup>
             <div className="picture-container">
                 <img className="sign-picture" src='/images/book.jpg' ></img>
             </div>
@@ -83,7 +116,7 @@ function SignPage() {
                 <Button type="medium-btn"
                     style={{ marginTop: 10 }}
                     text={isLoginPage ? "Sign in" : "Sign up"}
-                    disabled={isLoginPage || (isUsernameValid && isEmailValid && isPasswordValid) ? null: "disabled"}
+                    disabled={isLoginPage || (isUsernameValid && isEmailValid && isPasswordValid) ? false : true}
                     onClick={isLoginPage ? loginHandler : registerHandler} />
                 <br />
                 <Button type="href-btn"

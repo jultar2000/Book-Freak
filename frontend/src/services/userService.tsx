@@ -1,22 +1,16 @@
 import axiosInstance from "../utils/axiosInstance";
-import { getCurrentUser } from "./authService";
+import { getItemFromLocalStorage } from "../utils/helpers";
 
 const basicUserUrl = "/user-module/api/v1/users/"
 
 export async function getUserImage() {
-    let username = await getCurrentUser()
-    axiosInstance
-        .get(basicUserUrl + username + "/image")
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
+    let username = getItemFromLocalStorage("username")
+    return await axiosInstance
+        .get(basicUserUrl + username + "/image");
 }
 
 export async function getUserData() {
-    let username = await getCurrentUser()
-    axiosInstance
-        .get(basicUserUrl + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
+    let username = getItemFromLocalStorage("username")
+    return await axiosInstance
+        .get(basicUserUrl + username);
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import './StartPage.css'
 
-function StartPage() {
+const StartPage = () => {
     return (
         <>
             <h1>

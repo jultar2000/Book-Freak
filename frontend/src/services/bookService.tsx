@@ -1,99 +1,66 @@
 import axiosInstance from "../utils/axiosInstance";
-import { getCurrentUser } from "./authService";
+import { getItemFromLocalStorage } from "../utils/helpers";
 
 const booksBasicUrl = "/book-module/api/v1/books/"
 const extentedBooksUrl = booksBasicUrl + "comments/"
 
 export async function getAllBooks() {
-    axiosInstance
-        .get(booksBasicUrl + "all")
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
+    return await axiosInstance
+        .get(booksBasicUrl + "all");
 }
 
 export async function getBookById(bookId: string) {
-    axiosInstance
+    return await axiosInstance
         .get(booksBasicUrl + bookId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getBooksByKeyword(keyword: string) {
-    axiosInstance
+    return await  axiosInstance
         .get(booksBasicUrl + "keyword/" + keyword)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getBooksByGenre(genre: string) {
-    axiosInstance
+    return await  axiosInstance
         .get(booksBasicUrl + "genre/" + genre)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getBooksByRating() {
-    axiosInstance
+    return await axiosInstance
         .get(booksBasicUrl + "/rating")
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getBooksByAuthor(authorId: string) {
-    axiosInstance
+    return await axiosInstance
         .get(booksBasicUrl + "authors/" + authorId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function updateRating(bookId: string, ratingNum: number) {
     const rating = {
         rating: ratingNum
     }
-    axiosInstance
+    return await axiosInstance
         .put(booksBasicUrl + bookId + "/rating", rating)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getBookComments(bookId: string) {
-    axiosInstance
+    return await axiosInstance
         .get(booksBasicUrl + bookId + "/comments")
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function addComment(bookId: string) {
-    axiosInstance
+    return await axiosInstance
         .post(booksBasicUrl + bookId + "/comments")
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function updateComment(commentId: string) {
-    axiosInstance
+    return await axiosInstance
         .put(extentedBooksUrl + commentId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function deleteComment(commentId: string) {
-    let username = await getCurrentUser()
-    axiosInstance
+    let username = getItemFromLocalStorage("username")
+    return await axiosInstance
         .delete(extentedBooksUrl + commentId + "/users/" + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 

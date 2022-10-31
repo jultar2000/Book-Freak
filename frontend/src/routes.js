@@ -3,6 +3,7 @@ import SignPage from './pages/SignPage/SignPage';
 import MainPage from './pages/MainPage/MainPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import { useRoutes } from 'react-router-dom';
+import React from 'react'
 
 const Routes = () => useRoutes([
     { path: '/', element: <StartPage /> },
