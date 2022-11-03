@@ -7,7 +7,6 @@ import './SignPage.css'
 import { setItemToLocalStorage } from "../../utils/helpers";
 import MessagePopup from "../../Components/MessagePopup/MessagePopup";
 import { ResponseStatus } from "../../shared/enums/ResponseStatus";
-import { getUserData } from "../../services/userService";
 
 const SignPage = () => {
 
@@ -20,7 +19,7 @@ const SignPage = () => {
     const successRegisterMessage = "Please check your email to confirm your account."
 
     const nav = useNavigate()
-    const location = useLocation();
+    const location = useLocation()
 
     const [userData, setUserData] = useState<UserData>({})
     const [popupTrigger, setPopupTrigger] = useState(false)
@@ -61,7 +60,6 @@ const SignPage = () => {
 
     const loginHandler = () => {
         login(userData).then((res) => {
-            console.log('as')
             setItemToLocalStorage("authenticationToken", res.data.authenticationToken)
             setItemToLocalStorage("refreshToken", res.data.refreshToken);
             setItemToLocalStorage("expiresAt", res.data.expiresAt);

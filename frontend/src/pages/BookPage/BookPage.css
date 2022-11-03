@@ -1,0 +1,42 @@
+.main-book-detail-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-detail-image-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.book-detail-image-container span {
+    font-size: 20px;
+    color: white;
+    font-weight: 400;
+}
+
+.book-detail-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+    margin-left: 50px;
+    margin-right: 40px;
+    width: 85%;
+}
+
+.info-cart-container {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.book-detail-image-container {
+    width: 30%;
+}
+
+.detail-info-container {
+    display: flex;
+    flex-direction: column;
+}

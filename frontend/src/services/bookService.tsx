@@ -34,6 +34,11 @@ export async function getBooksByAuthor(authorId: string) {
         .get(booksBasicUrl + "authors/" + authorId)
 }
 
+export async function getBookRatings() {
+    return await axiosInstance
+        .get(booksBasicUrl + "ratings")
+}
+
 export async function updateRating(bookId: string, ratingNum: number) {
     const rating = {
         rating: ratingNum
