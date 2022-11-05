@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getBookById, getBookComments, addComment } from "../../services/bookService";
+import { getBookById, getBookComments, addComment, getBookImage } from "../../services/bookService";
 import { BookData } from "../../shared/interfaces/Book/BookData";
 import { CommentData } from "../../shared/interfaces/Book/CommentData"
 import { useParams } from "react-router-dom"
@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 const BookPage = () => {
 
     const [book, setBook] = useState<BookData>()
+    const [bookImage, setBookImage] = useState('')
     const [author, setAuthor] = useState<AuthorData>()
     const [commentsData, setCommentsData] = useState<CommentData[]>([])
     const nav = useNavigate();
@@ -37,6 +38,12 @@ const BookPage = () => {
             getBookComments(id)
                 .then((res) => {
                     setCommentsData(res.data)
+                }).catch((err) => {
+                    console.log(err)
+                })
+            getBookImage(id)
+                .then((res) => {
+                    setBookImage(res.data)
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -79,7 +86,7 @@ const BookPage = () => {
             if (engLanguageCheckbox && engLanguageCheckbox.checked === true) {
                 bookLanguage = "HARD"
             }
-            if(quatityInput && quatityInput.value) {
+            if (quatityInput && quatityInput.value) {
                 quantity = +quatityInput.value
             }
             orderItemData = {
@@ -128,7 +135,7 @@ const BookPage = () => {
                 <div className="book-detail-description-container">
                     <div className="book-detail-image-container">
                         <figure>
-                            <img width={370} height={540} src='/images/book.jpg'></img>
+                            <img width={370} height={540} src={"data:image/png;base64," + bookImage}></img>
                         </figure>
                         <span>Genre</span>
                         <span>{book != null ? book.genre : null}</span>
@@ -186,7 +193,7 @@ const BookPage = () => {
                 <span id="comments-label">Comments</span>
                 <div id="user-comment-container" className="comment-container">
                     <span id="comment-header">Add a comment</span>
-                    <input id="comment-input"></input>
+                    <textarea id="comment-input"></textarea>
                     <div id="comment-button-container">
                         <Button style={{ background: "green" }} type="medium-btn" text="Comment" onClick={addCommentHandler} />
                     </div>

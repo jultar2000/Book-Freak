@@ -60,8 +60,10 @@ const MainPage = () => {
                     </div>
                     <div className="description-container">
                         <span className="author-span">{author != null ? author.name + ' ' + author.surname : null}</span>
-                        <span>{book.price + "$"}</span>
-                        <span>{rating != null ? rating.realRating + "/10" : null}</span>
+                        <span id="price-main">{book.price + "$"}</span>
+                        <div id="rating-main-container">
+                            <span id="rating-main">{rating != null ? rating.realRating + "/10" : null}</span>
+                        </div>
                     </div>
                 </div>
             )

@@ -1,7 +1,8 @@
 .main-books-container {
     display: grid;
-    grid-template-columns: auto auto auto;
-    justify-content: space-evenly;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-left: auto;
+    margin-right: auto;
     padding-top: 30px;
     gap: 50px 100px;
 }
@@ -13,7 +14,7 @@
     align-items: center;
     background-color: rgb(32, 37, 35);
     border-radius: 5px;
-    width: 400px;
+    width: 350px;
     height: 675px;
 }
 
@@ -36,4 +37,31 @@
 
 .author-span {
     color: white;
+}
+
+#price-main {
+    font-size: 30px;
+    font-weight: 600;
+    color: grey;
+}
+
+#rating-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 35px;
+    font-size: 22px;
+    border: solid;
+    font-weight: 700;
+    border-color: green;
+}
+
+#rating-main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }

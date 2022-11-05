@@ -30,22 +30,39 @@ const Navbar = () => {
     return (
         <nav className='navbar'>
             <ul className='nav-list'>
-                <li className='logo'>
-                    <img src='/images/logo.png' width={70} height={70} onClick={() => nav('/main')}></img>
-                    <figcaption className='caption'> Book Freak </figcaption>
-                </li>
-                <li className='git-icon'>
-                    <a href='https://github.com/jultar2000/BookFreak'>
-                        <img src='/images/GitHub-Mark-Light-64px.png' style={{ marginRight: "10px" }} ></img>
-                        Github
-                    </a>
-                </li>
                 {
                     checkPathState() ?
-                        <li> <Button type="large-btn" text="SIGN UP" onClick={() => nav('/sign-up')} /> </li> :
+                        <li className='logo'>
+                            <img src='/images/logo.png' width={70} height={70} onClick={() => nav('/main')}></img>
+                            <figcaption className='caption'> Book Freak </figcaption>
+                        </li>
+                        :
                         <li className='user-icon'>
-                            <img id="user-image" src={"data:image/png;base64," + userImage} width={85} height={85} onClick={() => nav('/profile')}></img>
+                            <img id="user-image" src={"data:image/png;base64," + userImage} width={80} height={80} onClick={() => nav('/profile')}></img>
                             <figcaption className='caption'> {getItemFromLocalStorage("username")} </figcaption>
+                        </li>
+                }
+                {
+                    checkPathState() ?
+                        <li className='git-icon'>
+                            <a href='https://github.com/jultar2000/BookFreak'>
+                                <img src='/images/GitHub-Mark-Light-64px.png' style={{ marginRight: "10px" }} ></img>
+                                Github
+                            </a>
+                        </li>
+                        :
+                        <li className='logo'>
+                            <img src='/images/logo.png' width={70} height={70} onClick={() => nav('/main')}></img>
+                            <figcaption className='caption'> Book Freak </figcaption>
+                        </li>
+                }
+                {
+                    checkPathState() ?
+                        <li> <Button type="large-btn" text="SIGN UP" onClick={() => nav('/sign-up')} /> </li>
+                        :
+                        <li className='cart'>
+                            <img src='/images/shopping-cart.svg' width={70} height={70} onClick={() => nav('/cart')}></img>
+                            <figcaption className='caption'> Your cart </figcaption>
                         </li>
                 }
             </ul>

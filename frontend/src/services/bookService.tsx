@@ -40,6 +40,11 @@ export async function getBookRatings() {
         .get(booksBasicUrl + "ratings")
 }
 
+export async function getBookImage(bookId: string) {
+    return await axiosInstance
+        .get(booksBasicUrl + bookId + "/image")
+}
+
 export async function getBooksImages() {
     return await axiosInstance
         .get(booksBasicUrl + "images")

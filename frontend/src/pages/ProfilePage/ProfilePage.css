@@ -1,0 +1,138 @@
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+}
+
+.image-profile-container {
+    display: flex;
+    height: 50%;
+    width: 50%;
+    margin-left: 50px;
+    margin-top: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#update-image-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 45px;
+  width: 200px;
+  border: none;
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+  border-radius: 4px;
+  background-color: rgb(32, 37, 35);
+  margin: 0;
+}
+
+#update-image-btn:hover {
+  transition: all 0.3s ease;
+  background-color: rgb(12, 129, 65);
+  cursor: pointer;
+}
+
+#change-image-btn {
+  color: transparent;
+}
+#change-image-btn::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+#change-image-btn::before {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  content: 'Select a file';
+  color: black;
+  display: flex;
+  background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 3px 5px 5px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+  margin-top: 10px;
+}
+
+.image-profile-container img {
+  border-radius: 50%;
+}
+
+.basic-data-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.update-content-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.update-content-input {
+    height: 30px;
+    width: 200px;
+    padding: 5px;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 400;
+    padding-top: 17px;
+    border:none;
+    border-radius: 5px;
+    border-bottom: 3px solid #333;
+    outline: none;
+  }
+
+  .update-content-input:focus {
+    border-color: green;
+  }
+  
+  .update-content-span {
+    font-size: 50px;
+    font-weight: 600;
+    pointer-events: none;
+    transition: 0.5s;
+  }
+
+  .update-content-span {
+    color: green;
+    font-size: 14px;
+    transform: translateY(-7px);
+  }
+
+  #update-content-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-top: 10px;
+    margin-left: 400px;
+    height: 45px;
+    width: 200px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    border-radius: 4px;
+    background-color: rgb(32, 37, 35);
+  }
+  
+  #update-content-btn:hover {
+    transition: all 0.3s ease;
+    background-color: rgb(12, 129, 65);
+    cursor: pointer;
+  }
