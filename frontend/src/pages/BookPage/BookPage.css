@@ -2,13 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    align-content: center;
 }
 
 .book-detail-image-container {
     display: flex;
     align-items: center;
     flex-direction: column;
-
 }
 
 .book-detail-image-container span {
@@ -21,22 +22,203 @@
     display: flex;
     justify-content: space-between;
     margin: 20px;
-    margin-left: 50px;
-    margin-right: 40px;
-    width: 85%;
+    width: 98%;
 }
 
 .info-cart-container {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    align-items: flex-start;
+    width: 50%;
 }
 
-.book-detail-image-container {
-    width: 30%;
+#description-span {
+    margin-top: 15px;
 }
 
 .detail-info-container {
     display: flex;
+    height: 80%;
     flex-direction: column;
+    color: white;
+}
+
+.description-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.info-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.pre-cart-container {
+    width: 25%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    background-color: rgb(27, 118, 62);
+}
+
+.pre-cart-container h2 {
+    font-size: 35px;
+    font-weight: 600;
+}
+
+.pre-cart-container form {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.main-label {
+    font-size: 25px;
+    font-weight: 400;
+}
+
+.pre-checkbox {
+    width: 1.3em;
+    height: 1.3em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.pre-checkbox:checked {
+    background-color: black;
+}
+
+.pre-checkbox-label {
+    font-size: 15px;
+}
+
+.book-language-checkboxes {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.book-language-checkboxes input {
+    margin-left: 13px;
+}
+
+.book-cover-checkboxes {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin-top: 10px;
+}
+
+.book-cover-checkboxes input {
+    margin-left: 13px;
+}
+
+.pre-checkboxes {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.info-container {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.comment-details-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-comments-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 30px;
+    border-top: 3px solid white;
+}
+
+.comment-container {
+    width: 75%;
+    height: 100px;
+    background-color: white;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.comment-text-container{
+    height: 60%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#comment-header {
+    margin-top: 5px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#comment-button-container {
+    margin-bottom: 4px;
+}
+
+#user-comment-container {
+    height: 140px;
+}
+
+#comment-text {
+    margin-left: 10px;
+}
+
+#comments-label {
+    font-size: 50px;
+    color: green;
+}
+
+#quantity-input {
+    margin-top: 10px;
+}
+
+#add-item-btn {
+    margin-bottom: 0px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(72, 69, 69);
+}
+
+#book-title {
+    font-size: 50px;
+    color: white;
+}
+
+#book-author {
+    font-size: 20px;
+    color: white;   
+}
+
+#description-label {
+    font-size: 30px;
+}
+
+#comment-username {
+    font-size: 20px;
+    font-weight: 900;
 }

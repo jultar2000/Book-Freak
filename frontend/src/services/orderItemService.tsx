@@ -1,4 +1,6 @@
+import { OrderItemData } from "../shared/interfaces/Order/OrderItemData";
 import axiosInstance from "../utils/axiosInstance";
+import { getItemFromLocalStorage } from "../utils/helpers";
 import { getCurrentUser } from "./authService";
 
 const basicOrderItemUrl = "/order-module/api/v1/order-items/"
@@ -28,10 +30,10 @@ export async function getOrderItemById(orderItemId: string) {
         }).catch((err) => console.log(err))
 }
 
-export async function addOrUpdateItem(bookId: string) {
-    let username = await getCurrentUser()
+export async function addOrUpdateItem(bookId: string, orderItemData: OrderItemData) {
+    let username = getItemFromLocalStorage("username")
     axiosInstance
-        .post(basicOrderItemUrl + "users/" + username + "/books/" + bookId)
+        .post(basicOrderItemUrl + "users/" + username + "/books/" + bookId, orderItemData)
         .then((res) => {
             return res.data
         }).catch((err) => console.log(err))

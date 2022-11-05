@@ -1,3 +1,4 @@
+import { CommentData } from "../shared/interfaces/Book/CommentData";
 import axiosInstance from "../utils/axiosInstance";
 import { getItemFromLocalStorage } from "../utils/helpers";
 
@@ -26,7 +27,7 @@ export async function getBooksByGenre(genre: string) {
 
 export async function getBooksByRating() {
     return await axiosInstance
-        .get(booksBasicUrl + "/rating")
+        .get(booksBasicUrl + "rating")
 }
 
 export async function getBooksByAuthor(authorId: string) {
@@ -37,6 +38,11 @@ export async function getBooksByAuthor(authorId: string) {
 export async function getBookRatings() {
     return await axiosInstance
         .get(booksBasicUrl + "ratings")
+}
+
+export async function getBooksImages() {
+    return await axiosInstance
+        .get(booksBasicUrl + "images")
 }
 
 export async function updateRating(bookId: string, ratingNum: number) {
@@ -52,9 +58,9 @@ export async function getBookComments(bookId: string) {
         .get(booksBasicUrl + bookId + "/comments")
 }
 
-export async function addComment(bookId: string) {
+export async function addComment(bookId: string, commentData: CommentData) {
     return await axiosInstance
-        .post(booksBasicUrl + bookId + "/comments")
+        .post(booksBasicUrl + bookId + "/comments", commentData)
 }
 
 export async function updateComment(commentId: string) {

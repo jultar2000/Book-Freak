@@ -43,9 +43,15 @@
 }
 
 .user-icon {
+    display: flex;
+    flex-direction: column;
     cursor: pointer;
 }
 
 .user-icon img {
-    border-radius: 10px;
+    border-radius: 50%;
+}
+
+.logo img {
+    cursor: pointer;
 }

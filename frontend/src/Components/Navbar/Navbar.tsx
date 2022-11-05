@@ -21,18 +21,17 @@ const Navbar = () => {
     useEffect(() => {
         getUserImage()
             .then((res) => {
-                console.log(res.data)
                 setUserImage(res.data)
             }).catch((err) => {
                 console.log(err)
             })
-    })
+    }, [])
 
     return (
         <nav className='navbar'>
             <ul className='nav-list'>
                 <li className='logo'>
-                    <img src='/images/logo.png' width={70} height={70}></img>
+                    <img src='/images/logo.png' width={70} height={70} onClick={() => nav('/main')}></img>
                     <figcaption className='caption'> Book Freak </figcaption>
                 </li>
                 <li className='git-icon'>
@@ -45,7 +44,7 @@ const Navbar = () => {
                     checkPathState() ?
                         <li> <Button type="large-btn" text="SIGN UP" onClick={() => nav('/sign-up')} /> </li> :
                         <li className='user-icon'>
-                            <img src='/images/book.jpg' width={75} height={75} onClick={() => nav('/profile')}></img>
+                            <img id="user-image" src={"data:image/png;base64," + userImage} width={85} height={85} onClick={() => nav('/profile')}></img>
                             <figcaption className='caption'> {getItemFromLocalStorage("username")} </figcaption>
                         </li>
                 }
