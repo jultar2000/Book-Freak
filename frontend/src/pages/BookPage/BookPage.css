@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     align-content: center;
+    font-family: 'Arial';
 }
 
 .book-detail-image-container {
@@ -18,6 +19,10 @@
     font-weight: 400;
 }
 
+.book-detail-image-container img {
+    border-radius: 5px;
+}
+
 .book-detail-container {
     display: flex;
     justify-content: space-between;
@@ -30,6 +35,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 50%;
+    font-family: 'Verdana', cursive;
 }
 
 #description-span {
@@ -61,7 +67,7 @@
     flex-direction: column;
     justify-content: space-between;
     border-radius: 10px;
-    background-color: rgb(27, 118, 62);
+    background-color: rgb(8, 84, 55);
 }
 
 .pre-cart-container h2 {
@@ -169,6 +175,46 @@
     justify-content: flex-start;
 }
 
+.under-image-content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.under-image-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+}
+
+.under-image-container-label {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.small-content-under-image-container {
+    border-radius: 5px;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    width: 60px;
+    height: 30px;
+}
+
+#book-genre-under-container {
+    width: 100px;
+}
+
+#price-span-under {
+    font-size: 30px;
+    font-weight: 700;
+}
+
 #comment-header {
     margin-top: 5px;
     font-size: 22px;
@@ -206,7 +252,9 @@
     padding: 10px;
     border-radius: 5px;
     border: none;
-    background-color: rgb(72, 69, 69);
+    background-color: rgb(186, 168, 168);
+    font-size: 16px;
+    font-weight: 700;
 }
 
 #book-title {
@@ -224,8 +272,8 @@
 }
 
 #comment-username {
-    font-size: 20px;
-    font-weight: 900;
+    font-size: 18px;
+    font-weight: 800;
 }
 
 #comment-input {

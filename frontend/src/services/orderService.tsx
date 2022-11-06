@@ -1,55 +1,38 @@
 import axiosInstance from "../utils/axiosInstance";
+import { getItemFromLocalStorage } from "../utils/helpers";
 import { getCurrentUser } from "./authService";
 
 const basicOrderUrl = "/order-module/api/v1/orders/"
 
 export async function getAllOrdersByUser() {
-    let username = await getCurrentUser()
-    axiosInstance
+    let username = getItemFromLocalStorage("username")
+    return await axiosInstance
         .get(basicOrderUrl + "all/user/" + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getOrderById(orderId: string) {
-    axiosInstance
+    return await axiosInstance
         .get(basicOrderUrl + orderId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function getActiveOrder() {
-    let username = await getCurrentUser()
-    axiosInstance
+    let username = getItemFromLocalStorage("username")
+    return await axiosInstance
         .get(basicOrderUrl + "active/users/" + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function updateOrder(orderId: string) {
-    axiosInstance
+    return await axiosInstance
         .put(basicOrderUrl + orderId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function makeOrder() {
-    let username = await getCurrentUser()
-    axiosInstance
+    let username = getItemFromLocalStorage("username")
+    return await axiosInstance
         .put(basicOrderUrl + "users/" + username)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }
 
 export async function deleteOrder(orderId: string) {
-    axiosInstance
+    return await axiosInstance
         .delete(basicOrderUrl + orderId)
-        .then((res) => {
-            return res.data
-        }).catch((err) => console.log(err))
 }

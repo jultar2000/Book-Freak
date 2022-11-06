@@ -22,6 +22,15 @@ export async function updateUserData(extendedUserData: ExtendedUserData) {
         .put(basicUserUrl + username, extendedUserData);
 }
 
+export async function updateUserFunds(funds: number) {
+    let username = getItemFromLocalStorage("username")
+    const fundsData = {
+        "funds": funds
+    }
+    return await axiosInstance
+        .put(basicUserUrl + username + "/user-funds", fundsData);
+}
+
 export async function updateUserImage(file: FormData) {
     let username = getItemFromLocalStorage("username")
     return await axiosInstance

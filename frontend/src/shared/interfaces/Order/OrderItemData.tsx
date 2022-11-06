@@ -1,8 +1,8 @@
-import { BookData } from "../Book/BookData";
+import { OrderItemBookData } from "../Book/OrderItemBookData";
 
 export interface OrderItemData {
     oid?: string,
-    book?: BookData,
+    book?: OrderItemBookData,
     orderId?: string,
     quantity: number,
     bookCover: string,

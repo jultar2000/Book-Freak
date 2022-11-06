@@ -39,7 +39,7 @@ const Navbar = () => {
                         :
                         <li className='user-icon'>
                             <img id="user-image" src={"data:image/png;base64," + userImage} width={80} height={80} onClick={() => nav('/profile')}></img>
-                            <figcaption className='caption'> {getItemFromLocalStorage("username")} </figcaption>
+                            <figcaption className='caption'> Your profile </figcaption>
                         </li>
                 }
                 {

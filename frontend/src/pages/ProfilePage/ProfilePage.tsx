@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUserData, getUserImage, updateUserData, updateUserImage } from "../../services/userService";
+import { getUserData, getUserImage, updateUserData, updateUserFunds, updateUserImage } from "../../services/userService";
 import { ExtendedUserData } from "../../shared/interfaces/User/ExtendedUserData";
 import './ProfilePage.css'
 
@@ -12,7 +12,6 @@ const ProfilePage = () => {
         getUserData()
             .then((res) => {
                 setUserData(res.data)
-                console.log(res.data)
             }).catch((err) => {
                 console.log(err)
             })
@@ -22,32 +21,28 @@ const ProfilePage = () => {
             }).catch((err) => {
                 console.log(err)
             })
-
     }, [])
 
     const updateHandler = () => {
         let extendedUserData: ExtendedUserData = {}
-        const nameInput = document.getElementById("") as HTMLInputElement
-        const surnameInput = document.getElementById("") as HTMLInputElement
-        const birtDateInput = document.getElementById("") as HTMLInputElement
-        const fundsInput = document.getElementById("") as HTMLInputElement
+        const nameInput = document.getElementById("name-input") as HTMLInputElement
+        const surnameInput = document.getElementById("surname-input") as HTMLInputElement
+        const birtDateInput = document.getElementById("birth-date-input") as HTMLInputElement
+        const fundsInput = document.getElementById("funds-input") as HTMLInputElement
 
-        if (nameInput && surnameInput && birtDateInput && fundsInput) {
-            if (nameInput.value) {
-                extendedUserData.name = nameInput.value
-            }
-            if (surnameInput.value) {
-                extendedUserData.surname = surnameInput.value
-            }
-            if (birtDateInput.value) {
-                extendedUserData.birthDate = birtDateInput.value
-            }
-            if (fundsInput.value) {
-                extendedUserData.funds = +fundsInput.value
-            }
+        if (nameInput && nameInput.value) {
+            extendedUserData.name = nameInput.value
         }
+        if (surnameInput && surnameInput.value) {
+            extendedUserData.surname = surnameInput.value
+        }
+        if (birtDateInput && birtDateInput.value) {
+            extendedUserData.birthDate = birtDateInput.value
+        }
+
         updateUserData(extendedUserData)
             .then(() => {
+                updateUserFunds(+fundsInput.value).catch((err) => console.log(err))
                 window.location.reload()
             }).catch((err) => {
                 console.log(err)
@@ -97,19 +92,19 @@ const ProfilePage = () => {
             <form className="basic-data-form">
                 <div className='update-content-container'>
                     <span className="update-content-span">Name</span>
-                    <input className="update-content-input" id='name-input' placeholder={userData != null ? userData.name: ''} />
+                    <input className="update-content-input" id='name-input' placeholder={userData != null ? userData.name : ''} />
                 </div>
                 <div className='update-content-container'>
                     <span className="update-content-span">Surname</span>
-                    <input className="update-content-input" id='surname-input' placeholder={userData != null ? userData.surname: ''}/>
+                    <input className="update-content-input" id='surname-input' placeholder={userData != null ? userData.surname : ''} />
                 </div>
                 <div className='update-content-container'>
                     <span className="update-content-span">Birth Date</span>
-                    <input className="update-content-input" id='birt-date-input' placeholder={userData != null ? userData.birthDate: ''}/>
+                    <input className="update-content-input" id='birth-date-input' placeholder={userData != null ? userData.birthDate : ''} />
                 </div>
                 <div className='update-content-container'>
                     <span className="update-content-span">Funds</span>
-                    <input type="number" className="update-content-input" id='funds-input'/>
+                    <input type="number" className="update-content-input" id='funds-input' placeholder={userData != null ? userData.funds : ''} />
                 </div>
                 <button
                     type="button"

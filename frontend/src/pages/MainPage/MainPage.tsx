@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAllAuthors } from "../../services/authorService";
-import { getAllBooks, getBookRatings, getBooksImages } from "../../services/bookService";
+import { getAllBooks, getBooksRatings, getBooksImages } from "../../services/bookService";
 import { AuthorData } from "../../shared/interfaces/Author/AuthorData";
 import { BookData } from "../../shared/interfaces/Book/BookData";
 import { BookImagesData } from "../../shared/interfaces/Book/BookImagesData";
@@ -29,7 +29,7 @@ const MainPage = () => {
             }).catch((err) => {
                 console.log(err)
             })
-        getBookRatings()
+        getBooksRatings()
             .then((res) => {
                 setBookRatings(res.data)
             }).catch((err) => {
@@ -62,7 +62,7 @@ const MainPage = () => {
                         <span className="author-span">{author != null ? author.name + ' ' + author.surname : null}</span>
                         <span id="price-main">{book.price + "$"}</span>
                         <div id="rating-main-container">
-                            <span id="rating-main">{rating != null ? rating.realRating + "/10" : null}</span>
+                            <span id="rating-main">{rating != null ? rating.realRating.toFixed(1) + "/10" : null}</span>
                         </div>
                     </div>
                 </div>

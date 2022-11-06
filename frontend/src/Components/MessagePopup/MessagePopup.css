@@ -4,8 +4,20 @@
     align-items: center;
     position: fixed;
     width: 30%;
-    height: 50%;
+    height: 20%;
+    border-radius: 10px;
     background-color: white;
+    font-family: 'Whisper', cursive;
+    font-weight: 600;
+    background-color: rgb(221, 184, 138);
+}
+
+.tick-popup {
+    border: solid green 2px;
+}
+
+.cross-popup {
+    border: solid red 2px;
 }
 
 .popup-container-content {

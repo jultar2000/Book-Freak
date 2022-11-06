@@ -6,12 +6,12 @@ import './MessagePopup.css'
 const MessagePopup = (props: MessagePopupProps) => {
 
     return (props.trigger) ? (
-        <div className="popup-container">
+        <div className={"popup-container " + (props.status === ResponseStatus.SUCCESS ? "tick-popup" : "cross-popup")}>
             <div className="popup-container-content">
                 <button className="close-popup-btn" onClick={() => props.setTrigger(false)}>x</button>
                 <div className="popup-image-container">
                     <figure>
-                        <img width={75} height={75} src={"/images/" + (props.status === ResponseStatus.SUCCESS ? "tick-sign.png" : "cross-sign.png")}></img>
+                        <img width={75} height={75} src={"/images/" + (props.status === ResponseStatus.SUCCESS ? "tick-sign.svg" : "cross-icon.svg")}></img>
                         <figcaption>{props.status === ResponseStatus.SUCCESS ? ResponseStatus["SUCCESS"] : ResponseStatus["ERROR"]}</figcaption>
                     </figure>
                 </div>

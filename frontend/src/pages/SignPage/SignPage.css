@@ -45,9 +45,19 @@
     border: none;
     border-radius: 5px;
     padding: 10px;
+    outline: none;
     background-color: antiquewhite;
 }
 
 .validation-message {
     font-size: 10px;
+}
+
+#message-popup-container {
+    display: flex;
+    position: absolute;
+    margin-top: 250px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }

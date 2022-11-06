@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getBookById, getBookComments, addComment, getBookImage } from "../../services/bookService";
+import { getBookById, getBookComments, addComment, getBookImage, getBookRating } from "../../services/bookService";
 import { BookData } from "../../shared/interfaces/Book/BookData";
 import { CommentData } from "../../shared/interfaces/Book/CommentData"
 import { useParams } from "react-router-dom"
@@ -18,6 +18,7 @@ const BookPage = () => {
     const [bookImage, setBookImage] = useState('')
     const [author, setAuthor] = useState<AuthorData>()
     const [commentsData, setCommentsData] = useState<CommentData[]>([])
+    const [rating, setRating] = useState(0)
     const nav = useNavigate();
     const { id } = useParams();
 
@@ -32,8 +33,6 @@ const BookPage = () => {
                         }).catch((err) => {
                             console.log(err)
                         })
-                }).catch((err) => {
-                    console.log(err)
                 })
             getBookComments(id)
                 .then((res) => {
@@ -44,6 +43,12 @@ const BookPage = () => {
             getBookImage(id)
                 .then((res) => {
                     setBookImage(res.data)
+                }).catch((err) => {
+                    console.log(err)
+                })
+            getBookRating(id)
+                .then((res) => {
+                    setRating(res.data)
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -137,8 +142,20 @@ const BookPage = () => {
                         <figure>
                             <img width={370} height={540} src={"data:image/png;base64," + bookImage}></img>
                         </figure>
-                        <span>Genre</span>
-                        <span>{book != null ? book.genre : null}</span>
+                        <div className="under-image-container">
+                            <div className="under-image-content-container">
+                                <span>Rating</span>
+                                <span className='small-content-under-image-container'>{rating.toFixed(1) + "/10"}</span>
+                            </div>
+                            <div className="under-image-content-container">
+                                <span>Genre</span>
+                                <span id="book-genre-under-container" className='small-content-under-image-container'>{book != null ? book.genre : null}</span>
+                            </div>
+                            <div className="under-image-content-container">
+                                <span>Price</span>
+                                <span className='small-content-under-image-container'>{book != null ? book.price + "$" : null}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="info-cart-container">

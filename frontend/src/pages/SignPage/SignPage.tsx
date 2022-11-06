@@ -84,8 +84,10 @@ const SignPage = () => {
 
     return (
         <div className="sign-container">
-            <MessagePopup trigger={popupTrigger} setTrigger={setPopupTrigger}
-                status={responseStatus} description={popupMessage}></MessagePopup>
+            <div id="message-popup-container">
+                <MessagePopup trigger={popupTrigger} setTrigger={setPopupTrigger}
+                    status={responseStatus} description={popupMessage}></MessagePopup>
+            </div>
             <div className="picture-container">
                 <img className="sign-picture" src='/images/book.jpg' ></img>
             </div>

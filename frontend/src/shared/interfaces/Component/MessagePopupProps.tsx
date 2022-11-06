@@ -6,5 +6,5 @@ export interface MessagePopupProps {
     trigger: boolean,
     setTrigger: Dispatch<SetStateAction<boolean>>,
     status: ResponseStatus,
-    description : string
+    description : string,
 }
