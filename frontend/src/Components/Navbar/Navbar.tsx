@@ -38,7 +38,7 @@ const Navbar = () => {
                         </li>
                         :
                         <li className='user-icon'>
-                            <img id="user-image" src={"data:image/png;base64," + userImage} width={80} height={80} onClick={() => nav('/profile')}></img>
+                            <img id="user-image" src={userImage ? "data:image/png;base64," + userImage : "userIcon.png"} width={80} height={80} onClick={() => nav('/profile')}></img>
                             <figcaption className='caption'> Your profile </figcaption>
                         </li>
                 }

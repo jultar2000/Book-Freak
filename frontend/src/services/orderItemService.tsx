@@ -10,9 +10,9 @@ export async function getAllOrderItemsByOrder(orderId: string) {
         .get(basicOrderItemUrl + "all/orders/" + orderId)
 }
 
-export async function getAllOrderItemsByActiveOrder() {
+export function getAllOrderItemsByActiveOrder() {
     let username = getItemFromLocalStorage("username")
-    return await axiosInstance
+    return axiosInstance
         .get(basicOrderItemUrl + "active/users/" + username)
 }
 
