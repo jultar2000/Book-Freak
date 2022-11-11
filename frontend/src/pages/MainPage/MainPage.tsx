@@ -17,27 +17,13 @@ const MainPage = () => {
     const [booksImages, setBooksImages] = useState<BookImagesData[]>([])
 
     useEffect(() => {
-        getAllBooks()
+        let promises = [getAllBooks(), getAllAuthors(), getBooksRatings(), getBooksImages()]
+        Promise.all(promises)
             .then((res) => {
-                setBooksData(res.data)
-            }).catch((err) => {
-                console.log(err)
-            })
-        getAllAuthors()
-            .then((res) => {
-                setAuthorsData(res.data)
-            }).catch((err) => {
-                console.log(err)
-            })
-        getBooksRatings()
-            .then((res) => {
-                setBookRatings(res.data)
-            }).catch((err) => {
-                console.log(err)
-            })
-        getBooksImages()
-            .then((res) => {
-                setBooksImages(res.data)
+                setBooksData(res[0].data)
+                setAuthorsData(res[1].data)
+                setBookRatings(res[2].data)
+                setBooksImages(res[3].data)
             }).catch((err) => {
                 console.log(err)
             })

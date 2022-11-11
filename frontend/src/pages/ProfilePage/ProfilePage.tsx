@@ -40,9 +40,16 @@ const ProfilePage = () => {
             extendedUserData.birthDate = birtDateInput.value
         }
 
-        updateUserData(extendedUserData)
+        let promises: any[] = []
+        if(extendedUserData.name || extendedUserData.surname || extendedUserData.birthDate) {
+            promises.push(updateUserData(extendedUserData))
+        }
+        if(fundsInput.value) {
+            promises.push(updateUserFunds(+fundsInput.value))
+        }
+
+        Promise.all(promises)
             .then(() => {
-                updateUserFunds(+fundsInput.value).catch((err) => console.log(err))
                 window.location.reload()
             }).catch((err) => {
                 console.log(err)
@@ -92,15 +99,15 @@ const ProfilePage = () => {
             <form className="basic-data-form">
                 <div className='update-content-container'>
                     <span className="update-content-span">Name</span>
-                    <input className="update-content-input" id='name-input' placeholder={userData != null ? userData.name : ''} />
+                    <input className="update-content-input" id='name-input' placeholder={userData != null ? userData.name : 'name'} />
                 </div>
                 <div className='update-content-container'>
                     <span className="update-content-span">Surname</span>
-                    <input className="update-content-input" id='surname-input' placeholder={userData != null ? userData.surname : ''} />
+                    <input className="update-content-input" id='surname-input' placeholder={userData != null ? userData.surname : 'surname'} />
                 </div>
                 <div className='update-content-container'>
                     <span className="update-content-span">Birth Date</span>
-                    <input className="update-content-input" id='birth-date-input' placeholder={userData != null ? userData.birthDate : ''} />
+                    <input className="update-content-input" id='birth-date-input' placeholder={userData != null ? userData.birthDate : 'xx-yy-zzzz'} />
                 </div>
                 <div className='update-content-container'>
                     <span className="update-content-span">Funds</span>
