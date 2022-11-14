@@ -1,3 +1,54 @@
+.main-container {
+    display: grid;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+}
+
+.filter-stripe {
+    background-color: rgb(32, 37, 35) !important;
+    width: 30%;
+    height: 70px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 100px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.filter-sub-container {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+.filter-sub-container input { 
+    border: none;
+    outline: none;
+}
+
+.input-filter-container {
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+.filter-checkbox {
+    width: 1.3em;
+    height: 1.3em;
+    background-color: white;
+    border-radius: 50%;
+    vertical-align: middle;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    border:none
+}
+
+.filter-checkbox:checked {
+    background-color: black;
+}
+
 .main-books-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -16,7 +67,7 @@
     background-color: rgb(32, 37, 35);
     border-radius: 5px;
     width: 350px;
-    height: 675px;
+    height: 750px;
 }
 
 .book-image-container figcaption {

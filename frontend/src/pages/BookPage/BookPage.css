@@ -47,12 +47,21 @@
     height: 80%;
     flex-direction: column;
     color: white;
+    align-items: flex-start;
+}
+
+.rating-sub-div {
+    margin-top: 5px;
 }
 
 .description-div {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
+    align-content: flex-start;
+    text-align:left;
+    width: 85%;
 }
 
 .info-container {
@@ -206,8 +215,17 @@
     height: 30px;
 }
 
+.rate-div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 90px;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+}
+
 #book-genre-under-container {
-    width: 100px;
+    width: 220px;
 }
 
 #price-span-under {
@@ -242,12 +260,30 @@
     margin-top: 10px;
 }
 
-#quantity {
+.numeric-input {
     padding: 3px;
-    outline: none;
+    outline: none
+}
+
+#rate-input {
+    padding-left: 2px;
+    width: 40px;
+    height: 20px;
+}
+
+#rate-btn {
+    margin-left: 20px;
+    width: 50px;
+    height: 30px;
+    cursor: pointer;
+    background-color: rgb(186, 168, 168);
+    border-radius: 5px;
+    border: none;
+    font-weight: 700;
 }
 
 #add-item-btn {
+    cursor: pointer;
     margin-bottom: 0px;
     padding: 10px;
     border-radius: 5px;

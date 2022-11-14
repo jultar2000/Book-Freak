@@ -11,6 +11,7 @@ import './MainPage.css'
 const MainPage = () => {
 
     const nav = useNavigate()
+    const [constBooksData, setConstBooksData] = useState<BookData[]>([])
     const [booksData, setBooksData] = useState<BookData[]>([])
     const [authorsData, setAuthorsData] = useState<AuthorData[]>([])
     const [bookRatings, setBookRatings] = useState<BookRating[]>([])
@@ -20,6 +21,7 @@ const MainPage = () => {
         let promises = [getAllBooks(), getAllAuthors(), getBooksRatings(), getBooksImages()]
         Promise.all(promises)
             .then((res) => {
+                setConstBooksData(res[0].data)
                 setBooksData(res[0].data)
                 setAuthorsData(res[1].data)
                 setBookRatings(res[2].data)
@@ -28,6 +30,43 @@ const MainPage = () => {
                 console.log(err)
             })
     }, [])
+
+    const setCheckedValue = (checkElemName: string) => {
+        const arr = ["genre-filter-checkbox", "author-filter-checkbox", "title-filter-checkbox"]
+        arr.forEach(name => {
+            const checkbox = document.getElementById(name) as HTMLInputElement
+            if (name === checkElemName) {
+                checkbox.checked = true
+            } else {
+                checkbox.checked = false
+            }
+
+        })
+    }
+
+    const filterBooks = () => {
+        const genreCheckbox = document.getElementById("genre-filter-checkbox") as HTMLInputElement
+        const authorCheckbox = document.getElementById("author-filter-checkbox") as HTMLInputElement
+        const titleCheckbox = document.getElementById("title-filter-checkbox") as HTMLInputElement
+        const valueInput = document.getElementById("filter-value-input") as HTMLInputElement
+        if (genreCheckbox.checked === true) {
+            setBooksData(booksData.filter(book => book.genre.toLowerCase().includes(valueInput.value.toLowerCase())))
+        } else if (authorCheckbox.checked === true) {
+            const arr: BookData[] = []
+            booksData.forEach(book => {
+                const author = authorsData.find(a => a.oid === book.author.oid)!
+                if (author.name.toLowerCase().includes(valueInput.value.toLowerCase()) ||
+                    author.surname.toLowerCase().includes(valueInput.value.toLowerCase())) {
+                    arr.push(book)
+                }
+            })
+            setBooksData(arr)
+        } else if (titleCheckbox.checked === true) {
+            setBooksData(booksData.filter(book => book.title.toLowerCase().includes(valueInput.value.toLowerCase())))
+        } else {
+            setBooksData(constBooksData)
+        }
+    }
 
     const appendBooks = () => {
         const bookObjects: any[] = [];
@@ -59,10 +98,30 @@ const MainPage = () => {
     }
 
     return (
-        <div className="main-books-container">
-            {
-                appendBooks()
-            }
+        <div className="main-container">
+            <div className="filter-stripe">
+                <div className="filter-sub-container">
+                    <input id="filter-value-input"></input>
+                    <div className="input-filter-container">
+                        <label className="filter-checkbox-label" htmlFor="genre-filter-checkbox">Genre</label>
+                        <input className="filter-checkbox" type="checkbox" id="genre-filter-checkbox" onChange={() => setCheckedValue("genre-filter-checkbox")}></input>
+                    </div>
+                    <div className="input-filter-container">
+                        <label className="filter-checkbox-label" htmlFor="author-filter-checkbox">Author</label>
+                        <input className="filter-checkbox" type="checkbox" id="author-filter-checkbox" onChange={() => setCheckedValue("author-filter-checkbox")}></input>
+                    </div>
+                    <div className="input-filter-container">
+                        <label className="filter-checkbox-label" htmlFor="title-filter-checkbox">Title</label>
+                        <input className="filter-checkbox" type="checkbox" id="title-filter-checkbox" onChange={() => setCheckedValue("title-filter-checkbox")}></input>
+                    </div>
+                    <button onClick={filterBooks}>Search</button>
+                </div>
+            </div>
+            <div className="main-books-container">
+                {
+                    appendBooks()
+                }
+            </div>
         </div>
     );
 }

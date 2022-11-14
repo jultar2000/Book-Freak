@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getBookById, getBookComments, addComment, getBookImage, getBookRating } from "../../services/bookService";
+import { getBookById, getBookComments, addComment, getBookImage, getBookRating, updateRating } from "../../services/bookService";
 import { BookData } from "../../shared/interfaces/Book/BookData";
 import { CommentData } from "../../shared/interfaces/Book/CommentData"
 import { useParams } from "react-router-dom"
@@ -37,6 +37,7 @@ const BookPage = () => {
             getBookComments(id)
                 .then((res) => {
                     setCommentsData(res.data)
+                    console.log(res.data)
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -134,6 +135,20 @@ const BookPage = () => {
         return commentObjects
     }
 
+    const rateHandler = () => {
+        const rateInput = document.getElementById("rate-input") as HTMLInputElement
+
+        if(id && rateInput && rateInput.value) {
+        updateRating(id, +rateInput.value)
+            .then(() => {
+                window.location.reload()
+            }).catch((err) => {
+                console.log(err)
+            })
+
+        }
+    }
+
     return (
         <div className="main-book-detail-container">
             <div className="book-detail-container">
@@ -169,8 +184,15 @@ const BookPage = () => {
                             </div>
                             <br />
                             <div className="description-div">
-                                <span id="description-label">Description</span>
+                                <span id="description-label">Description</span>        
                                 <span id="description-span">{book.description}</span>
+                            </div>
+                            <div className="rate-div">
+                                <span>Rate this book</span>
+                                <div className="rating-sub-div">
+                                    <input className="numeric-input" type="number" id="rate-input" name="rate" min="1" max="10"></input>
+                                    <button id="rate-btn" onClick={rateHandler}>Rate</button>
+                                </div>
                             </div>
                         </div> : null
                     }
@@ -199,7 +221,7 @@ const BookPage = () => {
                         <div>
                             <label className="main-label" htmlFor="book-language">Quantity</label>
                             <div id="quantity-input">
-                                <input type="number" id="quantity" name="quantity" min="1" max="5"></input>
+                                <input className="numeric-input" type="number" id="quantity" name="quantity" min="1" max="10"></input>
                             </div>
                         </div>
                         <input id="add-item-btn" type="submit" value="Add to cart" onClick={addItemToCartHandler}></input>

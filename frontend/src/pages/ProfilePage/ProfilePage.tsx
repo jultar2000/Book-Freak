@@ -85,7 +85,7 @@ const ProfilePage = () => {
     return (
         <div className="main-container">
             <div className="image-profile-container">
-                <img id="form-image" width={450} height={500} src={"data:image/png;base64," + userImage}></img>
+                <img id="form-image" width={450} height={500} src={userImage ? "data:image/png;base64," + userImage: "/images/user-icon.svg"}></img>
                 <input
                     type="file"
                     id="change-image-btn"
