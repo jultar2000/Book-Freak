@@ -1,9 +1,13 @@
 import { OrderItemData } from "../shared/interfaces/Order/OrderItemData";
 import axiosInstance from "../utils/axiosInstance";
 import { getItemFromLocalStorage } from "../utils/helpers";
-import { getCurrentUser } from "./authService";
 
 const basicOrderItemUrl = "/order-module/api/v1/order-items/"
+
+export async function getAllOrderItems() {
+    return await axiosInstance
+        .get(basicOrderItemUrl + "all")
+}
 
 export async function getAllOrderItemsByOrder(orderId: string) {
     return await axiosInstance

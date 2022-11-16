@@ -152,6 +152,7 @@ const CartPage = () => {
             <div className="top-cart-container">
                 <h1>{orderItemsData.length !== 0 ? "Your cart" : "Your cart is empty!"}</h1>
             </div>
+            <Button style={{"margin-bottom": "50px"}}type="medium-btn" text="Check previous orders" onClick={() => {nav("/previous-orders")}}></Button>
             {orderItemsData.length !== 0 ?
                 <div className="bottom-cart-container">
                     <div className="items-container">

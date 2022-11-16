@@ -1,0 +1,82 @@
+.main-previous-orders-container {
+    display: flex;
+    margin-top: 5vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    color: white;
+}
+
+.order-main-container {
+    margin-bottom: 7vh;
+    background-color: rgb(40, 47, 45);
+}
+
+.status-container {
+    display: flex;
+    height: 5vh;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1vh;
+    border-bottom: solid rgb(75, 73, 73) 2px;
+    font-weight: 400;
+    font-size: 1.2rem;
+}
+
+.status-container span {
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.sub-status-container span {
+    margin-left: 2vw;
+}
+
+.sub-inside-image-container img {
+    cursor: pointer;
+}
+
+.main-inside-order-item-container {
+    display: flex;
+    flex-direction: row;
+    width: 55vw;
+    height: 15vh;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: solid rgb(75, 73, 73) 2px;
+    border-radius: 1px;
+    margin-top: 3px;
+    font-size: 1.3rem;
+}
+
+.main-inside-image-container {
+    width: 5vw;
+}
+
+.main-inside-title-container {
+    width: 15vw;
+}
+
+.main-inside-price-container {
+    width: 10vw;
+}
+
+.main-inside-total-container {
+    width: 10vw;
+}
+
+.main-inside-order-item-container div:first-child {
+    margin-left: 1vw;
+}
+
+.main-inside-order-item-container div {
+    margin-left: 5vw;
+}
+
+.main-summary-container {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
